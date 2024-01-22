@@ -1,0 +1,8 @@
+Location #class
+com.axonivy.connector.openweather.data #namespace
+cityName String #field
+countryCode String #field
+stateCode String #field
+zipCode String #field
+lat Float #field
+lon Float #field

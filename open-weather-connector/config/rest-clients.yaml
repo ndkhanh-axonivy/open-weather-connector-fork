@@ -1,1 +1,11 @@
 RestClients:
+  https://api.openweathermap.org/data/2.5:
+    UUID: 0fc74980-b68a-4324-bd3f-f224de13e094
+    Url: https://api.openweathermap.org/data/2.5
+    Features:
+    - ch.ivyteam.ivy.rest.client.mapper.JsonFeature
+  https://api.openweathermap.org/geo/1.0:
+    UUID: 48f97d1e-b75a-4c1a-83da-adba8c9e9d32
+    Url: https://api.openweathermap.org/geo/1.0
+    Features:
+    - ch.ivyteam.ivy.rest.client.mapper.JsonFeature

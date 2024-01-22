@@ -1,0 +1,183 @@
+{
+  "format" : "10.0.0",
+  "id" : "18D095DBEDE31F47",
+  "kind" : "CALLABLE_SUB",
+  "config" : {
+    "data" : "com.axonivy.connector.openweather.data.forecast.ForecastWeatherData"
+  },
+  "elements" : [ {
+      "id" : "f0",
+      "type" : "CallSubStart",
+      "name" : "call(String,String,String)",
+      "config" : {
+        "callSignature" : "call",
+        "input" : {
+          "params" : [
+            { "name" : "cityName", "type" : "String" },
+            { "name" : "stateCode", "type" : "String" },
+            { "name" : "countryCode", "type" : "String" }
+          ],
+          "map" : {
+            "out.location.cityName" : "param.cityName",
+            "out.location.countryCode" : "param.countryCode",
+            "out.location.stateCode" : "param.stateCode"
+          }
+        },
+        "result" : {
+          "params" : [
+            { "name" : "response", "type" : "com.axonivy.connector.openweather.data.forecast.ForecastWeatherResponse" }
+          ],
+          "map" : {
+            "result.response" : "in.forecastWeatherResponse"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 64 }
+      },
+      "connect" : { "id" : "f11", "to" : "f4" }
+    }, {
+      "id" : "f1",
+      "type" : "CallSubEnd",
+      "visual" : {
+        "at" : { "x" : 576, "y" : 64 }
+      }
+    }, {
+      "id" : "f5",
+      "type" : "RequestStart",
+      "name" : "start.ivp",
+      "config" : {
+        "callSignature" : "start",
+        "outLink" : "start.ivp"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 232 }
+      },
+      "connect" : { "id" : "f8", "to" : "f7" }
+    }, {
+      "id" : "f6",
+      "type" : "TaskEnd",
+      "visual" : {
+        "at" : { "x" : 576, "y" : 232 }
+      }
+    }, {
+      "id" : "f7",
+      "type" : "RestClientCall",
+      "name" : "Forecast",
+      "config" : {
+        "path" : "/forecast",
+        "clientId" : "0fc74980-b68a-4324-bd3f-f224de13e094",
+        "method" : "GET",
+        "queryParams" : {
+          "lat" : "10",
+          "lon" : "10",
+          "appid" : "\"536ab120c8d59f5249e91d759e1392c9\"",
+          "units" : "\"metric\""
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 424, "y" : 232 }
+      },
+      "connect" : { "id" : "f9", "to" : "f6" }
+    }, {
+      "id" : "f10",
+      "type" : "RestClientCall",
+      "name" : "Forecast",
+      "config" : {
+        "path" : "/forecast",
+        "clientId" : "0fc74980-b68a-4324-bd3f-f224de13e094",
+        "clientErrorCode" : "ivy:error:rest:client",
+        "method" : "GET",
+        "queryParams" : {
+          "lat" : "in.location.lat",
+          "lon" : "in.location.lon",
+          "appid" : "\"536ab120c8d59f5249e91d759e1392c9\"",
+          "units" : "\"metric\""
+        },
+        "statusErrorCode" : "ivy:error:rest:client",
+        "resultType" : "com.fasterxml.jackson.databind.JsonNode",
+        "responseCode" : [
+          "import java.time.Instant;",
+          "import java.time.ZoneId;",
+          "import java.time.LocalDateTime;",
+          "import java.util.Locale;",
+          "import java.time.format.DateTimeFormatter;",
+          "import java.util.ArrayList;",
+          "import com.axonivy.connector.openweather.data.forecast.ForecastWeatherRecord;",
+          "import ch.srgssr.api.srf.meteo.v2.client.GeolocationNamesSearch;",
+          "import com.fasterxml.jackson.databind.node.ObjectNode;",
+          "import com.fasterxml.jackson.databind.JsonNode;",
+          "import com.fasterxml.jackson.databind.node.ArrayNode;",
+          "",
+          "if (result.isObject() && !result.isArray()) {",
+          "  ObjectNode objectNode = result as ObjectNode;",
+          "  ArrayNode list = objectNode.get(\"list\") as ArrayNode;",
+          "  if (list != null) {",
+          "    List<ForecastWeatherRecord> forecastWeatherList = new ArrayList();",
+          "    for (int i = 0; i < list.size(); i = i + 8) {",
+          "      ObjectNode objectNode = list.get(i) as ObjectNode;",
+          "      ForecastWeatherRecord forecastWeather = new ForecastWeatherRecord();",
+          "      forecastWeather.mainTemp = objectNode.get(\"main\").get(\"temp\").asDouble();",
+          "      forecastWeather.mainFeelsLike = objectNode.get(\"main\").get(\"feels_like\").asDouble();",
+          "      forecastWeather.mainTempMin = objectNode.get(\"main\").get(\"temp_min\").asDouble();",
+          "      forecastWeather.mainTempMax = objectNode.get(\"main\").get(\"temp_max\").asDouble();",
+          "      forecastWeather.mainHumidity = objectNode.get(\"main\").get(\"humidity\").asInt();",
+          "      forecastWeather.mainSeaLevel = objectNode.get(\"main\").get(\"sea_level\").asInt();",
+          "      ObjectNode weatherNode = (objectNode.get(\"weather\") as ArrayNode).get(0) as ObjectNode;",
+          "      forecastWeather.weatherIcon = weatherNode.get(\"icon\").asText();",
+          "      forecastWeather.weatherDescription = weatherNode.get(\"description\").asText();",
+          "      forecastWeather.dt = objectNode.get(\"dt\").asText();",
+          "      ivy.log.info(Long.parseLong(forecastWeather.dt));",
+          "       Instant instant = Instant.ofEpochMilli(Long.parseLong(forecastWeather.dt) * 1000);",
+          "      LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());",
+          "      forecastWeather.dayOfWeek = dateTime.getDayOfWeek()",
+          "        .getDisplayName(java.time.format.TextStyle.FULL, Locale.ENGLISH);",
+          "      ",
+          "      DateTimeFormatter formatter = DateTimeFormatter.ofPattern(\"dd.MM.yyyy\");",
+          "      forecastWeather.daytime = dateTime.format(formatter);",
+          "      forecastWeatherList.add(forecastWeather);",
+          "    }",
+          "    in.forecastWeatherResponse.list = forecastWeatherList;",
+          "  }",
+          "}"
+        ]
+      },
+      "visual" : {
+        "at" : { "x" : 424, "y" : 64 }
+      },
+      "connect" : { "id" : "f3", "to" : "f1" }
+    }, {
+      "id" : "f4",
+      "type" : "RestClientCall",
+      "name" : "Geocoding",
+      "config" : {
+        "path" : "direct",
+        "clientId" : "48f97d1e-b75a-4c1a-83da-adba8c9e9d32",
+        "clientErrorCode" : "ivy:error:rest:client",
+        "queryParams" : {
+          "q" : "in.location.cityName + \",\" + in.location.stateCode + \",\" + in.location.countryCode",
+          "appid" : "\"536ab120c8d59f5249e91d759e1392c9\""
+        },
+        "statusErrorCode" : "ivy:error:rest:client",
+        "resultType" : "com.fasterxml.jackson.databind.JsonNode",
+        "responseCode" : [
+          "import ch.srgssr.api.srf.meteo.v2.client.GeolocationNamesSearch;",
+          "import com.fasterxml.jackson.databind.node.ObjectNode;",
+          "import com.fasterxml.jackson.databind.JsonNode;",
+          "import com.fasterxml.jackson.databind.node.ArrayNode;",
+          "",
+          "if (!result.isEmpty()) {",
+          "  ArrayNode arrayNode = result as ArrayNode;",
+          "  JsonNode firstNode = arrayNode.get(0);",
+          "  ObjectNode objectNode = firstNode as ObjectNode;",
+          "  in.location.lat = objectNode.get(\"lat\").asDouble(0.0);",
+          "  in.location.lon = objectNode.get(\"lon\").asDouble(0.0);",
+          "}"
+        ]
+      },
+      "visual" : {
+        "at" : { "x" : 240, "y" : 64 }
+      },
+      "connect" : { "id" : "f2", "to" : "f10" }
+    } ]
+}

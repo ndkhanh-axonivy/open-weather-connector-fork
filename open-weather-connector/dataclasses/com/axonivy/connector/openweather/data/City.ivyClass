@@ -1,0 +1,11 @@
+City #class
+com.axonivy.connector.openweather.data #namespace
+id Integer #field
+name String #field
+lat Float #field
+lon Float #field
+country String #field
+population String #field
+timezone String #field
+sunrise java.sql.Timestamp #field
+sunset java.sql.Timestamp #field

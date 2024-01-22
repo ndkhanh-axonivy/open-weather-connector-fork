@@ -5,6 +5,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_hd"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_wsproc"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_dataClasses"/>
+		<wb-resource deploy-path="/WEB-INF/classes" source-path="/js"/>
         <property name="context-root" value="open-weather-connector-demo"/>
         <property name="java-output-path" value="/open-weather-connector-demo/target/classes"/>
     </wb-module>

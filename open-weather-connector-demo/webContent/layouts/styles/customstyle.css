@@ -1,0 +1,68 @@
+.custom-row-margin {
+	padding-bottom: 50px;
+}
+
+.weather-container {
+	background-color: pink;
+	text-align: center;
+	position: relative;
+}
+
+.weather-container img {
+	display: block;
+	margin: auto; /* Center align the image */
+}
+
+.degree {
+	font-size: 24px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+.weekday {
+	font-size: 18px;
+	margin-top: 10px;
+}
+
+.weekday-button {
+	background-color: pink;
+	width: 70px;
+	height: 110px;
+	text-align: center;
+}
+
+.additional-info {
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+.additional-info-button {
+	font-size: 14px;
+}
+
+.grid-container {
+	display: grid;
+	grid-template-columns: 1fr 1fr; /* Two columns of equal width */
+	gap: 20px; /* Adjust the gap between columns if needed */
+}
+
+.column {
+	background-color: lightgray; /* Just for visibility */
+	padding: 10px;
+}
+
+.custom-tabview .ui-tabview-nav li {
+	border-right: 1px solid #ddd;
+	/* Adjust the border style and color as needed */
+	padding-right: 10px;
+	/* Adjust the padding to control the space between tabs */
+}
+
+/* Remove right border from the last tab */
+.custom-tabview .ui-tabview-nav li:last-child {
+	border-right: none;
+}
+
+.ui-chart {
+	margin-bottom: 50px;
+}

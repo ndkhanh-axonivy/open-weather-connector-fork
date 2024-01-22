@@ -1,0 +1,5 @@
+ForecastWeatherData #class
+com.axonivy.connector.openweather.data.forecast #namespace
+location com.axonivy.connector.openweather.data.Location #field
+forecastWeatherResponse com.axonivy.connector.openweather.data.forecast.ForecastWeatherResponse #field
+forecastWeatherResponse PERSISTENT #fieldModifier

@@ -1,0 +1,22 @@
+ForecastWeatherRecord #class
+com.axonivy.connector.openweather.data.forecast #namespace
+dt String #field
+mainTemp Float #field
+mainTempMin Float #field
+mainTempMax Float #field
+mainPressure Integer #field
+mainSeaLevel Integer #field
+mainGrndLevel Integer #field
+mainHumidity Integer #field
+weatherId String #field
+weatherMain String #field
+weatherDescription String #field
+weatherIcon String #field
+cloudsAll Integer #field
+windSpeed Integer #field
+windDeg Integer #field
+windGust String #field
+dtTxt String #field
+daytime String #field
+dayOfWeek String #field
+mainFeelsLike Double #field
