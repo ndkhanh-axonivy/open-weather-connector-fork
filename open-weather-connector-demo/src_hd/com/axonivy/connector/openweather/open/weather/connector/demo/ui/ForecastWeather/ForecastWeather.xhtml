@@ -47,9 +47,23 @@
 					<div class="ui-g" style="width: 100%;">
 						<div class="ui-g-3 ui-g-nopad weather-container"
 							style="background-color: #f5fdff; text-align: center;">
-							<img src="https://openweathermap.org/img/wn/10d@2x.png"
-								alt="Weather Icon" />
-							<div class="degree">25°C</div>
+							<p:graphicImage
+								value="https://openweathermap.org/img/wn/02d@2x.png"
+								width="140px" />
+							<div style="margin-bottom: 10px">
+								<span class="degree">
+									25
+								</span>
+								<span>
+								°C
+								</span>
+								<span>
+								|
+								</span>
+								<span>
+								°F
+								</span>
+							</div>
 							<div class="additional-info">
 								01:00 Thu <br /> New York <br /> Rainy <br /> <br />
 								Humidity: 81% <br /> Wind: 1MPH
@@ -59,8 +73,9 @@
 							<div class="ui-g-12 ui-g-nopad">
 								<p:tabView>
 									<p:tab title="Tab 1" style="padding: 0">
-										<p:lineChart widgetVar="lineChartWidgetVar" model="#{chartJsView.lineModel}"
-											style="width: 20px; height: 5px;" />
+										<p:lineChart widgetVar="lineChartWidgetVar"
+											model="#{chartJsView.lineModel}"
+											style="cursor: pointer; width: 20px; height: 5px;" />
 									</p:tab>
 									<p:tab title="Tab 2">
 									</p:tab>
@@ -68,99 +83,101 @@
 									</p:tab>
 								</p:tabView>
 							</div>
-							<div class="ui-g-12 ui-g-nopad" style="text-align: center;">
-								<div class="ui-g-2 ui-g-nopad">
-									<div class="ui-g-12 ui-g-nopad">
-										<span>Thu</span>
-									</div>
-									<div class="ui-g-12 ui-g-nopad">
-										<p:graphicImage
-											value="https://openweathermap.org/img/wn/10d@2x.png" />
-									</div>
-									<div class="ui-g-12 ui-g-nopad">
-										<div class="ui-g-6 ui-g-nopad">91°</div>
-										<div class="ui-g-6 ui-g-nopad">75°</div>
-									</div>
-								</div>
+							<div class="ui-g-12 ui-g-nopad"
+								style="text-align: center; margin-top: 20px">
+								<div
+									style="display: flex; justify-content: space-around; text-align: center;">
 
-								<div class="ui-g-2 ui-g-nopad">
-									<div class="ui-g-12 ui-g-nopad">
-										<span>Thu</span>
+									<div class="clickable-item" onclick="handleClick(this)">
+										<div style="margin-bottom: 10px;">
+											<span style="font-size: 20px; font-weight: bold">Today</span>
+										</div>
+										<div style="margin-bottom: 10px;">
+											<p:graphicImage
+												value="https://openweathermap.org/img/wn/10d@2x.png"
+												width="100px" />
+										</div>
+										<div>
+											<span
+												style="font-size: 14px; margin-right: 5px; font-weight: bold;">91°</span>
+											<span style="font-size: 14px;">75°</span>
+										</div>
 									</div>
-									<div class="ui-g-12 ui-g-nopad">
-										<p:graphicImage
-											value="https://openweathermap.org/img/wn/10d@2x.png" />
-									</div>
-									<div class="ui-g-12 ui-g-nopad">
-										<div class="ui-g-6 ui-g-nopad">91°</div>
-										<div class="ui-g-6 ui-g-nopad">75°</div>
-									</div>
-								</div>
 
-								<div class="ui-g-2 ui-g-nopad">
-									<div class="ui-g-12 ui-g-nopad">
-										<span>Thu</span>
+									<div class="clickable-item" onclick="handleClick(this)">
+										<div style="margin-bottom: 10px;">
+											<span style="font-size: 20px; font-weight: bold">Today</span>
+										</div>
+										<div style="margin-bottom: 10px;">
+											<p:graphicImage
+												value="https://openweathermap.org/img/wn/10d@2x.png"
+												width="100px" />
+										</div>
+										<div>
+											<span
+												style="font-size: 14px; margin-right: 5px; font-weight: bold;">91°</span>
+											<span style="font-size: 14px;">75°</span>
+										</div>
 									</div>
-									<div class="ui-g-12 ui-g-nopad">
-										<p:graphicImage
-											value="https://openweathermap.org/img/wn/10d@2x.png" />
-									</div>
-									<div class="ui-g-12 ui-g-nopad">
-										<div class="ui-g-6 ui-g-nopad">91°</div>
-										<div class="ui-g-6 ui-g-nopad">75°</div>
-									</div>
-								</div>
 
-								<div class="ui-g-2 ui-g-nopad">
-									<div class="ui-g-12 ui-g-nopad">
-										<span>Thu</span>
+									<div class="clickable-item" onclick="handleClick(this)">
+										<div style="margin-bottom: 10px;">
+											<span style="font-size: 20px; font-weight: bold">Today</span>
+										</div>
+										<div style="margin-bottom: 10px;">
+											<p:graphicImage
+												value="https://openweathermap.org/img/wn/10d@2x.png"
+												width="100px" />
+										</div>
+										<div>
+											<span
+												style="font-size: 14px; margin-right: 5px; font-weight: bold;">91°</span>
+											<span style="font-size: 14px;">75°</span>
+										</div>
 									</div>
-									<div class="ui-g-12 ui-g-nopad">
-										<p:graphicImage
-											value="https://openweathermap.org/img/wn/10d@2x.png" />
-									</div>
-									<div class="ui-g-12 ui-g-nopad">
-										<div class="ui-g-6 ui-g-nopad">91°</div>
-										<div class="ui-g-6 ui-g-nopad">75°</div>
-									</div>
-								</div>
 
-								<div class="ui-g-2 ui-g-nopad">
-									<div class="ui-g-12 ui-g-nopad">
-										<span>Thu</span>
+									<div class="clickable-item" onclick="handleClick(this)">
+										<div style="margin-bottom: 10px;">
+											<span style="font-size: 20px; font-weight: bold">Today</span>
+										</div>
+										<div style="margin-bottom: 10px;">
+											<p:graphicImage
+												value="https://openweathermap.org/img/wn/10d@2x.png"
+												width="100px" />
+										</div>
+										<div>
+											<span
+												style="font-size: 14px; margin-right: 5px; font-weight: bold;">91°</span>
+											<span style="font-size: 14px;">75°</span>
+										</div>
 									</div>
-									<div class="ui-g-12 ui-g-nopad">
-										<p:graphicImage
-											value="https://openweathermap.org/img/wn/10d@2x.png" />
-									</div>
-									<div class="ui-g-12 ui-g-nopad">
-										<div class="ui-g-6 ui-g-nopad">91°</div>
-										<div class="ui-g-6 ui-g-nopad">75°</div>
-									</div>
-								</div>
 
-								<div class="ui-g-2 ui-g-nopad">
-									<div class="ui-g-12 ui-g-nopad">
-										<span>Thu</span>
-									</div>
-									<div class="ui-g-12 ui-g-nopad">
-										<p:graphicImage
-											value="https://openweathermap.org/img/wn/10d@2x.png" />
-									</div>
-									<div class="ui-g-12 ui-g-nopad">
-										<div class="ui-g-6 ui-g-nopad">91°</div>
-										<div class="ui-g-6 ui-g-nopad">75°</div>
+									<div class="clickable-item" onclick="handleClick(this)">
+										<div style="margin-bottom: 10px;">
+											<span style="font-size: 20px; font-weight: bold">Today</span>
+										</div>
+										<div style="margin-bottom: 10px;">
+											<p:graphicImage
+												value="https://openweathermap.org/img/wn/10d@2x.png"
+												width="100px" />
+										</div>
+										<div>
+											<span
+												style="font-size: 14px; margin-right: 5px; font-weight: bold;">91°</span>
+											<span style="font-size: 14px;">75°</span>
+										</div>
 									</div>
 								</div>
 							</div>
+
 						</div>
 					</div>
 				</div>
 
 				<p:spacer height="40" />
 				<div>
-					<button onclick="panChart(-2)">Pan Left</button>
-					<button onclick="panChart(2)">Pan Right</button>
+					<p:commandButton value="Pan Left" onclick="panChart(-2)" />
+					<p:commandButton value="Pan Right" onclick="panChart(2)" />
 				</div>
 				<div class="command-btns">
 					<p:commandLink id="cancel"
@@ -171,12 +188,22 @@
 				</div>
 
 				<h:outputScript library="js" name="temperature-chart.js" />
-				<h:outputScript library="js" name="hammer.min.js" />
 				<h:outputScript library="chartjs-plugin"
-					name="chartjs-plugin-zoom.min.js" />
+					name="chartjs-plugin-datalabels.min.js" />
 
 			</h:form>
-
+			<script>
+			    function handleClick(element) {
+			        // Remove 'selected' class from all elements
+			        const allItems = document.querySelectorAll('.clickable-item');
+			        allItems.forEach(item => {
+			            item.classList.remove('selected');
+			        });
+			
+			        // Add 'selected' class to the clicked element
+			        element.classList.add('selected');
+			    }
+			</script>
 		</ui:define>
 
 	</ui:composition>

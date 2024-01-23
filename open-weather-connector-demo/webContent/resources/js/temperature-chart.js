@@ -1,20 +1,49 @@
+const ClickPositionDetector = {
+	id: 'clickPositionDetector',
+    afterEvent: function (chart, event, options) {
+        if (event.event.type === 'click') {
+            var datasets = chart.config.data.datasets;
+            datasets.forEach(function (dataset, datasetIndex) {
+                var meta = chart.getDatasetMeta(datasetIndex);
+                if (meta.hidden) {
+                    return; // Skip hidden datasets
+                }
+				
+               	for (var index = 0; index < meta.data.length - 1; index++) {
+
+                    var middlePointX = (meta.data[index + 1].x + meta.data[index].x) / 2;
+					console.log(middlePointX)
+                    if (event.event.x <= middlePointX) {
+                        console.log('Hovered or clicked on hidden column:', datasetIndex, index);
+                        break;
+                    } else if (
+                        index == meta.data.length - 2
+                    ) {
+                        console.log('END Hovered or clicked on hidden column:', datasetIndex, index + 1);
+                        break;
+                    }
+                }
+            });
+        }
+    }
+};
+
 function chartExtender() {
+	//Register plugin datalabels
+	jQuery.extend(true, this.cfg.config, {plugins: [ChartDataLabels, ClickPositionDetector]});
 	let data = [...this.cfg.config.data.datasets[0].data];
-	console.log(data);
     // copy the config options into a variable
     let options = jQuery.extend(true, {}, this.cfg.config.options);
     options = {
     	scales: {
             y: {
                 display: false, // Hide y-axis
-                beginAtZero: true,
-                min: Math.min(...data) - 0.1 * (Math.max(...data) - Math.min(...data)),
-                max: Math.max(...data) + 0.1 * (Math.max(...data) - Math.min(...data))
+                min: Math.min(...data) - 0.2 * (Math.max(...data) - Math.min(...data)),
+                max: Math.max(...data) + 0.2 * (Math.max(...data) - Math.min(...data))
             },
             x: {
-            	display: false,
-                min: 0, // Set minimum x-axis value
-                max: 2, // Set maximum x-axis value
+            	min: 0,
+            	max: 2,
                 grid: {
                     drawOnChartArea: false
                 }
@@ -24,13 +53,13 @@ function chartExtender() {
         	legend: {
 		        display: false
 		    },
-            zoom: {
-                pan: {
-                    enabled: true,
-                    threshold: 1,
-                    mode: 'x'
-                }
+		    datalabels: {
+	            display: true,
+	            align: 'top', // Adjust the alignment as needed
+	            formatter: function(value, context) {
+	                return value; // You can customize the label content here
             }
+        }
         }
     };
 
@@ -38,49 +67,44 @@ function chartExtender() {
     jQuery.extend(true, this.cfg.config.options, options);
     
     let extendedData = {
-       datasets: [
-       {
-         borderColor: 'black',
-         backgroundColor: 'orange',
-       }
-    ]
-  }
-  
-   // merge data into the main chart data
-  jQuery.extend(true, this.cfg.config.data, extendedData);
+			datasets: [
+       		{
+       			fill: 'start',
+        		borderColor: 'orange',
+         		backgroundColor: 'lightyellow'
+       		}
+    	]
+	}
+
+ 	// merge data into the main chart data
+	jQuery.extend(true, this.cfg.config.data, extendedData);
 }
 
 function panChart(offset) {
-    var chart = PF('lineChartWidgetVar').chart;
- 	console.log(chart);
-    // Log the original options
-    console.log(chart.config);
+	// Get the chart instance from the widgetVar
+	var chart = PF('lineChartWidgetVar').chart;
+	console.log(PF('lineChartWidgetVar'));
+	var xAxis = chart.scales.x;
+	var yAxis = chart.scales.y;
+	
+	var newMinX = xAxis.min + offset;
+	var newMaxX = xAxis.max + offset;
 
-    // Modify the copied options
-    var xAxis = chart.cfg.options.scales.x;
-    var currentMinX = xAxis.min;
-    var currentMaxX = xAxis.max;
-    var newMinX = currentMinX + offset;
-    var newMaxX = currentMaxX + offset;
+	console.log(xAxis.min);
+	console.log(xAxis.max);
+	console.log(PF('lineChartWidgetVar').cfg.config.data.datasets[0].data.length);
+	
+	if (newMinX < 0 || newMaxX > PF('lineChartWidgetVar').cfg.config.data.datasets[0].data.length-1) {
+	    console.log('no action');
+	    return;
+	}
 
-    // Check if the new values are within valid range
-    if (newMinX < 0 || newMaxX > 7) {
-        console.log('No action');
-        return;
-    }
-
-    chart.cfg.options.scales.x.min = newMinX;
-    chart.cfg.options.scales.x.max = newMaxX;
-
-    var yAxis = chart.cfg.options.scales.y;
-
-    chart.cfg.options.scales.y.min = yAxis.min;
-    chart.cfg.options.scales.y.max = yAxis.max;
-
-    // Log the modified options using JSON.stringify for a cleaner representation
-    console.log('Modified Options:', JSON.stringify(chart.cfg, null, 2));
-    chart.pan({
-		x: offset,
-		y: 0
-	});
+	chart.options.scales.x.min = newMinX;
+	chart.options.scales.x.max = newMaxX;
+	
+	// Preserve the current Y-axis range
+	chart.options.scales.y.min = yAxis.min;
+	chart.options.scales.y.max = yAxis.max;
+	
+	chart.update();
 }
