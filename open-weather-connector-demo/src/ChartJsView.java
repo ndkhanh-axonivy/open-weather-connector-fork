@@ -72,21 +72,22 @@ public class ChartJsView implements Serializable {
 		values.add(65);
 		values.add(59);
 		values.add(80);
-		values.add(81);
+		values.add(-70);
 		values.add(56);
 		values.add(55);
 		values.add(40);
 		dataSet.setData(values);
+		dataSet.setTension(0.3);
 		data.addChartDataSet(dataSet);
 
 		List<String> labels = new ArrayList<>();
-		labels.add("1");
-		labels.add("2");
-		labels.add("3");
-		labels.add("April");
-		labels.add("May");
-		labels.add("June");
-		labels.add("July");
+		labels.add("1:00");
+		labels.add("4:00");
+		labels.add("7:00");
+		labels.add("10:00");
+		labels.add("13:00");
+		labels.add("16:00");
+		labels.add("19:00");
 		data.setLabels(labels);
 
 		// Options
@@ -106,9 +107,9 @@ public class ChartJsView implements Serializable {
 		values.add(20);
 		values.add(50);
 		values.add(100);
-		values.add(75);
+		values.add(-7);
 		values.add(25);
-		values.add(0);
+		values.add(10);
 		dataSet.setData(values);
 		dataSet.setLabel("Left Dataset");
 		dataSet.setYaxisID("left-y-axis");
