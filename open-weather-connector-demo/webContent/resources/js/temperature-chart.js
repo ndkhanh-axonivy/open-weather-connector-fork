@@ -43,7 +43,7 @@ function chartExtender() {
             },
             x: {
             	min: 0,
-            	max: 2,
+            	max: 7,
                 grid: {
                     drawOnChartArea: false
                 }

@@ -14,14 +14,14 @@
         "guid" : "18D1562D826E7109"
       },
       "visual" : {
-        "at" : { "x" : 96, "y" : 64 }
+        "at" : { "x" : 96, "y" : 80 }
       },
       "connect" : { "id" : "f2", "to" : "f1" }
     }, {
       "id" : "f1",
       "type" : "HtmlDialogEnd",
       "visual" : {
-        "at" : { "x" : 224, "y" : 64 }
+        "at" : { "x" : 224, "y" : 80 }
       }
     }, {
       "id" : "f3",
@@ -40,5 +40,62 @@
       "visual" : {
         "at" : { "x" : 224, "y" : 160 }
       }
+    }, {
+      "id" : "f6",
+      "type" : "HtmlDialogEventStart",
+      "name" : "getWeather",
+      "config" : {
+        "guid" : "18D3F9DBEB85B5E4"
+      },
+      "visual" : {
+        "at" : { "x" : 104, "y" : 240 }
+      },
+      "connect" : { "id" : "f9", "to" : "f7" }
+    }, {
+      "id" : "f7",
+      "type" : "SubProcessCall",
+      "name" : "ForecastWeather",
+      "config" : {
+        "processCall" : "ForecastWeather:call(String,String,String)",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.forecastWeather.forecastWeatherResponse" : "result.response"
+          }
+        },
+        "call" : {
+          "params" : [
+            { "name" : "cityName", "type" : "String" },
+            { "name" : "stateCode", "type" : "String" },
+            { "name" : "countryCode", "type" : "String" }
+          ],
+          "map" : {
+            "param.cityName" : "in.forecastWeather.location.cityName",
+            "param.stateCode" : "in.forecastWeather.location.stateCode",
+            "param.countryCode" : "in.forecastWeather.location.countryCode"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 248, "y" : 240 }
+      },
+      "connect" : { "id" : "f10", "to" : "f8" }
+    }, {
+      "id" : "f8",
+      "type" : "HtmlDialogEnd",
+      "visual" : {
+        "at" : { "x" : 392, "y" : 240 }
+      }
+    }, {
+      "id" : "f11",
+      "type" : "HtmlDialogEventStart",
+      "name" : "getWeather2",
+      "config" : {
+        "guid" : "18D401C752E780E3"
+      },
+      "visual" : {
+        "at" : { "x" : 112, "y" : 312 }
+      },
+      "connect" : { "id" : "f12", "to" : "f7" }
     } ]
 }

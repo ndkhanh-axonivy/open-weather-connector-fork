@@ -43,43 +43,6 @@
         "at" : { "x" : 576, "y" : 64 }
       }
     }, {
-      "id" : "f5",
-      "type" : "RequestStart",
-      "name" : "start.ivp",
-      "config" : {
-        "callSignature" : "start",
-        "outLink" : "start.ivp"
-      },
-      "visual" : {
-        "at" : { "x" : 96, "y" : 232 }
-      },
-      "connect" : { "id" : "f8", "to" : "f7" }
-    }, {
-      "id" : "f6",
-      "type" : "TaskEnd",
-      "visual" : {
-        "at" : { "x" : 576, "y" : 232 }
-      }
-    }, {
-      "id" : "f7",
-      "type" : "RestClientCall",
-      "name" : "Forecast",
-      "config" : {
-        "path" : "/forecast",
-        "clientId" : "0fc74980-b68a-4324-bd3f-f224de13e094",
-        "method" : "GET",
-        "queryParams" : {
-          "lat" : "10",
-          "lon" : "10",
-          "appid" : "\"536ab120c8d59f5249e91d759e1392c9\"",
-          "units" : "\"metric\""
-        }
-      },
-      "visual" : {
-        "at" : { "x" : 424, "y" : 232 }
-      },
-      "connect" : { "id" : "f9", "to" : "f6" }
-    }, {
       "id" : "f10",
       "type" : "RestClientCall",
       "name" : "Forecast",
@@ -110,8 +73,8 @@
           "import com.fasterxml.jackson.databind.node.ArrayNode;",
           "",
           "if (result.isObject() && !result.isArray()) {",
-          "  ObjectNode objectNode = result as ObjectNode;",
-          "  ArrayNode list = objectNode.get(\"list\") as ArrayNode;",
+          "  ObjectNode resultNode = result as ObjectNode;",
+          "  ArrayNode list = resultNode.get(\"list\") as ArrayNode;",
           "  if (list != null) {",
           "    List<ForecastWeatherRecord> forecastWeatherList = new ArrayList();",
           "    for (int i = 0; i < list.size(); i = i + 8) {",
@@ -138,6 +101,7 @@
           "      forecastWeatherList.add(forecastWeather);",
           "    }",
           "    in.forecastWeatherResponse.list = forecastWeatherList;",
+          "    in.forecastWeatherResponse.city.name = resultNode.get(\"city\").get(\"name\").asText();",
           "  }",
           "}"
         ]

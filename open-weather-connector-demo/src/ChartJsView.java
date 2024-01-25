@@ -69,13 +69,52 @@ public class ChartJsView implements Serializable {
 
 		LineChartDataSet dataSet = new LineChartDataSet();
 		List<Object> values = new ArrayList<>();
-		values.add(65);
-		values.add(59);
-		values.add(80);
-		values.add(-70);
-		values.add(56);
-		values.add(55);
-		values.add(40);
+		
+		values.add(21);
+		values.add(25);
+		values.add(22);
+		values.add(33);
+		values.add(30);
+		values.add(26);
+		values.add(23);
+		values.add(19);
+		
+		values.add(21);
+		values.add(25);
+		values.add(22);
+		values.add(33);
+		values.add(30);
+		values.add(26);
+		values.add(23);
+		values.add(19);
+		
+		values.add(21);
+		values.add(25);
+		values.add(22);
+		values.add(33);
+		values.add(30);
+		values.add(26);
+		values.add(23);
+		values.add(19);
+		
+		values.add(21);
+		values.add(25);
+		values.add(22);
+		values.add(33);
+		values.add(30);
+		values.add(26);
+		values.add(23);
+		values.add(19);
+		
+		values.add(21);
+		values.add(25);
+		values.add(22);
+		values.add(33);
+		values.add(30);
+		values.add(26);
+		values.add(23);
+		values.add(19);
+		
 		dataSet.setData(values);
 		dataSet.setTension(0.3);
 		data.addChartDataSet(dataSet);
@@ -88,6 +127,43 @@ public class ChartJsView implements Serializable {
 		labels.add("13:00");
 		labels.add("16:00");
 		labels.add("19:00");
+		labels.add("22:00");
+		
+		labels.add("1:00");
+		labels.add("4:00");
+		labels.add("7:00");
+		labels.add("10:00");
+		labels.add("13:00");
+		labels.add("16:00");
+		labels.add("19:00");
+		labels.add("22:00");
+		
+		labels.add("1:00");
+		labels.add("4:00");
+		labels.add("7:00");
+		labels.add("10:00");
+		labels.add("13:00");
+		labels.add("16:00");
+		labels.add("19:00");
+		labels.add("22:00");
+		
+		labels.add("1:00");
+		labels.add("4:00");
+		labels.add("7:00");
+		labels.add("10:00");
+		labels.add("13:00");
+		labels.add("16:00");
+		labels.add("19:00");
+		labels.add("22:00");
+		
+		labels.add("1:00");
+		labels.add("4:00");
+		labels.add("7:00");
+		labels.add("10:00");
+		labels.add("13:00");
+		labels.add("16:00");
+		labels.add("19:00");
+		labels.add("22:00");
 		data.setLabels(labels);
 
 		// Options
