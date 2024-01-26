@@ -2,5 +2,3 @@ ForecastWeatherData #class
 com.axonivy.connector.openweather.open.weather.connector.demo.ui.ForecastWeather #namespace
 forecastWeather com.axonivy.connector.openweather.data.forecast.ForecastWeatherData #field
 forecastWeather PERSISTENT #fieldModifier
-selectedTime java.sql.Timestamp #field
-selectedTime PERSISTENT #fieldModifier

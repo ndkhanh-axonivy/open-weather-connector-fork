@@ -71,12 +71,12 @@
 									style="display: flex; justify-content: space-evenly; font-size: 16px;">
 									<div>
 										<div style="margin-bottom: 5px; font-size: 14px;">Humidity</div>
-										<div style="font-weight: bold; font-size: 18px;">#{forecastWeatherBean.humidityNumber}%</div>
+										<div style="font-weight: bold; font-size: 18px;">#{data.forecastWeather.forecastWeatherResponse.list[0].mainHumidity}%</div>
 									</div>
 									<div>
 										<div style="margin-bottom: 5px; font-size: 14px;">Wind
 											speed</div>
-										<div style="font-weight: bold; font-size: 18px;">#{forecastWeatherBean.windSpeed}mph</div>
+										<div style="font-weight: bold; font-size: 18px;">#{data.forecastWeather.forecastWeatherResponse.list[0].windSpeed}mph</div>
 									</div>
 								</div>
 							</div>
