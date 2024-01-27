@@ -16,70 +16,85 @@
 
 				<p:panelGrid columns="4" layout="grid"
 					styleClass="ui-panelgrid-blank ui-fluid"
-					columnClasses="ui-g-12 ui-md-4, ui-g-12 ui-md-3, ui-g-12 ui-md-3, ui-g-12 ui-md-2"
+					columnClasses="ui-g-4, ui-g-3, ui-g-3, ui-g-2"
 					style="background-color: #f5fdff; border-radius: 5px">
 
 					<h:panelGroup styleClass="ui-float-label">
-						<p:inputText />
+						<p:inputText value="#{data.forecastWeather.location.cityName}" />
 						<p:outputLabel for="@previous" value="City name" />
 					</h:panelGroup>
 
 					<h:panelGroup styleClass="ui-float-label">
-						<p:inputText />
+						<p:inputText value="#{data.forecastWeather.location.countryCode}" />
 						<p:outputLabel for="@previous" value="Country code" />
 					</h:panelGroup>
 
 					<h:panelGroup styleClass="ui-float-label">
-						<p:inputText />
+						<p:inputText value="#{data.forecastWeather.location.stateCode}" />
 						<p:outputLabel for="@previous" value="State code" />
 					</h:panelGroup>
 
-					<p:commandButton type="button" value="Search" icon="pi pi-search" />
+					<p:commandButton value="Search" icon="pi pi-search"
+						actionListener="#{logic.getWeather2}" update="form" />
 				</p:panelGrid>
 
 				<p:spacer height="20" />
-
-
 
 				<p:spacer height="20" />
 
 				<div style="display: flex; justify-content: center;">
 					<div class="ui-g" style="width: 100%;">
 						<div class="ui-g-3 ui-g-nopad weather-container"
-							style="background-color: #f5fdff; text-align: center;">
-							<p:graphicImage
-								value="https://openweathermap.org/img/wn/02d@2x.png"
-								width="140px" />
-							<div style="margin-bottom: 10px">
-								<span class="degree">
-									25
-								</span>
-								<span>
-								°C
-								</span>
-								<span>
-								|
-								</span>
-								<span>
-								°F
-								</span>
+							style="background-color: #f5fdff; text-align: center; display: flex; justify-content: space-between; flex-direction: column; height: 100%;">
+							<div>
+								<div class="date-time caption">
+									<span class="city"><i class="pi pi-map-marker"
+										style="font-size: 16px" />
+										#{data.forecastWeather.forecastWeatherResponse.city.name}</span> <span
+										class="time">#{forecastWeatherBean.formatted12HourTime}</span>
+								</div>
+								<p:graphicImage class="caption"
+									value="https://openweathermap.org/img/wn/02d@2x.png"
+									width="160px" />
+								<div class="caption"
+									style="margin-bottom: 5px; line-height: 1; position: relative;">
+									<span class="degree"> #{forecastWeatherBean.weatherDegree} </span> <span
+										style="position: absolute; top: 6px; right: 33px; font-size: 20px">
+										<span style="font-weight: bold"> °C</span> | <span>°F</span>
+									</span>
+								</div>
+								<div class="additional-info caption"
+									style="margin-bottom: 40px;">
+									<span style="font-size: 20px;">#{forecastWeatherBean.weatherDetail}</span>
+								</div>
+								<div class="caption"
+									style="display: flex; justify-content: space-evenly; font-size: 16px;">
+									<div>
+										<div style="margin-bottom: 5px; font-size: 14px;">Humidity</div>
+										<div style="font-weight: bold; font-size: 18px;">#{data.forecastWeather.forecastWeatherResponse.list[0].mainHumidity}%</div>
+									</div>
+									<div>
+										<div style="margin-bottom: 5px; font-size: 14px;">Wind
+											speed</div>
+										<div style="font-weight: bold; font-size: 18px;">#{data.forecastWeather.forecastWeatherResponse.list[0].windSpeed}mph</div>
+									</div>
+								</div>
 							</div>
-							<div class="additional-info">
-								01:00 Thu <br /> New York <br /> Rainy <br /> <br />
-								Humidity: 81% <br /> Wind: 1MPH
-							</div>
+
+							<div class="caption"
+								style="padding-bottom: 12px; font-size: 14px;">#{forecastWeatherBean.formattedDateTime}</div>
 						</div>
 						<div class="ui-g-9 ui-g-nopad">
 							<div class="ui-g-12 ui-g-nopad">
 								<p:tabView>
-									<p:tab title="Tab 1" style="padding: 0">
+									<p:tab title="Temparature" style="padding: 0">
 										<p:lineChart widgetVar="lineChartWidgetVar"
 											model="#{chartJsView.lineModel}"
 											style="cursor: pointer; width: 20px; height: 5px;" />
 									</p:tab>
-									<p:tab title="Tab 2">
+									<p:tab title="Precipitation">
 									</p:tab>
-									<p:tab title="Tab 3">
+									<p:tab title="Wind">
 									</p:tab>
 								</p:tabView>
 							</div>
@@ -174,11 +189,7 @@
 					</div>
 				</div>
 
-				<p:spacer height="40" />
-				<div>
-					<p:commandButton value="Pan Left" onclick="panChart(-2)" />
-					<p:commandButton value="Pan Right" onclick="panChart(2)" />
-				</div>
+				<p:spacer height="100" />
 				<div class="command-btns">
 					<p:commandLink id="cancel"
 						actionListener="#{ivyWorkflowView.cancel()}" process="@this"

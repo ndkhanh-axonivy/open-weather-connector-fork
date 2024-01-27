@@ -13,7 +13,7 @@ weatherMain String #field
 weatherDescription String #field
 weatherIcon String #field
 cloudsAll Integer #field
-windSpeed Integer #field
+windSpeed Float #field
 windDeg Integer #field
 windGust String #field
 dtTxt String #field
