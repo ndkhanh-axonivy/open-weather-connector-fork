@@ -1,14 +1,14 @@
 ForecastWeatherRecord #class
 com.axonivy.connector.openweather.data.forecast #namespace
-dt String #field
+dt Long #field
 mainTemp Float #field
-mainTempMin Float #field
-mainTempMax Float #field
+mainMinTemp Float #field
+mainMaxTemp Float #field
 mainPressure Integer #field
 mainSeaLevel Integer #field
 mainGrndLevel Integer #field
 mainHumidity Integer #field
-weatherId String #field
+weatherId Integer #field
 weatherMain String #field
 weatherDescription String #field
 weatherIcon String #field

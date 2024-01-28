@@ -13,29 +13,28 @@
 			<p:spacer height="20" />
 			<h:form id="form">
 				<p:messages />
-
 				<p:panelGrid columns="4" layout="grid"
 					styleClass="ui-panelgrid-blank ui-fluid"
 					columnClasses="ui-g-4, ui-g-3, ui-g-3, ui-g-2"
 					style="background-color: #f5fdff; border-radius: 5px">
 
 					<h:panelGroup styleClass="ui-float-label">
-						<p:inputText value="#{data.forecastWeather.location.cityName}" />
+						<p:inputText value="#{forecastWeatherBean.searchCityName}" />
 						<p:outputLabel for="@previous" value="City name" />
 					</h:panelGroup>
 
 					<h:panelGroup styleClass="ui-float-label">
-						<p:inputText value="#{data.forecastWeather.location.countryCode}" />
+						<p:inputText value="#{forecastWeatherBean.searchCountryCode}" />
 						<p:outputLabel for="@previous" value="Country code" />
 					</h:panelGroup>
 
 					<h:panelGroup styleClass="ui-float-label">
-						<p:inputText value="#{data.forecastWeather.location.stateCode}" />
+						<p:inputText value="#{forecastWeatherBean.searchStateCode}" />
 						<p:outputLabel for="@previous" value="State code" />
 					</h:panelGroup>
 
-					<p:commandButton value="Search" icon="pi pi-search"
-						actionListener="#{logic.getWeather2}" update="form" />
+					<p:commandButton value="Search" icon="pi pi-search" update="form"
+						actionListener="#{forecastWeatherBean.search}" />
 				</p:panelGrid>
 
 				<p:spacer height="20" />
@@ -44,46 +43,48 @@
 
 				<div style="display: flex; justify-content: center;">
 					<div class="ui-g" style="width: 100%;">
-						<div class="ui-g-3 ui-g-nopad weather-container"
+						<p:outputPanel styleClass="ui-g-3 ui-g-nopad weather-container"
+							id="forecastPanel"
 							style="background-color: #f5fdff; text-align: center; display: flex; justify-content: space-between; flex-direction: column; height: 100%;">
 							<div>
 								<div class="date-time caption">
 									<span class="city"><i class="pi pi-map-marker"
-										style="font-size: 16px" />
-										#{data.forecastWeather.forecastWeatherResponse.city.name}</span> <span
-										class="time">#{forecastWeatherBean.formatted12HourTime}</span>
+										style="font-size: 16px" /> #{forecastWeatherBean.cityName}</span> <span
+										class="time">#{forecastWeatherBean.formattedTime12Hour}</span>
 								</div>
 								<p:graphicImage class="caption"
-									value="https://openweathermap.org/img/wn/02d@2x.png"
+									value="https://openweathermap.org/img/wn/#{forecastWeatherBean.currentWeatherIcon}@2x.png"
 									width="160px" />
 								<div class="caption"
 									style="margin-bottom: 5px; line-height: 1; position: relative;">
-									<span class="degree"> #{forecastWeatherBean.weatherDegree} </span> <span
-										style="position: absolute; top: 6px; right: 33px; font-size: 20px">
+									<span class="degree">
+										#{forecastWeatherBean.currentWeatherDegree} </span> <span
+										style="position: absolute; top: 6px; right: 30px; font-size: 20px">
 										<span style="font-weight: bold"> °C</span> | <span>°F</span>
 									</span>
 								</div>
 								<div class="additional-info caption"
 									style="margin-bottom: 40px;">
-									<span style="font-size: 20px;">#{forecastWeatherBean.weatherDetail}</span>
+									<span style="font-size: 14px;">#{forecastWeatherBean.currentWeatherDetail}</span>
 								</div>
 								<div class="caption"
 									style="display: flex; justify-content: space-evenly; font-size: 16px;">
 									<div>
 										<div style="margin-bottom: 5px; font-size: 14px;">Humidity</div>
-										<div style="font-weight: bold; font-size: 18px;">#{data.forecastWeather.forecastWeatherResponse.list[0].mainHumidity}%</div>
+										<div style="font-weight: bold; font-size: 18px;">#{forecastWeatherBean.currentHumidity}%</div>
 									</div>
 									<div>
 										<div style="margin-bottom: 5px; font-size: 14px;">Wind
 											speed</div>
-										<div style="font-weight: bold; font-size: 18px;">#{data.forecastWeather.forecastWeatherResponse.list[0].windSpeed}mph</div>
+										<div style="font-weight: bold; font-size: 18px;">#{forecastWeatherBean.currentWindSpeed}mph</div>
 									</div>
 								</div>
 							</div>
 
 							<div class="caption"
-								style="padding-bottom: 12px; font-size: 14px;">#{forecastWeatherBean.formattedDateTime}</div>
-						</div>
+								style="padding-bottom: 12px; font-size: 14px;">#{forecastWeatherBean.formattedDate}</div>
+						</p:outputPanel>
+
 						<div class="ui-g-9 ui-g-nopad">
 							<div class="ui-g-12 ui-g-nopad">
 								<p:tabView>
@@ -100,89 +101,34 @@
 							</div>
 							<div class="ui-g-12 ui-g-nopad"
 								style="text-align: center; margin-top: 20px">
-								<div
+
+								<p:outputPanel id="forecastPanel1"
 									style="display: flex; justify-content: space-around; text-align: center;">
 
-									<div class="clickable-item" onclick="handleClick(this)">
-										<div style="margin-bottom: 10px;">
-											<span style="font-size: 20px; font-weight: bold">Today</span>
-										</div>
-										<div style="margin-bottom: 10px;">
-											<p:graphicImage
-												value="https://openweathermap.org/img/wn/10d@2x.png"
-												width="100px" />
-										</div>
-										<div>
-											<span
-												style="font-size: 14px; margin-right: 5px; font-weight: bold;">91°</span>
-											<span style="font-size: 14px;">75°</span>
-										</div>
-									</div>
+									<ui:repeat value="#{forecastWeatherBean.dailyForecasts}"
+										var="forecast" varStatus="status">
+										<h:commandLink
+											class="clickable-item #{status.index == forecastWeatherBean.dateIndex ? 'selected' : ''}"
+											action="#{forecastWeatherBean.setSelectedDate(forecast.date)}">
+											<p:ajax update=":form:forecastPanel :form:forecastPanel1" />
+											<div style="margin-bottom: 10px;">
+												<span style="font-size: 20px; font-weight: bold">#{status.first
+													? 'Today' : forecast.formattedEEE}</span>
+											</div>
+											<div style="margin-bottom: 10px;">
+												<p:graphicImage
+													value="https://openweathermap.org/img/wn/#{forecast.weatherIcon}@2x.png"
+													width="100px" />
+											</div>
 
-									<div class="clickable-item" onclick="handleClick(this)">
-										<div style="margin-bottom: 10px;">
-											<span style="font-size: 20px; font-weight: bold">Today</span>
-										</div>
-										<div style="margin-bottom: 10px;">
-											<p:graphicImage
-												value="https://openweathermap.org/img/wn/10d@2x.png"
-												width="100px" />
-										</div>
-										<div>
-											<span
-												style="font-size: 14px; margin-right: 5px; font-weight: bold;">91°</span>
-											<span style="font-size: 14px;">75°</span>
-										</div>
-									</div>
-
-									<div class="clickable-item" onclick="handleClick(this)">
-										<div style="margin-bottom: 10px;">
-											<span style="font-size: 20px; font-weight: bold">Today</span>
-										</div>
-										<div style="margin-bottom: 10px;">
-											<p:graphicImage
-												value="https://openweathermap.org/img/wn/10d@2x.png"
-												width="100px" />
-										</div>
-										<div>
-											<span
-												style="font-size: 14px; margin-right: 5px; font-weight: bold;">91°</span>
-											<span style="font-size: 14px;">75°</span>
-										</div>
-									</div>
-
-									<div class="clickable-item" onclick="handleClick(this)">
-										<div style="margin-bottom: 10px;">
-											<span style="font-size: 20px; font-weight: bold">Today</span>
-										</div>
-										<div style="margin-bottom: 10px;">
-											<p:graphicImage
-												value="https://openweathermap.org/img/wn/10d@2x.png"
-												width="100px" />
-										</div>
-										<div>
-											<span
-												style="font-size: 14px; margin-right: 5px; font-weight: bold;">91°</span>
-											<span style="font-size: 14px;">75°</span>
-										</div>
-									</div>
-
-									<div class="clickable-item" onclick="handleClick(this)">
-										<div style="margin-bottom: 10px;">
-											<span style="font-size: 20px; font-weight: bold">Today</span>
-										</div>
-										<div style="margin-bottom: 10px;">
-											<p:graphicImage
-												value="https://openweathermap.org/img/wn/10d@2x.png"
-												width="100px" />
-										</div>
-										<div>
-											<span
-												style="font-size: 14px; margin-right: 5px; font-weight: bold;">91°</span>
-											<span style="font-size: 14px;">75°</span>
-										</div>
-									</div>
-								</div>
+											<div>
+												#{status.index == dateIndex} <span
+													style="font-size: 14px; margin-right: 5px; font-weight: bold;">#{forecast.maxTemperature}°</span>
+												<span style="font-size: 14px;">#{forecast.minTemperature}°</span>
+											</div>
+										</h:commandLink>
+									</ui:repeat>
+								</p:outputPanel>
 							</div>
 
 						</div>
@@ -201,7 +147,6 @@
 				<h:outputScript library="js" name="temperature-chart.js" />
 				<h:outputScript library="chartjs-plugin"
 					name="chartjs-plugin-datalabels.min.js" />
-
 			</h:form>
 			<script>
 			    function handleClick(element) {
