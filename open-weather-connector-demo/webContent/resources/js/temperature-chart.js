@@ -90,6 +90,7 @@ function panChart(offset) {
 	var newMinX = xAxis.min + offset;
 	var newMaxX = xAxis.max + offset;
 
+	console.log(offset);
 	console.log(xAxis.min);
 	console.log(xAxis.max);
 	console.log(PF('lineChartWidgetVar').cfg.config.data.datasets[0].data.length);

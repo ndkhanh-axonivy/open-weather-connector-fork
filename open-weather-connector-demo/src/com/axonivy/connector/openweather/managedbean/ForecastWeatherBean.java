@@ -20,6 +20,10 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.primefaces.model.charts.ChartData;
+import org.primefaces.model.charts.line.LineChartDataSet;
+import org.primefaces.model.charts.line.LineChartModel;
+import org.primefaces.model.charts.line.LineChartOptions;
 
 import com.axonivy.connector.openweather.data.forecast.ForecastWeatherRecord;
 import com.axonivy.connector.openweather.data.forecast.ForecastWeatherResponse;
@@ -57,6 +61,8 @@ public class ForecastWeatherBean implements Serializable {
 	private String searchCountryCode;
 	private String searchStateCode;
 
+	private LineChartModel lineModel;
+
 	@PostConstruct
 	public void init() {
 		searchCityName = "New York";
@@ -67,20 +73,6 @@ public class ForecastWeatherBean implements Serializable {
 
 	public LocalDate getSelectedDate() {
 		return selectedDate;
-	}
-
-	public void setSelectedDateByJsf() {
-
-		String selectedDateStr = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
-				.get("selectedDate");
-		Ivy.log().info(selectedDateStr);
-		if (selectedDateStr != null && !selectedDateStr.isEmpty()) {
-			LocalDate selectedDate = LocalDate.parse(selectedDateStr);
-			setSelectedDate(selectedDate);
-			// Now 'selectedDate' contains the parsed LocalDate value
-		} else {
-			// Handle the case where 'selectedDateStr' is null or empty
-		}
 	}
 
 	public void setSelectedDate(LocalDate selectedDate) {
@@ -183,14 +175,17 @@ public class ForecastWeatherBean implements Serializable {
 	public List<DailyForecast> getDailyForecasts() {
 		return dailyForecasts;
 	}
-	
+
 	public int getDateIndex() {
 		return dateIndex;
 	}
 
+	public LineChartModel getLineModel() {
+		return lineModel;
+	}
+
 	public void search() {
 		ForecastWeatherResponse forecastWeather = null;
-		Ivy.log().info("searchCityName: " + searchCityName);
 		SubProcessCallResult callResult = SubProcessCall.withPath("ForecastWeather").withStartName("call")
 				.withParam("cityName", searchCityName).withParam("countryCode", searchCountryCode)
 				.withParam("stateCode", searchStateCode).call();
@@ -211,9 +206,45 @@ public class ForecastWeatherBean implements Serializable {
 		dailyForecasts = forecastsByDate.entrySet().stream()
 				.map(entry -> new DailyForecast(entry.getKey(), entry.getValue()))
 				.sorted(Comparator.comparing(DailyForecast::getDate)).limit(5).collect(Collectors.toList());
-
+		
 		dateIndex = 0;
 		setSelectedDate(dailyForecasts.get(dateIndex).date);
+		createLineModel();
+	}
+
+	public void createLineModel() {
+		lineModel = new LineChartModel();
+		ChartData data = new ChartData();
+
+		List<LocalTime> timeLabels = dailyForecasts.stream()
+				.flatMap(dailyForecast -> dailyForecast.getDailyRecords().stream().map(
+						record -> Instant.ofEpochSecond(record.getDt()).atZone(ZoneId.systemDefault()).toLocalTime()))
+				.collect(Collectors.toList());
+
+		List<Object> values = dailyForecasts.stream()
+		        .flatMap(dailyForecast -> dailyForecast.getDailyRecords().stream()
+		                .map(record -> record.getMainTemp().intValue()))
+		        .collect(Collectors.toList());
+
+		LineChartDataSet dataSet = new LineChartDataSet();
+		dataSet.setData(values);
+		dataSet.setLabel("Temperature");
+		dataSet.setFill(false);
+		data.addChartDataSet(dataSet);
+
+		// Set time labels
+		List<String> labels = timeLabels.stream().map(time -> DateTimeFormatterUtilities.formatTime24Hour(time))
+				.collect(Collectors.toList());
+
+		data.setLabels(labels);
+
+		// Options
+		// Options
+		LineChartOptions options = new LineChartOptions();
+
+		lineModel.setOptions(options);
+		lineModel.setData(data);
+		lineModel.setExtender("chartExtender");
 	}
 
 	public static class DailyForecast {

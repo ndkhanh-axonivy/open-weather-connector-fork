@@ -90,7 +90,7 @@
 								<p:tabView>
 									<p:tab title="Temparature" style="padding: 0">
 										<p:lineChart widgetVar="lineChartWidgetVar"
-											model="#{chartJsView.lineModel}"
+											model="#{forecastWeatherBean.lineModel}"
 											style="cursor: pointer; width: 20px; height: 5px;" />
 									</p:tab>
 									<p:tab title="Precipitation">
@@ -110,7 +110,7 @@
 										<h:commandLink
 											class="clickable-item #{status.index == forecastWeatherBean.dateIndex ? 'selected' : ''}"
 											action="#{forecastWeatherBean.setSelectedDate(forecast.date)}">
-											<p:ajax update=":form:forecastPanel :form:forecastPanel1" />
+											<p:ajax update=":form:forecastPanel :form:forecastPanel1" oncomplete="panChart(#{(status.index-forecastWeatherBean.dateIndex)*8});"/>
 											<div style="margin-bottom: 10px;">
 												<span style="font-size: 20px; font-weight: bold">#{status.first
 													? 'Today' : forecast.formattedEEE}</span>
@@ -122,7 +122,7 @@
 											</div>
 
 											<div>
-												#{status.index == dateIndex} <span
+												<span
 													style="font-size: 14px; margin-right: 5px; font-weight: bold;">#{forecast.maxTemperature}°</span>
 												<span style="font-size: 14px;">#{forecast.minTemperature}°</span>
 											</div>
