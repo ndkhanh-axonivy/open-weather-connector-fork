@@ -28,7 +28,6 @@ import org.primefaces.model.charts.line.LineChartOptions;
 import com.axonivy.connector.openweather.data.forecast.ForecastWeatherRecord;
 import com.axonivy.connector.openweather.data.forecast.ForecastWeatherResponse;
 import com.axonivy.connector.openweather.enums.TypeOfDegree;
-import com.axonivy.connector.openweather.exception.OpenWeatherMapException;
 import com.axonivy.connector.openweather.util.DateTimeFormatterUtilities;
 
 import ch.ivyteam.ivy.environment.Ivy;
@@ -41,7 +40,7 @@ public class ForecastWeatherBean implements Serializable {
 
 	private static final long serialVersionUID = 4700043015312367231L;
 
-	private TypeOfDegree typeOfDegree;
+	private String typeOfDegree;
 	private LocalDate selectedDate;
 	private LocalTime selectedTime;
 	private int dateIndex;
@@ -68,6 +67,7 @@ public class ForecastWeatherBean implements Serializable {
 		searchCityName = "New York";
 		searchCountryCode = "US";
 		searchStateCode = "NY";
+		typeOfDegree = "CELSIUS";
 		search();
 	}
 
@@ -99,13 +99,41 @@ public class ForecastWeatherBean implements Serializable {
 		return selectedTime;
 	}
 
+	public void setSelectedTimeByIndex() {
+		Ivy.log().info(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("index"));
+
+		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+		int index = Integer.parseInt(params.get("index"));
+
+		if (dateIndex >= 0 && dateIndex < dailyForecasts.size()) {
+
+			List<ForecastWeatherRecord> forecastWeatherRecords = dailyForecasts.stream()
+					.flatMap(dailyForecast -> dailyForecast.getDailyRecords().stream()).collect(Collectors.toList());
+
+			ForecastWeatherRecord selectedRecord = forecastWeatherRecords.get(index);
+
+			setSelectedTime(Instant.ofEpochSecond(selectedRecord.getDt()).atZone(ZoneId.systemDefault())
+					.toLocalTime());
+			currentTemperature = selectedRecord.getMainTemp().intValue();
+			currentHumidity = selectedRecord.getMainHumidity();
+			currentWindSpeed = selectedRecord.getWindSpeed();
+			currentWeatherIconCode = selectedRecord.getWeatherIcon();
+			currentWeatherDetail = StringUtils.capitalize(selectedRecord.getWeatherDescription());
+		}
+	}
+
 	public void setSelectedTime(LocalTime selectedTime) {
 		this.selectedTime = selectedTime;
 		updateFormattedTime12Hour();
 	}
 
-	public TypeOfDegree getTypeOfDegree() {
+	public String getTypeOfDegree() {
 		return typeOfDegree;
+	}
+	
+	public void setTypeOfDegree(String typeOfDegree) {
+		Ivy.log().info(typeOfDegree);
+		this.typeOfDegree = typeOfDegree;
 	}
 
 	public int getCurrentWeatherDegree() {
@@ -206,7 +234,7 @@ public class ForecastWeatherBean implements Serializable {
 		dailyForecasts = forecastsByDate.entrySet().stream()
 				.map(entry -> new DailyForecast(entry.getKey(), entry.getValue()))
 				.sorted(Comparator.comparing(DailyForecast::getDate)).limit(5).collect(Collectors.toList());
-		
+
 		dateIndex = 0;
 		setSelectedDate(dailyForecasts.get(dateIndex).date);
 		createLineModel();
@@ -221,10 +249,8 @@ public class ForecastWeatherBean implements Serializable {
 						record -> Instant.ofEpochSecond(record.getDt()).atZone(ZoneId.systemDefault()).toLocalTime()))
 				.collect(Collectors.toList());
 
-		List<Object> values = dailyForecasts.stream()
-		        .flatMap(dailyForecast -> dailyForecast.getDailyRecords().stream()
-		                .map(record -> record.getMainTemp().intValue()))
-		        .collect(Collectors.toList());
+		List<Object> values = dailyForecasts.stream().flatMap(dailyForecast -> dailyForecast.getDailyRecords().stream()
+				.map(record -> record.getMainTemp().intValue())).collect(Collectors.toList());
 
 		LineChartDataSet dataSet = new LineChartDataSet();
 		dataSet.setData(values);
@@ -258,13 +284,14 @@ public class ForecastWeatherBean implements Serializable {
 		private final float windSpeed;
 		private final String weatherIcon;
 		private final String weatherDescription;
+		private final int sizeDaily;
 		private static final String DEFAULT_WEATHER_CONDITION_ICON = "01d";
 		private static final String DEFAULT_WEATHER_CONDITION_DESCRIPTION = "clear sky";
 
 		private DailyForecast(LocalDate date, List<ForecastWeatherRecord> dailyRecords) {
 			this.date = date;
 			this.dailyRecords = dailyRecords;
-
+			sizeDaily = dailyRecords.size();
 			formattedEEE = DateTimeFormatterUtilities.formatEEE(date);
 			temperature = dailyRecords.stream().map(ForecastWeatherRecord::getMainTemp).mapToInt(Float::intValue).max()
 					.orElse(0);
@@ -324,11 +351,16 @@ public class ForecastWeatherBean implements Serializable {
 			return formattedEEE;
 		}
 
+		public int getSizeDaily() {
+			return sizeDaily;
+		}
+
 		private static int getWeatherPriority(int weatherId) {
 			int firstDigit = weatherId / 100;
 			int lastTwoDigits = weatherId % 100;
 
 			return firstDigit * -100 + lastTwoDigits;
 		}
+
 	}
 }

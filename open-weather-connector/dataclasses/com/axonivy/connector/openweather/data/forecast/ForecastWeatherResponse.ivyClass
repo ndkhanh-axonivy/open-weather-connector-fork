@@ -1,7 +1,0 @@
-ForecastWeatherResponse #class
-com.axonivy.connector.openweather.data.forecast #namespace
-cod String #field
-message String #field
-cnt String #field
-list java.util.List<com.axonivy.connector.openweather.data.forecast.ForecastWeatherRecord> #field
-city com.axonivy.connector.openweather.data.City #field

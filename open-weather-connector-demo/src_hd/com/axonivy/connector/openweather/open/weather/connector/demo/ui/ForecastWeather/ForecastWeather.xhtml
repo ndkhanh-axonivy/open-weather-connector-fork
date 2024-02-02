@@ -12,6 +12,9 @@
 			<h1>Find Weather Forecasts in Any City</h1>
 			<p:spacer height="20" />
 			<h:form id="form">
+				<p:remoteCommand name="rc" update="forecastPanel"
+					action="#{forecastWeatherBean.setSelectedTimeByIndex}" />
+
 				<p:messages />
 				<p:panelGrid columns="4" layout="grid"
 					styleClass="ui-panelgrid-blank ui-fluid"
@@ -58,9 +61,16 @@
 								<div class="caption"
 									style="margin-bottom: 5px; line-height: 1; position: relative;">
 									<span class="degree">
-										#{forecastWeatherBean.currentWeatherDegree} </span> <span
-										style="position: absolute; top: 6px; right: 30px; font-size: 20px">
-										<span style="font-weight: bold"> °C</span> | <span>°F</span>
+										#{forecastWeatherBean.currentWeatherDegree} </span>
+									<span
+										class="temperature-unit">
+										<span
+											style="position: absolute; top: 6px; right: 30px; font-size: 20px; cursor: pointer;">
+											<span
+											class="#{forecastWeatherBean.typeOfDegree == 'CELSIUS' ? 'type-of-degree-selected' : ''}">
+												°C</span> | <span
+											class="#{forecastWeatherBean.typeOfDegree == 'FAHRENHEIT' ? 'type-of-degree-selected' : ''}">°F</span>
+										</span>
 									</span>
 								</div>
 								<div class="additional-info caption"
@@ -110,7 +120,8 @@
 										<h:commandLink
 											class="clickable-item #{status.index == forecastWeatherBean.dateIndex ? 'selected' : ''}"
 											action="#{forecastWeatherBean.setSelectedDate(forecast.date)}">
-											<p:ajax update=":form:forecastPanel :form:forecastPanel1" oncomplete="panChart(#{(status.index-forecastWeatherBean.dateIndex)*8});"/>
+											<p:ajax update=":form:forecastPanel :form:forecastPanel1"
+												oncomplete="panChart(#{(status.index - forecastWeatherBean.dateIndex) * 8 - (status.index == forecastWeatherBean.dateIndex ? 0 : 1) * (8 - forecastWeatherBean.dailyForecasts[forecastWeatherBean.dateIndex].sizeDaily)})" />
 											<div style="margin-bottom: 10px;">
 												<span style="font-size: 20px; font-weight: bold">#{status.first
 													? 'Today' : forecast.formattedEEE}</span>
@@ -148,18 +159,6 @@
 				<h:outputScript library="chartjs-plugin"
 					name="chartjs-plugin-datalabels.min.js" />
 			</h:form>
-			<script>
-			    function handleClick(element) {
-			        // Remove 'selected' class from all elements
-			        const allItems = document.querySelectorAll('.clickable-item');
-			        allItems.forEach(item => {
-			            item.classList.remove('selected');
-			        });
-			
-			        // Add 'selected' class to the clicked element
-			        element.classList.add('selected');
-			    }
-			</script>
 		</ui:define>
 
 	</ui:composition>

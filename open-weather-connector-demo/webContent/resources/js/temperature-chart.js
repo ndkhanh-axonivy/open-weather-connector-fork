@@ -8,8 +8,8 @@ const ClickPositionDetector = {
                 if (meta.hidden) {
                     return; // Skip hidden datasets
                 }
-				
-               	for (var index = 0; index < meta.data.length - 1; index++) {
+				var index = 0;
+               	for (index = 0; index < meta.data.length - 1; index++) {
 
                     var middlePointX = (meta.data[index + 1].x + meta.data[index].x) / 2;
 					console.log(middlePointX)
@@ -23,6 +23,7 @@ const ClickPositionDetector = {
                         break;
                     }
                 }
+                rc([{name: 'index', value: index}]);
             });
         }
     }
@@ -96,8 +97,8 @@ function panChart(offset) {
 	console.log(PF('lineChartWidgetVar').cfg.config.data.datasets[0].data.length);
 	
 	if (newMinX < 0 || newMaxX > PF('lineChartWidgetVar').cfg.config.data.datasets[0].data.length-1) {
-	    console.log('no action');
-	    return;
+	    newMinX = 0;
+	    newMaxX = 7;
 	}
 
 	chart.options.scales.x.min = newMinX;

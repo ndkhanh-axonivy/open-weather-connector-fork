@@ -1,0 +1,51 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:ic="http://ivyteam.ch/jsf/component"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:body>
+	<ui:composition template="/layouts/frame-10-full-width.xhtml">
+		<ui:define name="title">ForecastWeatherDemo</ui:define>
+		<ui:define name="content">
+			<h:outputStylesheet name="layouts/styles/forecastweather.css" />
+			<h1>Find Weather Forecasts in Any City</h1>
+			<p:spacer height="20" />
+			<h:form id="form">
+				<p:panelGrid columns="4" layout="grid"
+					styleClass="ui-fluid"
+					columnClasses="ui-g-4 p-pl-0, ui-g-3, ui-g-3, ui-g-2 p-pr-0">
+
+					<h:panelGroup styleClass="ui-float-label">
+						<p:inputText value="" />
+						<p:outputLabel for="@previous" value="City name" />
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="ui-float-label">
+						<p:inputText value="" />
+						<p:outputLabel for="@previous" value="Country code" />
+					</h:panelGroup>
+
+					<h:panelGroup styleClass="ui-float-label">
+						<p:inputText value="" />
+						<p:outputLabel for="@previous" value="State code" />
+					</h:panelGroup>
+
+					<p:commandButton value="Search" icon="pi pi-search" update="form" />
+
+				</p:panelGrid>
+
+				<div class="p-d-flex">
+					<div class="p-mr-2">Item 1</div>
+					<div class="p-mr-2">Item 2</div>
+					<div>Item 3</div>
+				</div>
+
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>
