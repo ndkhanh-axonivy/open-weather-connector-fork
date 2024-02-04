@@ -1,0 +1,11 @@
+.forecast-weather-panel {
+	min-width: 1000px;
+}
+
+.weather-detail-container {
+	background-color: #f5fdff;
+	
+}
+
+background-color: #f5fdff; text-align: center; display: flex;
+justify-content: space-between; flex-direction: column; height: 100%;

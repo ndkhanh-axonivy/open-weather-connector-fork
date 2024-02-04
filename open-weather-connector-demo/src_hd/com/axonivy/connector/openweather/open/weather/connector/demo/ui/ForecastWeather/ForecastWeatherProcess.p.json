@@ -54,9 +54,9 @@
     }, {
       "id" : "f7",
       "type" : "SubProcessCall",
-      "name" : "ForecastWeather",
+      "name" : "connector/ForecastWeather",
       "config" : {
-        "processCall" : "ForecastWeather:call(String,String,String)",
+        "processCall" : "connector/ForecastWeather:getForecastWeatherByLocationName(String,String,String,String,String,Integer)",
         "output" : {
           "map" : {
             "out" : "in",
@@ -66,8 +66,11 @@
         "call" : {
           "params" : [
             { "name" : "cityName", "type" : "String" },
+            { "name" : "countryCode", "type" : "String" },
             { "name" : "stateCode", "type" : "String" },
-            { "name" : "countryCode", "type" : "String" }
+            { "name" : "lang", "type" : "String" },
+            { "name" : "units", "type" : "String" },
+            { "name" : "cnt", "type" : "Integer" }
           ],
           "map" : {
             "param.cityName" : "in.forecastWeather.location.cityName",

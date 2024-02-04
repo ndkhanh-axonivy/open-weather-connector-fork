@@ -10,39 +10,67 @@
 		<ui:define name="title">ForecastWeatherDemo</ui:define>
 		<ui:define name="content">
 			<h:outputStylesheet name="layouts/styles/forecastweather.css" />
-			<h1>Find Weather Forecasts in Any City</h1>
-			<p:spacer height="20" />
-			<h:form id="form">
-				<p:panelGrid columns="4" layout="grid"
-					styleClass="ui-fluid"
-					columnClasses="ui-g-4 p-pl-0, ui-g-3, ui-g-3, ui-g-2 p-pr-0">
+			<p:outputPanel styleClass="forecast-weather-panel">
+				<h1>Find Weather Forecasts in Any City</h1>
 
-					<h:panelGroup styleClass="ui-float-label">
-						<p:inputText value="" />
-						<p:outputLabel for="@previous" value="City name" />
-					</h:panelGroup>
+				<p:spacer height="20" />
 
-					<h:panelGroup styleClass="ui-float-label">
-						<p:inputText value="" />
-						<p:outputLabel for="@previous" value="Country code" />
-					</h:panelGroup>
+				<h:form id="form">
+					<p:panelGrid columns="4" layout="grid" styleClass="ui-fluid"
+						columnClasses="ui-g-4 p-pl-0, ui-g-3, ui-g-3, ui-g-2 p-pr-0">
 
-					<h:panelGroup styleClass="ui-float-label">
-						<p:inputText value="" />
-						<p:outputLabel for="@previous" value="State code" />
-					</h:panelGroup>
+						<h:panelGroup styleClass="ui-float-label">
+							<p:inputText value="" />
+							<p:outputLabel for="@previous" value="City name" />
+						</h:panelGroup>
 
-					<p:commandButton value="Search" icon="pi pi-search" update="form" />
+						<h:panelGroup styleClass="ui-float-label">
+							<p:inputText value="" />
+							<p:outputLabel for="@previous" value="Country code" />
+						</h:panelGroup>
 
-				</p:panelGrid>
+						<h:panelGroup styleClass="ui-float-label">
+							<p:inputText value="" />
+							<p:outputLabel for="@previous" value="State code" />
+						</h:panelGroup>
 
-				<div class="p-d-flex">
-					<div class="p-mr-2">Item 1</div>
-					<div class="p-mr-2">Item 2</div>
-					<div>Item 3</div>
-				</div>
+						<p:commandButton value="Search" icon="pi pi-search" update="form" />
+					</p:panelGrid>
 
-			</h:form>
+					<p:spacer height="20" />
+
+					<p:panelGrid layout="grid" columns="2"
+						columnClasses="ui-g-4 p-p-0, ui-g-8 p-p-0">
+						<p:panelGrid layout="grid" columns="2"
+							columnClasses="ui-g-6, ui-g-6">
+							<p:row>
+								<p:column>
+									<p:commandButton value="Search" icon="pi pi-search"
+										update="form" />
+								</p:column>
+								<p:column>
+									<p:commandButton value="Search" icon="pi pi-search"
+										update="form" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="ui-g-12">
+									<p:graphicImage
+										value="https://openweathermap.org/img/wn/10d@2x.png"
+										width="160px" />
+								</p:column>
+							</p:row>
+
+
+
+
+
+						</p:panelGrid>
+
+					</p:panelGrid>
+				</h:form>
+			</p:outputPanel>
+
 
 		</ui:define>
 	</ui:composition>
