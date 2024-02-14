@@ -35,11 +35,13 @@ and refence it below in the head part.
 		library="#{ivyFreyaTheme.library}" />
 	<h:outputStylesheet name="primeflex-2.min.css" library="primeflex" />
 	<h:outputStylesheet name="custom.css" library="ivy-branding" />
-	<h:outputStylesheet name="layouts/styles/customstyle.css" />
+	<!-- Optional Style or Script files: 
+  <h:outputStylesheet name="layouts/styles/style.css" /> 
+  -->
 </h:head>
 <h:body class="body-hd">
 	<ui:include src="/layouts/includes/progress-loader.xhtml" />
-	<div id="content" class="container frame" style="min-width: 1000px;">
+	<div id="content" class="container frame">
 		<ui:insert name="content">
       		default content
     	</ui:insert>

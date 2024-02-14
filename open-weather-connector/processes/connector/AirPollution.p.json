@@ -327,8 +327,8 @@
           "map" : {
             "out" : "in",
             "out.error" : "result.#error",
-            "out.param.lat" : "result.geoLocations.get(0).lat",
-            "out.param.lon" : "result.geoLocations.get(0).lon"
+            "out.param.lat" : "result.geoLocations.size() != 0 ? result.geoLocations.get(0).lat : null",
+            "out.param.lon" : "result.geoLocations.size() != 0 ? result.geoLocations.get(0).lon : null"
           }
         },
         "call" : {
@@ -482,8 +482,8 @@
           "map" : {
             "out" : "in",
             "out.error" : "result.#error",
-            "out.param.lat" : "result.geoLocations.get(0).lat",
-            "out.param.lon" : "result.geoLocations.get(0).lon"
+            "out.param.lat" : "result.geoLocations.size() != 0 ? result.geoLocations.get(0).lat : null",
+            "out.param.lon" : "result.geoLocations.size() != 0 ? result.geoLocations.get(0).lon : null"
           }
         },
         "call" : {
@@ -663,8 +663,8 @@
           "map" : {
             "out" : "in",
             "out.error" : "result.#error",
-            "out.param.lat" : "result.geoLocations.get(0).lat",
-            "out.param.lon" : "result.geoLocations.get(0).lon"
+            "out.param.lat" : "result.geoLocations.size() != 0 ? result.geoLocations.get(0).lat : null",
+            "out.param.lon" : "result.geoLocations.size() != 0 ? result.geoLocations.get(0).lon : null"
           }
         },
         "call" : {

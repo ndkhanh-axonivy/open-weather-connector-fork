@@ -29,11 +29,11 @@ const ClickPositionDetector = {
     }
 };
 
-function chartExtender() {
+function temperatureChartExtender() {
 	//Register plugin datalabels
 	jQuery.extend(true, this.cfg.config, {plugins: [ChartDataLabels, ClickPositionDetector]});
 	let data = [...this.cfg.config.data.datasets[0].data];
-    // copy the config options into a variable
+
     let options = jQuery.extend(true, {}, this.cfg.config.options);
     options = {
     	scales: {
@@ -58,7 +58,7 @@ function chartExtender() {
 	            display: true,
 	            align: 'top', // Adjust the alignment as needed
 	            formatter: function(value, context) {
-	                return value; // You can customize the label content here
+	                return value;
             }
         }
         }
@@ -81,32 +81,64 @@ function chartExtender() {
 	jQuery.extend(true, this.cfg.config.data, extendedData);
 }
 
+function precipitationChartExtender() {
+	let data = [...this.cfg.config.data.datasets[0].data];
+
+    let options = jQuery.extend(true, {}, this.cfg.config.options);
+    options = {
+    	scales: {
+            y: {
+                display: false, // Hide y-axis
+                min: 0,
+                max: 100
+            },
+            x: {
+            	min: 0,
+            	max: 7,
+                grid: {
+                    drawOnChartArea: false
+                }
+            },
+        },
+        plugins: {
+        	legend: {
+		        display: false
+		    }
+		}
+    };
+
+    // merge all options into the main chart options
+    jQuery.extend(true, this.cfg.config.options, options);
+}
+
 function panChart(offset) {
 	// Get the chart instance from the widgetVar
-	var chart = PF('lineChartWidgetVar').chart;
-	console.log(PF('lineChartWidgetVar'));
-	var xAxis = chart.scales.x;
-	var yAxis = chart.scales.y;
+	var tempChart = PF('lineChartWidgetVar').chart;
+	var precipitationChart = PF('barChartWidgetVar').chart;
+	
+	var xAxis = tempChart.scales.x;
+	var yAxis = tempChart.scales.y;
 	
 	var newMinX = xAxis.min + offset;
 	var newMaxX = xAxis.max + offset;
-
-	console.log(offset);
-	console.log(xAxis.min);
-	console.log(xAxis.max);
-	console.log(PF('lineChartWidgetVar').cfg.config.data.datasets[0].data.length);
 	
 	if (newMinX < 0 || newMaxX > PF('lineChartWidgetVar').cfg.config.data.datasets[0].data.length-1) {
 	    newMinX = 0;
 	    newMaxX = 7;
 	}
 
-	chart.options.scales.x.min = newMinX;
-	chart.options.scales.x.max = newMaxX;
+	// TempChart
+	tempChart.options.scales.x.min = newMinX;
+	tempChart.options.scales.x.max = newMaxX;
 	
-	// Preserve the current Y-axis range
-	chart.options.scales.y.min = yAxis.min;
-	chart.options.scales.y.max = yAxis.max;
+	tempChart.options.scales.y.min = yAxis.min;
+	tempChart.options.scales.y.max = yAxis.max;
 	
-	chart.update();
+	tempChart.update();
+	
+	// PrecipitationChart
+	precipitationChart.options.scales.x.min = newMinX;
+	precipitationChart.options.scales.x.max = newMaxX;
+	
+	precipitationChart.update();
 }
