@@ -4,7 +4,7 @@
 
 .weather-detail-container {
 	background-image: url("#{resource['images/background/white.jpg']}");
-	background-size : cover;
+	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
 	background-clip: content-box;
@@ -103,11 +103,11 @@
 }
 
 .weather-chart {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
 }
 
 .type-of-degree {

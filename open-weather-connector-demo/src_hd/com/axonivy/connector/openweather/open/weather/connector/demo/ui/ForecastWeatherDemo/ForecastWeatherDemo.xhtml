@@ -16,8 +16,9 @@
 				<p:spacer height="20" />
 
 				<h:form id="form">
-					<p:remoteCommand name="rc" update="forecast-panel"
-						action="#{forecastWeatherBean.setSelectedTimeByIndex}" />
+					<p:remoteCommand name="rc"
+						update="forecast-panel forecast-btn-panel"
+						action="#{forecastWeatherBean.setSelectedTimeIndex}" />
 					<p:panelGrid columns="4" layout="grid" styleClass="ui-fluid"
 						columnClasses="ui-g-4 p-pl-0, ui-g-3, ui-g-3, ui-g-2 p-pr-0">
 
@@ -67,17 +68,20 @@
 										styleClass="type-of-degree #{forecastWeatherBean.typeOfDegree == 'CELSIUS' ? 'type-of-degree-selected' : ''}"
 										action="#{forecastWeatherBean.setTypeOfDegree('CELSIUS')}"
 										disabled="#{forecastWeatherBean.typeOfDegree == 'CELSIUS'}">
-										°C</h:commandLink>
+										<p:ajax
+											update=":form:forecast-panel :form:weather-chart-panel:temp-chart"
+											onstart="destroyChart()" />°C</h:commandLink>
 									|
 									<h:commandLink
 										styleClass="type-of-degree #{forecastWeatherBean.typeOfDegree == 'FAHRENHEIT' ? 'type-of-degree-selected' : ''}"
 										action="#{forecastWeatherBean.setTypeOfDegree('FAHRENHEIT')}"
 										disabled="#{forecastWeatherBean.typeOfDegree == 'FAHRENHEIT'}">
-										°F</h:commandLink>
+										<p:ajax
+											update=":form:forecast-panel :form:weather-chart-panel:temp-chart"
+											onstart="destroyChart()" />°F</h:commandLink>
 								</div>
 							</div>
 							<div>#{forecastWeatherBean.currentWeatherDetail}</div>
-
 							<p:panelGrid layout="grid" columns="2"
 								styleClass="weather-other-detail-container p-mt-4"
 								columnClasses="ui-g-6, ui-g-6">
@@ -93,23 +97,20 @@
 							<p:outputPanel styleClass="weather-date-container p-mt-4">#{forecastWeatherBean.formattedDate}</p:outputPanel>
 						</p:outputPanel>
 						<p:outputPanel styleClass="weather-chart-btn-container">
-							<p:tabView styleClass="weather-tab-view">
-								<p:tab title="Temperature">
-
-									<p:lineChart widgetVar="lineChartWidgetVar"
-										model="#{forecastWeatherBean.lineModelForTemperature}"
-										style="cursor: pointer; width: 20px; height: 4px;"
-										styleClass="weather-chart" />
-
-								</p:tab>
+							<p:tabView id="weather-chart-panel" styleClass="weather-tab-view">
 								<p:tab title="Precipitation">
-
-									<p:barChart widgetVar="barChartWidgetVar"
+									<p:barChart id="pop-chart" widgetVar="barChartWidgetVar"
 										model="#{forecastWeatherBean.barModelForPrecipitation}"
 										style="cursor: pointer; width: 20px; height: 4px;"
 										styleClass="weather-chart" />
-										
 								</p:tab>
+								<p:tab title="Temperature">
+									<p:lineChart id="temp-chart" widgetVar="lineChartWidgetVar"
+										model="#{forecastWeatherBean.lineModelForTemperature}"
+										style="cursor: pointer; width: 20px; height: 4px;"
+										styleClass="weather-chart" />
+								</p:tab>
+
 								<p:tab title="Wind">
 								</p:tab>
 							</p:tabView>
@@ -118,10 +119,10 @@
 								<ui:repeat value="#{forecastWeatherBean.dailyForecasts}"
 									var="forecast" varStatus="status">
 									<h:commandLink
-										styleClass="weather-date-btn #{status.index == forecastWeatherBean.dateIndex ? 'weather-date-selected' : ''}"
-										action="#{forecastWeatherBean.setSelectedDate(forecast.date)}">
+										styleClass="weather-date-btn #{status.index == forecastWeatherBean.selectedDateIndex ? 'weather-date-selected' : ''}"
+										action="#{forecastWeatherBean.setSelectedDateIndex(status.index)}">
 										<p:ajax update=":form:forecast-panel :form:forecast-btn-panel"
-											oncomplete="panChart(#{(status.index - forecastWeatherBean.dateIndex) * 8 - (status.index == forecastWeatherBean.dateIndex ? 0 : 1) * (8 - forecastWeatherBean.dailyForecasts[forecastWeatherBean.dateIndex].sizeDaily)})" />
+											oncomplete="panChart(#{forecast.chartWindowStepX}, #{forecastWeatherBean.chartWindowSize})" />
 										<p:outputPanel styleClass="p-mb-2">
 											<span class="weather-date-btn-label">#{status.first ?
 												'Today' : forecast.formattedEEE}</span>
