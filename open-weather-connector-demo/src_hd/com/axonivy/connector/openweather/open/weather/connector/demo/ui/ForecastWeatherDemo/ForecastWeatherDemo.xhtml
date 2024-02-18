@@ -18,7 +18,7 @@
 				<h:form id="form">
 					<p:remoteCommand name="rc"
 						update="forecast-panel forecast-btn-panel"
-						action="#{forecastWeatherBean.setSelectedTimeIndex}" />
+						action="#{forecastWeatherBean.setSelectedTimeIndexFromUI}" />
 					<p:panelGrid columns="4" layout="grid" styleClass="ui-fluid"
 						columnClasses="ui-g-4 p-pl-0, ui-g-3, ui-g-3, ui-g-2 p-pr-0">
 
@@ -69,16 +69,18 @@
 										action="#{forecastWeatherBean.setTypeOfDegree('CELSIUS')}"
 										disabled="#{forecastWeatherBean.typeOfDegree == 'CELSIUS'}">
 										<p:ajax
-											update=":form:forecast-panel :form:weather-chart-panel:temp-chart"
-											onstart="destroyChart()" />°C</h:commandLink>
+											update=":form:forecast-panel :form:weather-chart-panel:temp-chart :form:forecast-btn-panel"
+											onstart="destroyChart()"
+											oncomplete="panChart(#{forecastWeatherBean.currentChartWindowStartX}, #{forecastWeatherBean.currentChartWindowEndX})" />°C</h:commandLink>
 									|
 									<h:commandLink
 										styleClass="type-of-degree #{forecastWeatherBean.typeOfDegree == 'FAHRENHEIT' ? 'type-of-degree-selected' : ''}"
 										action="#{forecastWeatherBean.setTypeOfDegree('FAHRENHEIT')}"
 										disabled="#{forecastWeatherBean.typeOfDegree == 'FAHRENHEIT'}">
 										<p:ajax
-											update=":form:forecast-panel :form:weather-chart-panel:temp-chart"
-											onstart="destroyChart()" />°F</h:commandLink>
+											update=":form:forecast-panel :form:weather-chart-panel:temp-chart :form:forecast-btn-panel"
+											onstart="destroyChart()"
+											oncomplete="panChart(#{forecastWeatherBean.currentChartWindowStartX}, #{forecastWeatherBean.currentChartWindowEndX})" />°F</h:commandLink>
 								</div>
 							</div>
 							<div>#{forecastWeatherBean.currentWeatherDetail}</div>
@@ -98,15 +100,16 @@
 						</p:outputPanel>
 						<p:outputPanel styleClass="weather-chart-btn-container">
 							<p:tabView id="weather-chart-panel" styleClass="weather-tab-view">
-								<p:tab title="Precipitation">
-									<p:barChart id="pop-chart" widgetVar="barChartWidgetVar"
-										model="#{forecastWeatherBean.barModelForPrecipitation}"
+								<p:tab title="Temperature">
+									<p:lineChart id="temp-chart" widgetVar="tempChartWidgetVar"
+										model="#{forecastWeatherBean.temperatureModel}"
 										style="cursor: pointer; width: 20px; height: 4px;"
 										styleClass="weather-chart" />
 								</p:tab>
-								<p:tab title="Temperature">
-									<p:lineChart id="temp-chart" widgetVar="lineChartWidgetVar"
-										model="#{forecastWeatherBean.lineModelForTemperature}"
+
+								<p:tab title="Precipitation">
+									<p:barChart id="pop-chart" widgetVar="popChartWidgetVar"
+										model="#{forecastWeatherBean.precipitationModel}"
 										style="cursor: pointer; width: 20px; height: 4px;"
 										styleClass="weather-chart" />
 								</p:tab>
@@ -116,25 +119,26 @@
 							</p:tabView>
 							<p:outputPanel id="forecast-btn-panel"
 								styleClass="weather-date-btn-container">
-								<ui:repeat value="#{forecastWeatherBean.dailyForecasts}"
-									var="forecast" varStatus="status">
+								<ui:repeat
+									value="#{forecastWeatherBean.dailyForecastDisplayInfos}"
+									var="dailyForecastDisplayInfo" varStatus="status">
 									<h:commandLink
 										styleClass="weather-date-btn #{status.index == forecastWeatherBean.selectedDateIndex ? 'weather-date-selected' : ''}"
 										action="#{forecastWeatherBean.setSelectedDateIndex(status.index)}">
 										<p:ajax update=":form:forecast-panel :form:forecast-btn-panel"
-											oncomplete="panChart(#{forecast.chartWindowStepX}, #{forecastWeatherBean.chartWindowSize})" />
+											oncomplete="panChart(#{dailyForecastDisplayInfo.chartWindowStartX}, #{dailyForecastDisplayInfo.chartWindowEndX})" />
 										<p:outputPanel styleClass="p-mb-2">
 											<span class="weather-date-btn-label">#{status.first ?
-												'Today' : forecast.formattedEEE}</span>
+												'Today' : dailyForecastDisplayInfo.formattedEEE}</span>
 										</p:outputPanel>
 										<p:outputPanel styleClass="p-mb-2">
 											<p:graphicImage
-												value="https://openweathermap.org/img/wn/#{forecast.weatherIcon}@2x.png"
+												value="https://openweathermap.org/img/wn/#{dailyForecastDisplayInfo.dailyForecast.weatherIcon}@2x.png"
 												width="100px" />
 										</p:outputPanel>
 										<div>
-											<span class="weather-date-btn-max-degree">#{forecast.maxTemperature}°</span>
-											<span>#{forecast.minTemperature}°</span>
+											<span class="weather-date-btn-max-degree">#{dailyForecastDisplayInfo.dailyForecast.maxTemperature}°</span>
+											<span>#{dailyForecastDisplayInfo.dailyForecast.minTemperature}°</span>
 										</div>
 									</h:commandLink>
 

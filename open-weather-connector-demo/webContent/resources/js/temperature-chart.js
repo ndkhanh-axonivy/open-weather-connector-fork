@@ -111,34 +111,11 @@ function precipitationChartExtender() {
 	jQuery.extend(true, this.cfg.config.options, options);
 }
 
-function panChart(stepX, windowSize) {
-	console.log(stepX);
-	// Get the chart instance from the widgetVar
-	var tempChart = PF('lineChartWidgetVar').chart;
-	var precipitationChart = PF('barChartWidgetVar').chart;
-	
-	var xAxis = precipitationChart.scales.x;
-	
-	var newMinX = xAxis.min + stepX;
-	console.log(xAxis.min);
-	
-	if (newMinX < 0) {
-		newMinX = 0;
-	}
-	newMaxX = newMinX + windowSize - 1;
-	
-	// TempChart
-	precipitationChart.options.scales.x.min = newMinX;
-	precipitationChart.options.scales.x.max = newMaxX;
-	
-	var yAxis = precipitationChart.scales.y;
-	precipitationChart.options.scales.y.min = yAxis.min;
-	precipitationChart.options.scales.y.max = yAxis.max;
-	
-	precipitationChart.update();
+function panChart(newMinX, newMaxX) {
+	var tempChart = PF('tempChartWidgetVar').chart;
+	var precipitationChart = PF('popChartWidgetVar').chart;
 	
 	if (tempChart) {
-		// TempChart
 		tempChart.options.scales.x.min = newMinX;
 		tempChart.options.scales.x.max = newMaxX;
 	
@@ -149,13 +126,21 @@ function panChart(stepX, windowSize) {
 		
 		tempChart.update();
 	}
+	
+	if (precipitationChart) {
+		precipitationChart.options.scales.x.min = newMinX;
+		precipitationChart.options.scales.x.max = newMaxX;
+		
+		var yAxis = precipitationChart.scales.y;
+		precipitationChart.options.scales.y.min = yAxis.min;
+		precipitationChart.options.scales.y.max = yAxis.max;
+		
+		precipitationChart.update();
+	}
 }
 
 function destroyChart() {
-	if (window.barChartWidgetVar) {
-		window.barChartWidgetVar.destroy();
-	}
-	if (window.lineChartWidgetVar) {
-		window.lineChartWidgetVar.destroy();
-	}
+	if (PF('tempChartWidgetVar')) {
+        PF('tempChartWidgetVar').destroy();
+    }
 }

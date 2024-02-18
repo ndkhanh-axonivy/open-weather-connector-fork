@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -30,11 +31,11 @@ import org.primefaces.model.charts.line.LineChartDataSet;
 import org.primefaces.model.charts.line.LineChartModel;
 import org.primefaces.model.charts.line.LineChartOptions;
 
+import com.axonivy.connector.openweather.dto.DailyForecast;
+import com.axonivy.connector.openweather.dto.DailyForecastDisplayInfo;
+import com.axonivy.connector.openweather.service.ForecastService;
+import com.axonivy.connector.openweather.util.Constants;
 import com.axonivy.connector.openweather.util.DateTimeFormatterUtilities;
-
-import ch.ivyteam.ivy.environment.Ivy;
-import ch.ivyteam.ivy.process.call.SubProcessCall;
-import ch.ivyteam.ivy.process.call.SubProcessCallResult;
 
 @ManagedBean
 @ViewScoped
@@ -46,11 +47,13 @@ public class ForecastWeatherBean implements Serializable {
 	private LocalDate selectedDate;
 	private LocalTime selectedTime;
 	private int selectedDateIndex;
+	private int selectedTimeIndex;
 	private String cityName;
 	private String formattedTime12Hour;
 	private String formattedDate;
 	private ZoneId zoneId;
 	private String speedUnit;
+	private String units;
 
 	private int currentTemperature;
 	private int currentHumidity;
@@ -60,39 +63,24 @@ public class ForecastWeatherBean implements Serializable {
 
 	private List<WeatherRecord> threeHourlyFiveDayForecasts;
 	private List<DailyForecast> dailyForecasts;
+	private List<DailyForecastDisplayInfo> dailyForecastDisplayInfos;
 
 	private String searchCityName;
 	private String searchCountryCode;
 	private String searchStateCode;
-	private String units;
 
-	private LineChartModel lineModelForTemperature;
-	private BarChartModel barModelForPrecipitation;
+	private LineChartModel temperatureModel;
+	private BarChartModel precipitationModel;
 	private int chartWindowSize;
 
 	@PostConstruct
 	public void init() {
-		searchCityName = "New York";
-		units = "metric";
-		typeOfDegree = "CELSIUS";
-		speedUnit = "m/s";
-		chartWindowSize = 8;
+		searchCityName = Constants.DEFAULT_SEARCH_CITY_NAME;
+		units = Constants.DEFAULT_UNITS;
+		typeOfDegree = Constants.DEFAULT_TYPE_OF_DEGREE;
+		speedUnit = Constants.DEFAULT_SPEED_UNIT;
+		chartWindowSize = Constants.DEFAULT_CHART_WINDOW_SIZE;
 		search();
-	}
-
-	public int getStepSlideChart(int targetDateIndex) {
-		int offset = targetDateIndex - selectedDateIndex;
-		if (offset == 0) {
-			return 0;
-		}
-		int chartWindowStepX;
-		if (selectedDateIndex == 0) {
-			chartWindowStepX = (offset - 1) * chartWindowSize + dailyForecasts.get(0).dailyRecords.size();
-		} else {
-			chartWindowStepX = offset * chartWindowSize;
-		}
-
-		return chartWindowStepX;
 	}
 
 	public LocalDate getSelectedDate() {
@@ -108,13 +96,20 @@ public class ForecastWeatherBean implements Serializable {
 		return selectedTime;
 	}
 
-	public void setSelectedTimeIndex() {
+	public void setSelectedTimeIndexFromUI() {
 		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-		int selectedTimeIndex = Integer.parseInt(params.get("selectedTimeIndex"));
+		setSelectedTimeIndex(Integer.parseInt(params.get("selectedTimeIndex")));
+	}
+
+	public int getSelectedTimeIndex() {
+		return selectedTimeIndex;
+	}
+
+	public void setSelectedTimeIndex(int selectedTimeIndex) {
 		if (selectedTimeIndex < 0 || selectedTimeIndex >= threeHourlyFiveDayForecasts.size()) {
 			return;
 		}
-
+		this.selectedTimeIndex = selectedTimeIndex;
 		WeatherRecord selectedRecord = threeHourlyFiveDayForecasts.get(selectedTimeIndex);
 		LocalDateTime dateTime = Instant.ofEpochSecond(selectedRecord.getDt()).atZone(zoneId).toLocalDateTime();
 
@@ -145,25 +140,21 @@ public class ForecastWeatherBean implements Serializable {
 	}
 
 	public void setSelectedDateIndex(int selectedDateIndex) {
-		if (selectedDateIndex < 0 || selectedDateIndex >= dailyForecasts.size()) {
+		if (selectedDateIndex < 0 || selectedDateIndex >= dailyForecastDisplayInfos.size()) {
 			return;
 		}
 
 		this.selectedDateIndex = selectedDateIndex;
-		DailyForecast selectedForecast = dailyForecasts.get(selectedDateIndex);
+		DailyForecast selectedForecast = dailyForecastDisplayInfos.get(selectedDateIndex).getDailyForecast();
 		setSelectedDate(selectedForecast.getDate());
-		setSelectedTime(null);
-
-		for (int index = 0; index < dailyForecasts.size(); index++) {
-			DailyForecast dailyForecast = dailyForecasts.get(index);
-			dailyForecast.chartWindowStepX = getStepSlideChart(index);
-		}
 
 		currentTemperature = selectedForecast.getTemperature();
 		currentHumidity = selectedForecast.getHumidity();
 		currentWindSpeed = selectedForecast.getWindSpeed();
 		currentWeatherIconCode = selectedForecast.getWeatherIcon();
 		currentWeatherDetail = StringUtils.capitalize(selectedForecast.getWeatherDescription());
+
+		setSelectedTime(null);
 	}
 
 	public String getTypeOfDegree() {
@@ -173,18 +164,24 @@ public class ForecastWeatherBean implements Serializable {
 	public void setTypeOfDegree(String typeOfDegree) {
 		if (!Objects.equals(this.typeOfDegree, typeOfDegree)) {
 			this.typeOfDegree = typeOfDegree;
-			if (typeOfDegree.equals("CELSIUS")) {
-				speedUnit = "m/s";
-				units = "metric";
-			} else if (typeOfDegree.equals("FAHRENHEIT")) {
-				speedUnit = "mph";
-				units = "imperial";
+			if (typeOfDegree.equals(Constants.CELSIUS_TYPE_OF_DEGREE)) {
+				speedUnit = Constants.SPEED_METER_UNIT;
+				units = Constants.METRIC_UNITS;
+			} else if (typeOfDegree.equals(Constants.FAHRENHEIT_TYPE_OF_DEGREE)) {
+				speedUnit = Constants.SPEED_MILE_UNIT;
+				units = Constants.IMPERIAL_UNITS;
 			} else {
-				typeOfDegree = "";
-				speedUnit = "";
-				units = "";
+				typeOfDegree = StringUtils.EMPTY;
+				speedUnit = StringUtils.EMPTY;
+				units = StringUtils.EMPTY;
 			}
-//			search();
+			processAndGroupForecastData();
+			if (selectedTime == null) {
+				setSelectedDateIndex(selectedDateIndex);
+			} else {
+				setSelectedTimeIndex(selectedTimeIndex);
+			}
+			updateTemperatureModelByData();
 		}
 	}
 
@@ -252,12 +249,12 @@ public class ForecastWeatherBean implements Serializable {
 		return cityName;
 	}
 
-	public List<DailyForecast> getDailyForecasts() {
-		return dailyForecasts;
+	public List<DailyForecastDisplayInfo> getDailyForecastDisplayInfos() {
+		return dailyForecastDisplayInfos;
 	}
 
-	public LineChartModel getLineModelForTemperature() {
-		return lineModelForTemperature;
+	public LineChartModel getTemperatureModel() {
+		return temperatureModel;
 	}
 
 	public String getUnits() {
@@ -268,16 +265,32 @@ public class ForecastWeatherBean implements Serializable {
 		return speedUnit;
 	}
 
-	public BarChartModel getBarModelForPrecipitation() {
-		return barModelForPrecipitation;
+	public BarChartModel getPrecipitationModel() {
+		return precipitationModel;
 	}
 
 	public int getChartWindowSize() {
 		return chartWindowSize;
 	}
+	
+	public int getCurrentChartWindowStartX() {
+		return dailyForecastDisplayInfos.get(selectedDateIndex).getChartWindowStartX();
+	}
+	
+	public int getCurrentChartWindowEndX() {
+		return dailyForecastDisplayInfos.get(selectedDateIndex).getChartWindowEndX();
+	}
 
 	public void search() {
-		Optional<Forecast> optionalForecast = fetchForecast();
+		processAndGroupForecastData();
+		setSelectedDateIndex(0);
+		createTemperatureModel();
+		createPrecipitationModel();
+	}
+
+	private void processAndGroupForecastData() {
+		Optional<Forecast> optionalForecast = ForecastService.getInstance()
+				.fetchForecastThreeHourlyFiveDay(searchCityName, searchCountryCode, searchStateCode, units);
 
 		if (optionalForecast.isEmpty()) {
 			return;
@@ -293,235 +306,106 @@ public class ForecastWeatherBean implements Serializable {
 				}
 			});
 		});
+
 		zoneId = ZoneId.ofOffset("UTC", ZoneOffset.ofTotalSeconds(forecast.getCity().getTimezone()));
 		cityName = forecast.getCity().getName();
 		threeHourlyFiveDayForecasts = forecast.getList();
+		groupForecastData();
+	}
 
-		// Group forecasts by date
-		Map<LocalDate, List<WeatherRecord>> forecastsByDate = threeHourlyFiveDayForecasts.stream().collect(
+	private void groupForecastData() {
+		Map<LocalDate, List<WeatherRecord>> forecastsByDate = groupForecastsByDate();
+
+		dailyForecasts = generateDailyForecasts(forecastsByDate);
+
+		dailyForecastDisplayInfos = IntStream.range(0, dailyForecasts.size())
+				.mapToObj(index -> createDailyForecastDisplayInfo(index)).collect(Collectors.toList());
+	}
+
+	private Map<LocalDate, List<WeatherRecord>> groupForecastsByDate() {
+		return threeHourlyFiveDayForecasts.stream().collect(
 				Collectors.groupingBy(record -> Instant.ofEpochSecond(record.getDt()).atZone(zoneId).toLocalDate()));
+	}
 
-		dailyForecasts = forecastsByDate.entrySet().stream()
-				.map(entry -> new DailyForecast(entry.getKey(), entry.getValue()))
+	private List<DailyForecast> generateDailyForecasts(Map<LocalDate, List<WeatherRecord>> forecastsByDate) {
+		return forecastsByDate.entrySet().stream().map(entry -> new DailyForecast(entry.getKey(), entry.getValue()))
 				.sorted(Comparator.comparing(DailyForecast::getDate)).limit(5).collect(Collectors.toList());
-
-		setSelectedDateIndex(selectedDateIndex);
-		createLineModelForTemperature();
-		createBarModelForPrecipitation();
 	}
 
-	private Optional<Forecast> fetchForecast() {
-		SubProcessCallResult callResult = SubProcessCall.withPath("connector/ForecastWeather")
-				.withStartName("getForecastWeatherByLocationName").withParam("cityName", searchCityName)
-				.withParam("countryCode", searchCountryCode).withParam("stateCode", searchStateCode)
-				.withParam("units", units).call();
-
-		if (callResult != null) {
-			Object forecastWeather = callResult.get("forecastWeather");
-			if (forecastWeather instanceof Forecast) {
-				return Optional.of((Forecast) forecastWeather);
-			}
-		}
-		return Optional.empty();
+	private DailyForecastDisplayInfo createDailyForecastDisplayInfo(int index) {
+		int startX = calculateModelStartX(index);
+		int endX = startX + chartWindowSize - 1;
+		return new DailyForecastDisplayInfo(dailyForecasts.get(index), startX, endX);
 	}
 
-	public void createLineModelForTemperature() {
-		ChartData data;
-		LineChartDataSet dataSet;
-		LineChartOptions options;
-		if (lineModelForTemperature == null) {
-			lineModelForTemperature = new LineChartModel();
-			data = new ChartData();
-			dataSet = new LineChartDataSet();
-			options = new LineChartOptions();
-			List<LocalTime> timeLabels = dailyForecasts.stream()
-					.flatMap(dailyForecast -> dailyForecast.getDailyRecords().stream()
-							.map(record -> Instant.ofEpochSecond(record.getDt()).atZone(zoneId).toLocalTime()))
-					.collect(Collectors.toList());
-
-			List<Object> values = dailyForecasts.stream().flatMap(dailyForecast -> dailyForecast.getDailyRecords()
-					.stream().map(record -> record.getMain().getTempMax().intValue())).collect(Collectors.toList());
-
-			dataSet.setData(values);
-			dataSet.setLabel("Temperature");
-			dataSet.setFill(false);
-			dataSet.setTension(0.4);
-			data.addChartDataSet(dataSet);
-
-			// Set time labels
-			List<String> labels = timeLabels.stream().map(time -> DateTimeFormatterUtilities.formatTime24Hour(time))
-					.collect(Collectors.toList());
-
-			data.setLabels(labels);
-
-			lineModelForTemperature.setOptions(options);
-			lineModelForTemperature.setData(data);
-			lineModelForTemperature.setExtender("temperatureChartExtender");
-		} else {
-			data = lineModelForTemperature.getData();
-			dataSet = (LineChartDataSet) data.getDataSet();
-			List<Object> values = dailyForecasts.stream().flatMap(dailyForecast -> dailyForecast.getDailyRecords()
-					.stream().map(record -> record.getMain().getTempMax().intValue())).collect(Collectors.toList());
-			dataSet.setData(values);
-		}
+	private int calculateModelStartX(int index) {
+		return IntStream.range(0, index).map(i -> dailyForecasts.get(i).getDailyRecords().size()).sum();
 	}
 
-	public void createBarModelForPrecipitation() {
+	private void createTemperatureModel() {
+		temperatureModel = new LineChartModel();
+		ChartData data = new ChartData();
+		LineChartDataSet dataSet = new LineChartDataSet();
+		LineChartOptions options = new LineChartOptions();
 
-		ChartData data;
-		BarChartDataSet dataSet;
-		BarChartOptions options;
-		if (barModelForPrecipitation == null) {
-			barModelForPrecipitation = new BarChartModel();
-			data = new ChartData();
-			dataSet = new BarChartDataSet();
-			options = new BarChartOptions();
-			List<LocalTime> timeLabels = dailyForecasts.stream()
-					.flatMap(dailyForecast -> dailyForecast.getDailyRecords().stream()
-							.map(record -> Instant.ofEpochSecond(record.getDt()).atZone(zoneId).toLocalTime()))
-					.collect(Collectors.toList());
+		List<Object> values = prepareTemperatureData();
+		List<String> labels = prepareTimeLabels();
 
-			List<Number> values = dailyForecasts.stream().flatMap(dailyForecast -> dailyForecast.getDailyRecords()
-					.stream().map(record -> record.getClouds().getAll().intValue())).collect(Collectors.toList());
+		dataSet.setData(values);
+		dataSet.setLabel("Temperature");
+		dataSet.setFill(false);
+		dataSet.setTension(0.4);
+		data.addChartDataSet(dataSet);
 
-			dataSet.setData(values);
-			dataSet.setLabel("Temperature");
-			data.addChartDataSet(dataSet);
+		data.setLabels(labels);
 
-			// Set time labels
-			List<String> labels = timeLabels.stream().map(time -> DateTimeFormatterUtilities.formatTime24Hour(time))
-					.collect(Collectors.toList());
-
-			data.setLabels(labels);
-
-			barModelForPrecipitation.setOptions(options);
-			barModelForPrecipitation.setData(data);
-			barModelForPrecipitation.setExtender("precipitationChartExtender");
-		} else {
-			data = barModelForPrecipitation.getData();
-			dataSet = (BarChartDataSet) data.getDataSet();
-			List<Number> values = dailyForecasts.stream().flatMap(dailyForecast -> dailyForecast.getDailyRecords()
-					.stream().map(record -> record.getClouds().getAll().intValue())).collect(Collectors.toList());
-			dataSet.setData(values);
-		}
-//		if (barModelForPrecipitation == null) {
-//			barModelForPrecipitation = new BarChartModel();
-//		}
-//		ChartData data = new ChartData();
-//
-//		List<LocalTime> timeLabels = dailyForecasts.stream()
-//				.flatMap(dailyForecast -> dailyForecast.getDailyRecords().stream()
-//						.map(record -> Instant.ofEpochSecond(record.getDt()).atZone(zoneId).toLocalTime()))
-//				.collect(Collectors.toList());
-//
-//		List<Number> values = dailyForecasts.stream().flatMap(dailyForecast -> dailyForecast.getDailyRecords().stream()
-//				.map(record -> record.getClouds().getAll().intValue())).collect(Collectors.toList());
-//
-//		BarChartDataSet dataSet = new BarChartDataSet();
-//		dataSet.setData(values);
-//		dataSet.setLabel("Precipitation");
-//		data.addChartDataSet(dataSet);
-//
-//		// Set time labels
-//		List<String> labels = timeLabels.stream().map(time -> DateTimeFormatterUtilities.formatTime24Hour(time))
-//				.collect(Collectors.toList());
-//
-//		data.setLabels(labels);
-//
-//		BarChartOptions options = new BarChartOptions();
-//
-//		barModelForPrecipitation.setOptions(options);
-//		barModelForPrecipitation.setData(data);
-//		barModelForPrecipitation.setExtender("precipitationChartExtender");
+		temperatureModel.setOptions(options);
+		temperatureModel.setData(data);
+		temperatureModel.setExtender("temperatureChartExtender");
 	}
 
-	public static class DailyForecast {
-		private final LocalDate date;
-		private String formattedEEE;
-		private final List<WeatherRecord> dailyRecords;
-		private final int temperature;
-		private final int minTemperature;
-		private final int maxTemperature;
-		private final int humidity;
-		private final float windSpeed;
-		private final String weatherIcon;
-		private final String weatherDescription;
-		private static final String DEFAULT_WEATHER_CONDITION_ICON = "01d";
-		private static final String DEFAULT_WEATHER_CONDITION_DESCRIPTION = "clear sky";
-		private int chartWindowStepX;
+	private void updateTemperatureModelByData() {
+		LineChartDataSet dataSet = (LineChartDataSet) temperatureModel.getData().getDataSet().get(0);
+		List<Object> values = prepareTemperatureData();
+		dataSet.setData(values);
+	}
 
-		private DailyForecast(LocalDate date, List<WeatherRecord> dailyRecords) {
-			this.date = date;
-			this.dailyRecords = dailyRecords;
-			formattedEEE = DateTimeFormatterUtilities.formatEEE(date);
-			temperature = dailyRecords.stream().map(record -> record.getMain().getTemp()).filter(Objects::nonNull)
-					.mapToInt(Float::intValue).max().orElse(-999);
-			maxTemperature = dailyRecords.stream().map(record -> record.getMain().getTempMax()).filter(Objects::nonNull)
-					.mapToInt(Float::intValue).max().orElse(-999);
-			minTemperature = dailyRecords.stream().map(record -> record.getMain().getTempMin()).filter(Objects::nonNull)
-					.mapToInt(Float::intValue).max().orElse(-999);
-			humidity = dailyRecords.stream().map(record -> record.getMain().getHumidity()).max(Integer::compareTo)
-					.orElse(0);
-			windSpeed = dailyRecords.stream().map(record -> record.getWind().getSpeed()).max(Float::compareTo)
-					.orElse(0.0f);
-			weatherIcon = dailyRecords.stream()
-					.max(Comparator.comparingInt(record -> getWeatherPriority(record.getWeather().get(0).getId())))
-					.map(record -> record.getWeather().get(0).getIcon()).orElse(DEFAULT_WEATHER_CONDITION_ICON);
-			weatherDescription = dailyRecords.stream()
-					.max(Comparator.comparingInt(record -> getWeatherPriority(record.getWeather().get(0).getId())))
-					.map(record -> record.getWeather().get(0).getDescription())
-					.orElse(DEFAULT_WEATHER_CONDITION_DESCRIPTION);
-		}
+	private List<Object> prepareTemperatureData() {
+		return dailyForecastDisplayInfos
+				.stream().map(DailyForecastDisplayInfo::getDailyForecast).flatMap(dailyForecast -> dailyForecast
+						.getDailyRecords().stream().map(record -> record.getMain().getTempMax().intValue()))
+				.collect(Collectors.toList());
+	}
 
-		public LocalDate getDate() {
-			return date;
-		}
+	private List<String> prepareTimeLabels() {
+		return dailyForecastDisplayInfos.stream().map(DailyForecastDisplayInfo::getDailyForecast)
+				.flatMap(dailyForecast -> dailyForecast.getDailyRecords().stream()
+						.map(record -> Instant.ofEpochSecond(record.getDt()).atZone(zoneId).toLocalTime()))
+				.map(DateTimeFormatterUtilities::formatTime24Hour).collect(Collectors.toList());
+	}
 
-		public List<WeatherRecord> getDailyRecords() {
-			return dailyRecords;
-		}
+	public void createPrecipitationModel() {
+		precipitationModel = new BarChartModel();
+		ChartData data = new ChartData();
+		BarChartDataSet dataSet = new BarChartDataSet();
+		BarChartOptions options = new BarChartOptions();
 
-		public int getTemperature() {
-			return temperature;
-		}
+		List<Number> values = preparePrecipitationData();
+		List<String> labels = prepareTimeLabels();
 
-		public int getMaxTemperature() {
-			return maxTemperature;
-		}
+		dataSet.setData(values);
+		dataSet.setLabel("Precipitation");
+		data.addChartDataSet(dataSet);
+		data.setLabels(labels);
 
-		public int getMinTemperature() {
-			return minTemperature;
-		}
+		precipitationModel.setOptions(options);
+		precipitationModel.setData(data);
+		precipitationModel.setExtender("precipitationChartExtender");
+	}
 
-		public int getHumidity() {
-			return humidity;
-		}
-
-		public float getWindSpeed() {
-			return windSpeed;
-		}
-
-		public String getWeatherIcon() {
-			return weatherIcon;
-		}
-
-		public String getWeatherDescription() {
-			return weatherDescription;
-		}
-
-		public String getFormattedEEE() {
-			return formattedEEE;
-		}
-
-		public int getChartWindowStepX() {
-			return chartWindowStepX;
-		}
-
-		private static int getWeatherPriority(int weatherId) {
-			int firstDigit = weatherId / 100;
-			int lastTwoDigits = weatherId % 100;
-
-			return firstDigit * -100 + lastTwoDigits;
-		}
+	private List<Number> preparePrecipitationData() {
+		return dailyForecastDisplayInfos.stream().map(DailyForecastDisplayInfo::getDailyForecast).flatMap(
+				dailyForecast -> dailyForecast.getDailyRecords().stream().map(record -> record.getPop().intValue()))
+				.collect(Collectors.toList());
 	}
 }
