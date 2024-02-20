@@ -73,6 +73,8 @@ public class ForecastWeatherBean implements Serializable {
 	private String temperatureData;
 	private BarChartModel precipitationModel;
 	private int chartWindowSize;
+	private int currentChartWindowStartX;
+	private int currentChartWindowEndX;
 
 	@PostConstruct
 	public void init() {
@@ -154,6 +156,8 @@ public class ForecastWeatherBean implements Serializable {
 		currentWindSpeed = selectedForecast.getWindSpeed();
 		currentWeatherIconCode = selectedForecast.getWeatherIcon();
 		currentWeatherDetail = StringUtils.capitalize(selectedForecast.getWeatherDescription());
+		currentChartWindowStartX = prepareCurrentChartWindowStartX();
+		currentChartWindowEndX = prepareCurrentChartWindowEndX();
 
 		setSelectedTime(null);
 	}
@@ -274,10 +278,26 @@ public class ForecastWeatherBean implements Serializable {
 	}
 
 	public int getCurrentChartWindowStartX() {
-		return dailyForecastDisplayInfos.get(selectedDateIndex).getChartWindowStartX();
+		return currentChartWindowStartX;
+	}
+	
+	public void setCurrentChartWindowStartX(int currentChartWindowStartX) {
+		this.currentChartWindowStartX = currentChartWindowStartX;
 	}
 
 	public int getCurrentChartWindowEndX() {
+		return currentChartWindowEndX;
+	}
+	
+	public void setCurrentChartWindowEndX(int currentChartWindowEndX) {
+		this.currentChartWindowEndX = currentChartWindowEndX;
+	}
+
+	public int prepareCurrentChartWindowStartX() {
+		return dailyForecastDisplayInfos.get(selectedDateIndex).getChartWindowStartX();
+	}
+
+	public int prepareCurrentChartWindowEndX() {
 		return dailyForecastDisplayInfos.get(selectedDateIndex).getChartWindowEndX();
 	}
 
@@ -384,7 +404,7 @@ public class ForecastWeatherBean implements Serializable {
 		precipitationModel.setData(preparePrecipitationChartData());
 		precipitationModel.setExtender("precipitationChartExtender");
 	}
-	
+
 	public ChartData preparePrecipitationChartData() {
 		ChartData data = new ChartData();
 		BarChartDataSet dataSet = new BarChartDataSet();
@@ -404,7 +424,7 @@ public class ForecastWeatherBean implements Serializable {
 	public String getTemperatureData() {
 		return temperatureData;
 	}
-
+	
 	public void setTemperatureData(String temperatureData) {
 		this.temperatureData = temperatureData;
 	}

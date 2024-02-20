@@ -134,7 +134,17 @@ function precipitationChartExtender() {
 	jQuery.extend(true, this.cfg.config.data, extendedData);
 }
 
+function panChartByCurrentValue() {
+	var currentChartWindowStartX = parseInt(document.getElementById('form:currentChartWindowStartX').value);
+	var currentChartWindowEndX = parseInt(document.getElementById('form:currentChartWindowEndX').value);
+	console.log(typeof(currentChartWindowEndX));
+	
+	panChart(currentChartWindowStartX, currentChartWindowEndX);
+}
+
 function panChart(newMinX, newMaxX) {
+	console.log(typeof(newMinX) + ': ' + newMinX);
+	console.log(typeof(newMaxX) + ': ' + newMaxX);
 	var tempChart = PF('tempChartWidgetVar').chart;
 	var precipitationChart = PF('popChartWidgetVar').chart;
 	
@@ -148,7 +158,7 @@ function panChart(newMinX, newMaxX) {
 		
 		tempChart.update();
 	}
-	
+
 	if (precipitationChart && precipitationChart.canvas) {
 		precipitationChart.options.scales.x.min = newMinX;
 		precipitationChart.options.scales.x.max = newMaxX;

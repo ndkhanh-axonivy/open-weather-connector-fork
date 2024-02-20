@@ -22,6 +22,10 @@
 					<p:outputPanel id="property-panel">
 						<h:inputHidden id="tempModelData"
 							value="#{forecastWeatherBean.temperatureData}" />
+						<h:inputHidden id="currentChartWindowStartX"
+							value="#{forecastWeatherBean.currentChartWindowStartX}" />
+						<h:inputHidden id="currentChartWindowEndX"
+							value="#{forecastWeatherBean.currentChartWindowEndX}" />
 					</p:outputPanel>
 					<p:panelGrid columns="4" layout="grid" styleClass="ui-fluid"
 						columnClasses="ui-g-4 p-pl-0, ui-g-3, ui-g-3, ui-g-2 p-pr-0">
@@ -102,6 +106,7 @@
 						</p:outputPanel>
 						<p:outputPanel styleClass="weather-chart-btn-container">
 							<p:tabView id="weather-chart-panel" styleClass="weather-tab-view">
+								<p:ajax event="tabChange" oncomplete="panChartByCurrentValue()" />
 								<p:tab title="Temperature">
 									<p:lineChart id="temp-chart" widgetVar="tempChartWidgetVar"
 										model="#{forecastWeatherBean.temperatureModel}"
@@ -124,7 +129,7 @@
 									<h:commandLink
 										styleClass="weather-date-btn #{status.index == forecastWeatherBean.selectedDateIndex ? 'weather-date-selected' : ''}"
 										action="#{forecastWeatherBean.setSelectedDateIndex(status.index)}">
-										<p:ajax update=":form:forecast-panel :form:forecast-btn-panel"
+										<p:ajax update=":form:forecast-panel :form:forecast-btn-panel :form:property-panel"
 											oncomplete="panChart(#{dailyForecastDisplayInfo.chartWindowStartX}, #{dailyForecastDisplayInfo.chartWindowEndX})" />
 										<p:outputPanel styleClass="p-mb-2">
 											<span class="weather-date-btn-label">#{status.first ?
@@ -140,7 +145,6 @@
 											<span>#{dailyForecastDisplayInfo.dailyForecast.minTemperature}°</span>
 										</div>
 									</h:commandLink>
-
 								</ui:repeat>
 							</p:outputPanel>
 						</p:outputPanel>
