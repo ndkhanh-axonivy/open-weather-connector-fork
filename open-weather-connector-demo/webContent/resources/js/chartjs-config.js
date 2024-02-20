@@ -143,8 +143,6 @@ function panChartByCurrentValue() {
 }
 
 function panChart(newMinX, newMaxX) {
-	console.log(typeof(newMinX) + ': ' + newMinX);
-	console.log(typeof(newMaxX) + ': ' + newMaxX);
 	var tempChart = PF('tempChartWidgetVar').chart;
 	var precipitationChart = PF('popChartWidgetVar').chart;
 	
