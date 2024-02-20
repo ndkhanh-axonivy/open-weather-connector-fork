@@ -16,9 +16,13 @@
 				<p:spacer height="20" />
 
 				<h:form id="form">
-					<p:remoteCommand name="rc"
+					<p:remoteCommand name="updateByTimeIndex"
 						update="forecast-panel forecast-btn-panel"
 						action="#{forecastWeatherBean.setSelectedTimeIndexFromUI}" />
+					<p:outputPanel id="property-panel">
+						<h:inputHidden id="tempModelData"
+							value="#{forecastWeatherBean.temperatureData}" />
+					</p:outputPanel>
 					<p:panelGrid columns="4" layout="grid" styleClass="ui-fluid"
 						columnClasses="ui-g-4 p-pl-0, ui-g-3, ui-g-3, ui-g-2 p-pr-0">
 
@@ -69,18 +73,16 @@
 										action="#{forecastWeatherBean.setTypeOfDegree('CELSIUS')}"
 										disabled="#{forecastWeatherBean.typeOfDegree == 'CELSIUS'}">
 										<p:ajax
-											update=":form:forecast-panel :form:weather-chart-panel:temp-chart :form:forecast-btn-panel"
-											onstart="destroyChart()"
-											oncomplete="panChart(#{forecastWeatherBean.currentChartWindowStartX}, #{forecastWeatherBean.currentChartWindowEndX})" />°C</h:commandLink>
+											update=":form:forecast-panel :form:forecast-btn-panel :form:property-panel"
+											oncomplete="updateChartWithNewData()" />°C</h:commandLink>
 									|
 									<h:commandLink
 										styleClass="type-of-degree #{forecastWeatherBean.typeOfDegree == 'FAHRENHEIT' ? 'type-of-degree-selected' : ''}"
 										action="#{forecastWeatherBean.setTypeOfDegree('FAHRENHEIT')}"
 										disabled="#{forecastWeatherBean.typeOfDegree == 'FAHRENHEIT'}">
 										<p:ajax
-											update=":form:forecast-panel :form:weather-chart-panel:temp-chart :form:forecast-btn-panel"
-											onstart="destroyChart()"
-											oncomplete="panChart(#{forecastWeatherBean.currentChartWindowStartX}, #{forecastWeatherBean.currentChartWindowEndX})" />°F</h:commandLink>
+											update=":form:forecast-panel :form:forecast-btn-panel :form:property-panel"
+											oncomplete="updateChartWithNewData()" />°F</h:commandLink>
 								</div>
 							</div>
 							<div>#{forecastWeatherBean.currentWeatherDetail}</div>
@@ -103,18 +105,15 @@
 								<p:tab title="Temperature">
 									<p:lineChart id="temp-chart" widgetVar="tempChartWidgetVar"
 										model="#{forecastWeatherBean.temperatureModel}"
-										style="cursor: pointer; width: 20px; height: 4px;"
+										style="cursor: pointer; width: 20px; height: 5px;"
 										styleClass="weather-chart" />
 								</p:tab>
 
 								<p:tab title="Precipitation">
 									<p:barChart id="pop-chart" widgetVar="popChartWidgetVar"
 										model="#{forecastWeatherBean.precipitationModel}"
-										style="cursor: pointer; width: 20px; height: 4px;"
+										style="cursor: pointer; width: 20px; height: 5px;"
 										styleClass="weather-chart" />
-								</p:tab>
-
-								<p:tab title="Wind">
 								</p:tab>
 							</p:tabView>
 							<p:outputPanel id="forecast-btn-panel"
@@ -146,13 +145,10 @@
 							</p:outputPanel>
 						</p:outputPanel>
 					</p:panelGrid>
-					<!-- 					<video width="320" height="240" autoplay="autoplay" loop="loop">
-						<source src="#{resource['videos/cloud.mp4']}" type="video/mp4" />
-					</video> -->
 				</h:form>
 
 			</p:outputPanel>
-			<h:outputScript library="js" name="temperature-chart.js" />
+			<h:outputScript library="js" name="chartjs-config.js" />
 			<h:outputScript library="chartjs-plugin"
 				name="chartjs-plugin-datalabels.min.js" />
 		</ui:define>

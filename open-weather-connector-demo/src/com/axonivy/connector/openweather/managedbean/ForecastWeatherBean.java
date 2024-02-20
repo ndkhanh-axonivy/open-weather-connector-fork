@@ -70,6 +70,7 @@ public class ForecastWeatherBean implements Serializable {
 	private String searchStateCode;
 
 	private LineChartModel temperatureModel;
+	private String temperatureData;
 	private BarChartModel precipitationModel;
 	private int chartWindowSize;
 
@@ -181,7 +182,6 @@ public class ForecastWeatherBean implements Serializable {
 			} else {
 				setSelectedTimeIndex(selectedTimeIndex);
 			}
-			updateTemperatureModelByData();
 		}
 	}
 
@@ -272,11 +272,11 @@ public class ForecastWeatherBean implements Serializable {
 	public int getChartWindowSize() {
 		return chartWindowSize;
 	}
-	
+
 	public int getCurrentChartWindowStartX() {
 		return dailyForecastDisplayInfos.get(selectedDateIndex).getChartWindowStartX();
 	}
-	
+
 	public int getCurrentChartWindowEndX() {
 		return dailyForecastDisplayInfos.get(selectedDateIndex).getChartWindowEndX();
 	}
@@ -311,6 +311,7 @@ public class ForecastWeatherBean implements Serializable {
 		cityName = forecast.getCity().getName();
 		threeHourlyFiveDayForecasts = forecast.getList();
 		groupForecastData();
+		temperatureData = prepareTemperatureData().toString();
 	}
 
 	private void groupForecastData() {
@@ -344,40 +345,32 @@ public class ForecastWeatherBean implements Serializable {
 
 	private void createTemperatureModel() {
 		temperatureModel = new LineChartModel();
-		ChartData data = new ChartData();
-		LineChartDataSet dataSet = new LineChartDataSet();
 		LineChartOptions options = new LineChartOptions();
-
-		List<Object> values = prepareTemperatureData();
-		List<String> labels = prepareTimeLabels();
-
-		dataSet.setData(values);
-		dataSet.setLabel("Temperature");
-		dataSet.setFill(false);
-		dataSet.setTension(0.4);
-		data.addChartDataSet(dataSet);
-
-		data.setLabels(labels);
-
 		temperatureModel.setOptions(options);
-		temperatureModel.setData(data);
+		temperatureModel.setData(prepareTemperatureChartData());
 		temperatureModel.setExtender("temperatureChartExtender");
 	}
 
-	private void updateTemperatureModelByData() {
-		LineChartDataSet dataSet = (LineChartDataSet) temperatureModel.getData().getDataSet().get(0);
-		List<Object> values = prepareTemperatureData();
-		dataSet.setData(values);
+	public ChartData prepareTemperatureChartData() {
+		ChartData data = new ChartData();
+		LineChartDataSet dataSet = new LineChartDataSet();
+		dataSet.setLabel("Temperature");
+		dataSet.setFill(false);
+		dataSet.setTension(0.4);
+		dataSet.setData(prepareTemperatureData());
+		data.setLabels(prepareTimeLabels());
+		data.addChartDataSet(dataSet);
+		return data;
 	}
 
-	private List<Object> prepareTemperatureData() {
+	public List<Object> prepareTemperatureData() {
 		return dailyForecastDisplayInfos
 				.stream().map(DailyForecastDisplayInfo::getDailyForecast).flatMap(dailyForecast -> dailyForecast
 						.getDailyRecords().stream().map(record -> record.getMain().getTempMax().intValue()))
 				.collect(Collectors.toList());
 	}
 
-	private List<String> prepareTimeLabels() {
+	public List<String> prepareTimeLabels() {
 		return dailyForecastDisplayInfos.stream().map(DailyForecastDisplayInfo::getDailyForecast)
 				.flatMap(dailyForecast -> dailyForecast.getDailyRecords().stream()
 						.map(record -> Instant.ofEpochSecond(record.getDt()).atZone(zoneId).toLocalTime()))
@@ -386,26 +379,33 @@ public class ForecastWeatherBean implements Serializable {
 
 	public void createPrecipitationModel() {
 		precipitationModel = new BarChartModel();
-		ChartData data = new ChartData();
-		BarChartDataSet dataSet = new BarChartDataSet();
 		BarChartOptions options = new BarChartOptions();
-
-		List<Number> values = preparePrecipitationData();
-		List<String> labels = prepareTimeLabels();
-
-		dataSet.setData(values);
-		dataSet.setLabel("Precipitation");
-		data.addChartDataSet(dataSet);
-		data.setLabels(labels);
-
 		precipitationModel.setOptions(options);
-		precipitationModel.setData(data);
+		precipitationModel.setData(preparePrecipitationChartData());
 		precipitationModel.setExtender("precipitationChartExtender");
 	}
+	
+	public ChartData preparePrecipitationChartData() {
+		ChartData data = new ChartData();
+		BarChartDataSet dataSet = new BarChartDataSet();
+		dataSet.setLabel("Precipitation");
+		dataSet.setData(preparePrecipitationData());
+		data.setLabels(prepareTimeLabels());
+		data.addChartDataSet(dataSet);
+		return data;
+	}
 
-	private List<Number> preparePrecipitationData() {
+	public List<Number> preparePrecipitationData() {
 		return dailyForecastDisplayInfos.stream().map(DailyForecastDisplayInfo::getDailyForecast).flatMap(
 				dailyForecast -> dailyForecast.getDailyRecords().stream().map(record -> record.getPop().intValue()))
 				.collect(Collectors.toList());
+	}
+
+	public String getTemperatureData() {
+		return temperatureData;
+	}
+
+	public void setTemperatureData(String temperatureData) {
+		this.temperatureData = temperatureData;
 	}
 }

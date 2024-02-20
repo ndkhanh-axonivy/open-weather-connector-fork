@@ -10,20 +10,16 @@ const ClickPositionDetector = {
 				}
 				var index = 0;
 				for (index = 0; index < meta.data.length - 1; index++) {
-
 					var middlePointX = (meta.data[index + 1].x + meta.data[index].x) / 2;
-					console.log(middlePointX)
 					if (event.event.x <= middlePointX) {
-						console.log('Hovered or clicked on hidden column:', datasetIndex, index);
 						break;
 					} else if (
 						index == meta.data.length - 2
 					) {
-						console.log('END Hovered or clicked on hidden column:', datasetIndex, index + 1);
 						break;
 					}
 				}
-				rc([{name: 'selectedTimeIndex', value: index}]);
+				updateByTimeIndex([{name: 'selectedTimeIndex', value: index}]);
 			});
 		}
 	}
@@ -39,8 +35,8 @@ function temperatureChartExtender() {
 		scales: {
 			y: {
 				display: false, // Hide y-axis
-				min: Math.min(...data) - 0.2 * (Math.max(...data) - Math.min(...data)),
-				max: Math.max(...data) + 0.2 * (Math.max(...data) - Math.min(...data))
+				min: Math.min(...data) - 0.1 * (Math.max(...data) - Math.min(...data)),
+				max: Math.max(...data) + 0.3 * (Math.max(...data) - Math.min(...data))
 			},
 			x: {
 				min: 0,
@@ -56,10 +52,11 @@ function temperatureChartExtender() {
 			},
 			datalabels: {
 				display: true,
-				align: 'top', // Adjust the alignment as needed
+				align: 'top',
 				formatter: function(value, context) {
 					return value;
-				}
+				},
+				offset: 5
 			}
 		}
 	};
@@ -82,6 +79,8 @@ function temperatureChartExtender() {
 }
 
 function precipitationChartExtender() {
+	//Register plugin datalabels
+	jQuery.extend(true, this.cfg.config, {plugins: [ChartDataLabels, ClickPositionDetector]});
 	let data = [...this.cfg.config.data.datasets[0].data];
 
 	let options = jQuery.extend(true, {}, this.cfg.config.options);
@@ -103,31 +102,54 @@ function precipitationChartExtender() {
 		plugins: {
 			legend: {
 				display: false
+			},
+			datalabels: {
+				display: true,
+				align: 'end',
+				formatter: function(value, context) {
+					return value + '%';
+				},
+				offset: 15,
+				clamp: false
 			}
 		}
 	};
 
 	// merge all options into the main chart options
 	jQuery.extend(true, this.cfg.config.options, options);
+	
+	let extendedData = {
+			datasets: [
+			{
+				minBarLength: '20',
+				borderWidth: 2,
+				backgroundColor: '#e8f0fe',
+				borderColor: '#1a73e8',
+				barThickness: 80
+			}
+		]
+	}
+
+ 	// merge data into the main chart data
+	jQuery.extend(true, this.cfg.config.data, extendedData);
 }
 
 function panChart(newMinX, newMaxX) {
 	var tempChart = PF('tempChartWidgetVar').chart;
 	var precipitationChart = PF('popChartWidgetVar').chart;
 	
-	if (tempChart) {
+	if (tempChart && tempChart.canvas) {
 		tempChart.options.scales.x.min = newMinX;
 		tempChart.options.scales.x.max = newMaxX;
 	
 		var yAxis = tempChart.scales.y;
 		tempChart.options.scales.y.min = yAxis.min;
 		tempChart.options.scales.y.max = yAxis.max;
-	
 		
 		tempChart.update();
 	}
 	
-	if (precipitationChart) {
+	if (precipitationChart && precipitationChart.canvas) {
 		precipitationChart.options.scales.x.min = newMinX;
 		precipitationChart.options.scales.x.max = newMaxX;
 		
@@ -139,8 +161,23 @@ function panChart(newMinX, newMaxX) {
 	}
 }
 
-function destroyChart() {
-	if (PF('tempChartWidgetVar')) {
-        PF('tempChartWidgetVar').destroy();
-    }
+function updateChartWithNewData() {
+	var newTemperatureData = document.getElementById('form:tempModelData').value;
+	newTemperatureData = JSON.parse(newTemperatureData);
+	
+	var tempChart = PF('tempChartWidgetVar').chart;
+	var temperatureData = tempChart.data.datasets[0].data;
+
+	data = temperatureData.map(function(value, index) {
+		
+		if (index < newTemperatureData.length) {
+			return newTemperatureData[index];
+		} else {
+			return value;
+		}
+	});
+	tempChart.data.datasets[0].data = data;
+	tempChart.options.scales.y.min = Math.min(...data) - 0.1 * (Math.max(...data) - Math.min(...data));
+	tempChart.options.scales.y.max = Math.max(...data) + 0.3 * (Math.max(...data) - Math.min(...data));
+	tempChart.update();
 }
