@@ -14,19 +14,19 @@ Harness the power of freely available weather data in your applications with the
 ## Demo
 
 Install the Open Weather Connector and execute it as a subprocess, providing corresponding parameter values for each field:
+
 <br>
 
 ![create-express-workflow](images/forecast-sub-process.png)
+
+<br>
 
 Within the demo, users can access to retrieve comprehensive **5-day weather forecasts** for any global location. Follow these straightforward steps:
 
 1. **Precise Location Specification:** Accurately identify the desired location by entering the city name and its corresponding country code. For locations within the United States, the inclusion of the state code further refines the forecast.
 2. **Initiate Search:** Simply click the **Search** button to activate the retrieval process. The connector will efficiently retrieve and display a detailed **5-day forecast** specific to your chosen location.
-<br>
 
 ![create-express-workflow](images/forecast-weather-demo.png)
-
-<br>
 
 ## Setup
 
