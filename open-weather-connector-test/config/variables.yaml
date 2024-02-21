@@ -1,9 +1,13 @@
-# == Variables ==
-# 
-# You can define here your project Variables.
-# If you want to define/override a Variable for a specific Environment, 
-# add an additional ‘variables.yaml’ file in a subdirectory in the ‘Config’ folder: 
-# '<project>/Config/_<environment>/variables.yaml
-#
 Variables:
-#  myVariable: value
+  openWeatherConnector:
+    # Host to Open Weather connector
+    host: 'api.openweathermap.org'
+
+    # Open Weather Data URI
+    weatherDataUri: 'https://api.openweathermap.org/data/2.5/'
+
+    # Open Weather Geocoding URI
+    weatherGeoUri: 'https://${open-weather-connector.host}/geo/1.0/'
+
+    # Your UPS Application Client ID
+    appId: '536ab120c8d59f5249e91d759e1392c9'

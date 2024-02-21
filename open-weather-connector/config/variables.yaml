@@ -2,12 +2,5 @@ Variables:
   openWeatherConnector:
     # Host to Open Weather connector
     host: 'api.openweathermap.org'
-
-    # Open Weather Data URI
-    weatherDataUri: 'https://api.openweathermap.org/data/2.5/'
-
-    # Open Weather Geocoding URI
-    weatherGeoUri: 'https://${open-weather-connector.host}/geo/1.0/'
-
-    # Your UPS Application Client ID
+    # Your Open Weather connector Application Client ID
     appId: ''
