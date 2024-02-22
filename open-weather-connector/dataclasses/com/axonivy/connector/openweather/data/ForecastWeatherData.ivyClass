@@ -1,0 +1,5 @@
+ForecastWeatherData #class
+com.axonivy.connector.openweather.data #namespace
+result org.openweathermap.api.data2_5.client.Forecast #field
+param com.axonivy.connector.openweather.data.WeatherParams #field
+error ch.ivyteam.ivy.bpm.error.BpmError #field

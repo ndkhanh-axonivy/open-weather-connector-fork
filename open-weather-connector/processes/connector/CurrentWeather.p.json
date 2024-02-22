@@ -1,0 +1,257 @@
+{
+  "format" : "10.0.0",
+  "id" : "18D5E5D311C7C5FE",
+  "kind" : "CALLABLE_SUB",
+  "config" : {
+    "data" : "com.axonivy.connector.openweather.data.CurrentWeatherData"
+  },
+  "elements" : [ {
+      "id" : "f0",
+      "type" : "CallSubStart",
+      "name" : "getCurrentWeather(Double,Double,String,String)",
+      "config" : {
+        "callSignature" : "getCurrentWeather",
+        "input" : {
+          "params" : [
+            { "name" : "lat", "type" : "Double" },
+            { "name" : "lon", "type" : "Double" },
+            { "name" : "units", "type" : "String" },
+            { "name" : "lang", "type" : "String" }
+          ],
+          "map" : {
+            "out.param.lang" : "param.lang",
+            "out.param.lat" : "param.lat",
+            "out.param.lon" : "param.lon",
+            "out.param.units" : "param.units"
+          },
+          "code" : "ivy.log.info(out.param.#lon);"
+        },
+        "result" : {
+          "params" : [
+            { "name" : "currentWeather", "type" : "org.openweathermap.api.data2_5.client.Current" },
+            { "name" : "error", "type" : "ch.ivyteam.ivy.bpm.error.BpmError" }
+          ],
+          "map" : {
+            "result.currentWeather" : "in.#result",
+            "result.error" : "in.#error"
+          }
+        },
+        "tags" : "connector"
+      },
+      "visual" : {
+        "at" : { "x" : 176, "y" : 32 },
+        "labelOffset" : { "x" : -23, "y" : 33 }
+      },
+      "connect" : { "id" : "f4", "to" : "f3" }
+    }, {
+      "id" : "f1",
+      "type" : "CallSubEnd",
+      "visual" : {
+        "at" : { "x" : 752, "y" : 32 }
+      }
+    }, {
+      "id" : "f3",
+      "type" : "RestClientCall",
+      "name" : "call rest",
+      "config" : {
+        "path" : "/weather",
+        "clientId" : "c7415148-b288-475b-8d2f-e532ddae4472",
+        "clientErrorCode" : "ivy:error:rest:client",
+        "queryParams" : {
+          "lat" : "in.param.#lat is initialized ? in.param.lat : null",
+          "lon" : "in.param.#lon is initialized ? in.param.lon : null",
+          "appid" : "",
+          "lang" : "in.param.#lang is initialized ? in.param.lang : null",
+          "units" : "in.param.#units is initialized ? in.param.units : null",
+          "mode" : "null"
+        },
+        "statusErrorCode" : "ivy:error:rest:client",
+        "responseMapping" : {
+          "out.result" : "result"
+        },
+        "resultType" : "org.openweathermap.api.data2_5.client.Current"
+      },
+      "visual" : {
+        "at" : { "x" : 624, "y" : 32 }
+      },
+      "boundaries" : [ {
+          "id" : "f5",
+          "type" : "ErrorBoundaryEvent",
+          "config" : {
+            "output" : {
+              "map" : {
+                "out" : "in",
+                "out.error" : "error"
+              }
+            }
+          },
+          "visual" : {
+            "at" : { "x" : 656, "y" : 74 }
+          },
+          "connect" : { "id" : "f23", "to" : "f20", "via" : [ { "x" : 656, "y" : 104 } ] }
+        } ],
+      "connect" : { "id" : "f2", "to" : "f1" }
+    }, {
+      "id" : "f7",
+      "type" : "CallSubStart",
+      "name" : "getCurrentWeatherByLocationName(String,Double,String,String,String)",
+      "config" : {
+        "callSignature" : "getCurrentWeatherByLocation",
+        "input" : {
+          "params" : [
+            { "name" : "cityName", "type" : "String" },
+            { "name" : "countryCode", "type" : "String" },
+            { "name" : "stateCode", "type" : "String" },
+            { "name" : "lang", "type" : "String" },
+            { "name" : "units", "type" : "String" }
+          ],
+          "map" : {
+            "out.param.cityName" : "param.cityName",
+            "out.param.countryCode" : "param.countryCode",
+            "out.param.lang" : "param.lang",
+            "out.param.stateCode" : "param.stateCode",
+            "out.param.units" : "param.units"
+          }
+        },
+        "result" : {
+          "params" : [
+            { "name" : "currentWeather", "type" : "org.openweathermap.api.data2_5.client.Current" },
+            { "name" : "error", "type" : "ch.ivyteam.ivy.bpm.error.BpmError" }
+          ],
+          "map" : {
+            "result.currentWeather" : "in.#result",
+            "result.error" : "in.#error"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 168, "y" : 224 },
+        "labelOffset" : { "x" : 49, "y" : 33 }
+      },
+      "connect" : { "id" : "f9", "to" : "f8", "via" : [ { "x" : 168, "y" : 192 } ] }
+    }, {
+      "id" : "f8",
+      "type" : "SubProcessCall",
+      "name" : "connector/GeocodingLocation",
+      "config" : {
+        "processCall" : "connector/GeocodingLocation:getCoordinatesByLocationName(String,String,String,Integer)",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.error" : "result.#error",
+            "out.param.lat" : "result.geoLocations.size() != 0 ? result.geoLocations.get(0).lat : null",
+            "out.param.lon" : "result.geoLocations.size() != 0 ? result.geoLocations.get(0).lon : null"
+          }
+        },
+        "call" : {
+          "params" : [
+            { "name" : "cityName", "type" : "String" },
+            { "name" : "countryCode", "type" : "String" },
+            { "name" : "stateCode", "type" : "String" },
+            { "name" : "limit", "type" : "Integer" }
+          ],
+          "map" : {
+            "param.cityName" : "in.param.cityName",
+            "param.countryCode" : "in.param.countryCode",
+            "param.stateCode" : "in.param.stateCode",
+            "param.limit" : "1"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 384, "y" : 192 },
+        "size" : { "width" : 192, "height" : 68 }
+      },
+      "connect" : { "id" : "f15", "to" : "f14" }
+    }, {
+      "id" : "f11",
+      "type" : "CallSubStart",
+      "name" : "getCurrentWeatherByZipCode(String,Double,String,String,String)",
+      "config" : {
+        "callSignature" : "call",
+        "input" : {
+          "params" : [
+            { "name" : "zipCode", "type" : "String" },
+            { "name" : "countryCode", "type" : "String" },
+            { "name" : "lang", "type" : "String" },
+            { "name" : "units", "type" : "String" }
+          ],
+          "map" : {
+            "out.param.countryCode" : "param.countryCode",
+            "out.param.lang" : "param.lang",
+            "out.param.units" : "param.units",
+            "out.param.zipCode" : "param.zipCode"
+          }
+        },
+        "result" : {
+          "params" : [
+            { "name" : "currentWeather", "type" : "org.openweathermap.api.data2_5.client.Current" },
+            { "name" : "error", "type" : "ch.ivyteam.ivy.bpm.error.BpmError" }
+          ],
+          "map" : {
+            "result.currentWeather" : "in.#result",
+            "result.error" : "in.#error"
+          }
+        },
+        "tags" : "connector"
+      },
+      "visual" : {
+        "at" : { "x" : 168, "y" : 328 },
+        "labelOffset" : { "x" : 41, "y" : 41 }
+      },
+      "connect" : { "id" : "f13", "to" : "f12", "via" : [ { "x" : 168, "y" : 304 } ] }
+    }, {
+      "id" : "f12",
+      "type" : "SubProcessCall",
+      "name" : "connector/GeocodingLocation",
+      "config" : {
+        "processCall" : "connector/GeocodingLocation:getCoordinatesByZipCode(String,String)",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.error" : "result.#error",
+            "out.param.lat" : "result.geoLocation.lat",
+            "out.param.lon" : "result.geoLocation.lon"
+          }
+        },
+        "call" : {
+          "params" : [
+            { "name" : "zipCode", "type" : "String" },
+            { "name" : "countryCode", "type" : "String" }
+          ],
+          "map" : {
+            "param.zipCode" : "in.param.zipCode",
+            "param.countryCode" : "in.param.countryCode"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 384, "y" : 304 },
+        "size" : { "width" : 194, "height" : 68 }
+      },
+      "connect" : { "id" : "f16", "to" : "f14", "via" : [ { "x" : 624, "y" : 304 } ] }
+    }, {
+      "id" : "f14",
+      "type" : "Alternative",
+      "visual" : {
+        "at" : { "x" : 624, "y" : 192 }
+      },
+      "connect" : [
+        { "id" : "f18", "to" : "f20", "via" : [ { "x" : 752, "y" : 192 } ], "label" : {
+            "name" : "fail"
+          }, "condition" : "in.#error is initialized" },
+        { "id" : "f17", "to" : "f3", "label" : {
+            "name" : "success"
+          } }
+      ]
+    }, {
+      "id" : "f20",
+      "type" : "Alternative",
+      "visual" : {
+        "at" : { "x" : 752, "y" : 104 }
+      },
+      "connect" : [
+        { "id" : "f6", "to" : "f1" }
+      ]
+    } ]
+}

@@ -1,0 +1,6 @@
+WebServiceClients:
+  http://api.openweathermap.org/data/2.5:
+    Id: 18CFCB586A4A7FCB
+    WsdlUrl: http://api.openweathermap.org/data/2.5
+    WsCallLibrary: CXF
+    Endpoints: {}

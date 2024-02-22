@@ -1,0 +1,11 @@
+WeatherParams #class
+com.axonivy.connector.openweather.data #namespace
+lat Double #field
+lon Double #field
+lang String #field
+units String #field
+cnt Integer #field
+cityName String #field
+stateCode String #field
+countryCode String #field
+zipCode String #field

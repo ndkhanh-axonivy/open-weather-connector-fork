@@ -1,0 +1,12 @@
+AirPollutionParams #class
+com.axonivy.connector.openweather.data #namespace
+startDate java.time.OffsetDateTime #field
+endDate java.time.OffsetDateTime #field
+lat Double #field
+lon Double #field
+start Long #field
+end Long #field
+cityName String #field
+countryCode String #field
+stateCode String #field
+zipCode String #field

@@ -1,0 +1,6 @@
+Variables:
+  openWeatherConnector:
+    # Host to Open Weather connector
+    host: 'api.openweathermap.org'
+    # Your Open Weather connector Application Client ID
+    appId: ''
