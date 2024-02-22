@@ -32,7 +32,7 @@
         "startMethod" : "start()"
       },
       "visual" : {
-        "at" : { "x" : 271, "y" : 62 },
+        "at" : { "x" : 272, "y" : 63 },
         "size" : { "width" : 174, "height" : 57 }
       },
       "connect" : { "id" : "f2", "to" : "f1" }
