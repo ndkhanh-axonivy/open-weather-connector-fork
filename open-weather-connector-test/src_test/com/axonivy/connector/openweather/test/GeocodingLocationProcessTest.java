@@ -20,8 +20,8 @@ public class GeocodingLocationProcessTest {
 	@Test
 	public void callProcess(BpmClient bpmClient) {
 		ExecutionResult result = bpmClient.start().subProcess(GEOCODING_LOCATION_START).execute();
-//		CompositeObject data = result.data().last();
-//		assertThat(data);
+		CompositeObject data = result.data().last();
+		assertThat(data);
 	}
 
 }

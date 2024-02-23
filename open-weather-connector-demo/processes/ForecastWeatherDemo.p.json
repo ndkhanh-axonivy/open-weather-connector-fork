@@ -36,5 +36,46 @@
         "size" : { "width" : 174, "height" : 57 }
       },
       "connect" : { "id" : "f2", "to" : "f1" }
+    }, {
+      "id" : "f5",
+      "type" : "RequestStart",
+      "name" : "start2.ivp",
+      "config" : {
+        "callSignature" : "start2",
+        "outLink" : "start2.ivp"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 208 }
+      },
+      "connect" : { "id" : "f9", "to" : "f8" }
+    }, {
+      "id" : "f6",
+      "type" : "TaskEnd",
+      "visual" : {
+        "at" : { "x" : 440, "y" : 208 }
+      }
+    }, {
+      "id" : "f8",
+      "type" : "SubProcessCall",
+      "name" : "connector/GeocodingLocation",
+      "config" : {
+        "processCall" : "connector/GeocodingLocation:getCoordinatesByLocationName(String,String,String,Integer)",
+        "call" : {
+          "params" : [
+            { "name" : "cityName", "type" : "String" },
+            { "name" : "countryCode", "type" : "String" },
+            { "name" : "stateCode", "type" : "String" },
+            { "name" : "limit", "type" : "Integer" }
+          ],
+          "map" : {
+            "param.cityName" : "\"New York\"",
+            "param.limit" : "-99"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 264, "y" : 208 }
+      },
+      "connect" : { "id" : "f7", "to" : "f6" }
     } ]
 }
