@@ -105,6 +105,7 @@
           ],
           "map" : {
             "out.param.countryCode" : "param.countryCode",
+            "out.param.zip" : "param.zipCode",
             "out.param.zipCode" : "param.zipCode"
           },
           "code" : [

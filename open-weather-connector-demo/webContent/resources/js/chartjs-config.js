@@ -89,7 +89,7 @@ function precipitationChartExtender() {
 			y: {
 				display: false, // Hide y-axis
 				min: 0,
-				max: 100
+				max: 120
 			},
 			x: {
 				min: 0,
@@ -104,13 +104,13 @@ function precipitationChartExtender() {
 				display: false
 			},
 			datalabels: {
-				display: true,
-				align: 'end',
+				display: 'true',
+				anchor: 'end',
+				align: 'top',
 				formatter: function(value, context) {
 					return value + '%';
 				},
-				offset: 15,
-				clamp: false
+				offset: 2
 			}
 		}
 	};
@@ -121,7 +121,6 @@ function precipitationChartExtender() {
 	let extendedData = {
 			datasets: [
 			{
-				minBarLength: '20',
 				borderWidth: 2,
 				backgroundColor: '#e8f0fe',
 				borderColor: '#1a73e8',

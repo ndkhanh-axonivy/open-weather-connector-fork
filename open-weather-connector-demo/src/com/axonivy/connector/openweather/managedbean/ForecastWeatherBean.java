@@ -417,7 +417,7 @@ public class ForecastWeatherBean implements Serializable {
 
 	public List<Number> preparePrecipitationData() {
 		return dailyForecastDisplayInfos.stream().map(DailyForecastDisplayInfo::getDailyForecast).flatMap(
-				dailyForecast -> dailyForecast.getDailyRecords().stream().map(record -> record.getPop().intValue()))
+				dailyForecast -> dailyForecast.getDailyRecords().stream().map(record -> (int) (record.getPop() * 100)))
 				.collect(Collectors.toList());
 	}
 
