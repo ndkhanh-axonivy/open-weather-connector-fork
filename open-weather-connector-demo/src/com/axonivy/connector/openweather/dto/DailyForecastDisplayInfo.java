@@ -13,7 +13,7 @@ public class DailyForecastDisplayInfo {
 		this.dailyForecast = dailyForecast;
 		this.chartWindowStartX = chartWindowStartX;
 		this.chartWindowEndX = chartWindowEndX;
-		this.shortDateName = dailyForecast != null ? DateTimeFormatterUtilities.formatEEE(dailyForecast.getDate()) : null;
+		this.shortDateName = dailyForecast != null ? DateTimeFormatterUtilities.formatShortDate(dailyForecast.getDate()) : null;
 	}
 
 	public DailyForecast getDailyForecast() {

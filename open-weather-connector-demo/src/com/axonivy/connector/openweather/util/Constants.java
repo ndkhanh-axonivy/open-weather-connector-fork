@@ -19,7 +19,7 @@ public class Constants {
 
 	public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("E, d MMMM yyyy");
 	public static final DateTimeFormatter TIME_12_HOUR_FORMATTER = DateTimeFormatter.ofPattern("h:mm a");
-	public static final DateTimeFormatter EEE_FORMATTER = DateTimeFormatter.ofPattern("EEE");
+	public static final DateTimeFormatter SHORT_DATE_FORMATTER = DateTimeFormatter.ofPattern("EEE");
 	public static final DateTimeFormatter TIME_24_HOUR_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
 	public static final String DEFAULT_SEARCH_CITY_NAME = "New York";

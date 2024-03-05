@@ -18,8 +18,8 @@ public class DateTimeFormatterUtilities {
 		return time != null ? time.format(Constants.TIME_12_HOUR_FORMATTER) : StringUtils.EMPTY;
 	}
 
-	public static String formatEEE(LocalDate date) {
-		return date != null ? date.format(Constants.EEE_FORMATTER) : StringUtils.EMPTY;
+	public static String formatShortDate(LocalDate date) {
+		return date != null ? date.format(Constants.SHORT_DATE_FORMATTER) : StringUtils.EMPTY;
 	}
 
 	public static String formatTime24Hour(LocalTime time) {
