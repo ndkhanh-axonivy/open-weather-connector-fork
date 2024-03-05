@@ -3,7 +3,7 @@
   "id" : "18D69D45CF17FC2E",
   "kind" : "HTML_DIALOG",
   "config" : {
-    "data" : "com.axonivy.connector.openweather.open.weather.connector.demo.ui.ForecastWeatherDemo.ForecastWeatherDemoData"
+    "data" : "com.axonivy.connector.openweather.demo.ui.ForecastWeatherDemo.ForecastWeatherDemoData"
   },
   "elements" : [ {
       "id" : "f0",

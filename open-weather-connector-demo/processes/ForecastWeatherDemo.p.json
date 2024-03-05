@@ -28,7 +28,7 @@
       "type" : "DialogCall",
       "name" : "ForecastWeatherDemo",
       "config" : {
-        "dialogId" : "com.axonivy.connector.openweather.open.weather.connector.demo.ui.ForecastWeatherDemo",
+        "dialogId" : "com.axonivy.connector.openweather.demo.ui.ForecastWeatherDemo",
         "startMethod" : "start()"
       },
       "visual" : {

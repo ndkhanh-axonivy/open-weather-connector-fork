@@ -1,0 +1,18 @@
+Dialogs:
+  com:
+    axonivy:
+      connector:
+        openweather:
+          demo:
+            ui:
+              ForecastWeatherDemo:
+                CityNameLabel: City name
+                CountryCodeLabel: Country code
+                Header: Find Weather Forecasts in Any City
+                HumidityLabel: Humidity
+                PrecipitationLabel: Precipitation
+                SearchLabel: Search
+                StateCodeLabel: State code
+                TemperatureLabel: Temperature
+                Title: ForecastWeatherDemo
+                WindSpeedLabel: Wind speed

@@ -7,11 +7,11 @@
 	xmlns:pe="http://primefaces.org/ui/extensions">
 <h:body>
 	<ui:composition template="/layouts/frame-10.xhtml">
-		<ui:define name="title">ForecastWeatherDemo</ui:define>
+		<ui:define name="title">#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/Title')}</ui:define>
 		<ui:define name="content">
 			<h:outputStylesheet name="layouts/styles/forecastweather.css" />
 			<p:outputPanel styleClass="forecast-weather-panel">
-				<h1>Find Weather Forecasts in Any City</h1>
+				<h1>#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/Header')}</h1>
 
 				<p:spacer height="20" />
 
@@ -32,20 +32,25 @@
 
 						<h:panelGroup styleClass="ui-float-label">
 							<p:inputText value="#{forecastWeatherBean.searchCityName}" />
-							<p:outputLabel for="@previous" value="City name" />
+							<p:outputLabel for="@previous"
+								value="#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/CityNameLabel')}" />
 						</h:panelGroup>
 
 						<h:panelGroup styleClass="ui-float-label">
 							<p:inputText value="#{forecastWeatherBean.searchCountryCode}" />
-							<p:outputLabel for="@previous" value="Country code" />
+							<p:outputLabel for="@previous"
+								value="#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/CountryCodeLabel')}" />
 						</h:panelGroup>
 
 						<h:panelGroup styleClass="ui-float-label">
 							<p:inputText value="#{forecastWeatherBean.searchStateCode}" />
-							<p:outputLabel for="@previous" value="State code" />
+							<p:outputLabel for="@previous"
+								value="#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/StateCodeLabel')}" />
 						</h:panelGroup>
 
-						<p:commandButton value="Search" icon="pi pi-search" update="form"
+						<p:commandButton
+							value="#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/SearchLabel')}"
+							icon="pi pi-search" update="form"
 							actionListener="#{forecastWeatherBean.search}" />
 					</p:panelGrid>
 
@@ -94,11 +99,11 @@
 								styleClass="weather-other-detail-container p-mt-4"
 								columnClasses="ui-g-6, ui-g-6">
 								<p:outputPanel>
-									<div>Humidity</div>
+									<div>#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/HumidityLabel')}</div>
 									<div class="weather-humidity-detail">#{forecastWeatherBean.currentHumidity}%</div>
 								</p:outputPanel>
 								<p:outputPanel>
-									<div>Wind speed</div>
+									<div>#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/WindSpeedLabel')}</div>
 									<div class="weather-windspeed-detail">#{forecastWeatherBean.currentWindSpeed}#{forecastWeatherBean.speedUnit}</div>
 								</p:outputPanel>
 							</p:panelGrid>
@@ -107,14 +112,16 @@
 						<p:outputPanel styleClass="weather-chart-btn-container">
 							<p:tabView id="weather-chart-panel" styleClass="weather-tab-view">
 								<p:ajax event="tabChange" oncomplete="panChartByCurrentValue()" />
-								<p:tab title="Temperature">
+								<p:tab
+									title="#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/TemperatureLabel')}">
 									<p:lineChart id="temp-chart" widgetVar="tempChartWidgetVar"
 										model="#{forecastWeatherBean.temperatureModel}"
 										style="cursor: pointer; width: 20px; height: 5px;"
 										styleClass="weather-chart" />
 								</p:tab>
 
-								<p:tab title="Precipitation">
+								<p:tab
+									title="#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/PrecipitationLabel')}">
 									<p:barChart id="pop-chart" widgetVar="popChartWidgetVar"
 										model="#{forecastWeatherBean.precipitationModel}"
 										style="cursor: pointer; width: 20px; height: 5px;"
@@ -129,7 +136,8 @@
 									<h:commandLink
 										styleClass="weather-date-btn #{status.index == forecastWeatherBean.selectedDateIndex ? 'weather-date-selected' : ''}"
 										action="#{forecastWeatherBean.setSelectedDateIndex(status.index)}">
-										<p:ajax update=":form:forecast-panel :form:forecast-btn-panel :form:property-panel"
+										<p:ajax
+											update=":form:forecast-panel :form:forecast-btn-panel :form:property-panel"
 											oncomplete="panChart(#{dailyForecastDisplayInfo.chartWindowStartX}, #{dailyForecastDisplayInfo.chartWindowEndX})" />
 										<p:outputPanel styleClass="p-mb-2">
 											<span class="weather-date-btn-label">#{status.first ?

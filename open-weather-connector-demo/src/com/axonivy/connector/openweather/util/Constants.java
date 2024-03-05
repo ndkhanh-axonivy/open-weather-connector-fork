@@ -27,6 +27,14 @@ public class Constants {
 	public static final String DEFAULT_TYPE_OF_DEGREE = CELSIUS_TYPE_OF_DEGREE;
 	public static final String DEFAULT_SPEED_UNIT = SPEED_METER_UNIT;
 	public static final int DEFAULT_CHART_WINDOW_SIZE = 8;
+	
+	public static final String FORECAST_WEATHER_CONNECTOR = "connector/ForecastWeather";
+	public static final String GET_FORECAST_WEATHER_BY_LOCATION_START_NAME = "getForecastWeatherByLocationName";
+	public static final String CITY_NAME_PARAM_NAME = "cityName";
+	public static final String COUNTRY_CODE_PARAM_NAME = "countryCode";
+	public static final String STATE_CODE_PARAM_NAME = "stateCode";
+	public static final String UNITS_PARAM_NAME = "units";
+	public static final String FORECAST_WEATHER_RESULT_NAME = "forecastWeather";
 
 	private Constants() {
 	}
