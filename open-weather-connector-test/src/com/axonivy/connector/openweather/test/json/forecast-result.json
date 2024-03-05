@@ -1,0 +1,56 @@
+{
+	"cod": "200",
+	"message": 0,
+	"cnt": 1,
+	"list": [
+		{
+			"dt": 1709564400,
+			"main": {
+				"temp": 283.35,
+				"feels_like": 282.49,
+				"temp_min": 283.35,
+				"temp_max": 285.34,
+				"pressure": 1030,
+				"sea_level": 1030,
+				"grnd_level": 1027,
+				"humidity": 79,
+				"temp_kf": -1.99
+			},
+			"weather": [
+				{
+					"id": 804,
+					"main": "Clouds",
+					"description": "overcast clouds",
+					"icon": "04d"
+				}
+			],
+			"clouds": {
+				"all": 100
+			},
+			"wind": {
+				"speed": 2.78,
+				"deg": 87,
+				"gust": 3.92
+			},
+			"visibility": 10000,
+			"pop": 0,
+			"sys": {
+				"pod": "d"
+			},
+			"dt_txt": "2024-03-04 15:00:00"
+		}
+	],
+	"city": {
+		"id": 5099133,
+		"name": "Hoboken",
+		"coord": {
+			"lat": 40.7484,
+			"lon": -73.9967
+		},
+		"country": "US",
+		"population": 50005,
+		"timezone": -18000,
+		"sunrise": 1709551486,
+		"sunset": 1709592643
+	}
+}

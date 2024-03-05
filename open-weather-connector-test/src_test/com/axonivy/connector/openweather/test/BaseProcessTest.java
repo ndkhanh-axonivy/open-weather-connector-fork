@@ -15,7 +15,7 @@ public class BaseProcessTest {
 				"ch.ivyteam.ivy.rest.client.mapper.JsonFeature");
 		fixture.config("RestClients.GeocodingCoordinates (Openweathermap geocoding API).Features",
 				"ch.ivyteam.ivy.rest.client.mapper.JsonFeature");
-		fixture.var("openWeatherConnector.weatherDataUri", "{ivy.app.baseurl}/api/weatherDataMock");
-		fixture.var("openWeatherConnector.weatherGeoUri", "{ivy.app.baseurl}/api/weatherGeoMock");
+		fixture.var("openWeatherConnector.weatherDataUrl", "http://localhost:8081/designer/api/weatherDataMock");
+		fixture.var("openWeatherConnector.weatherGeoUrl", "http://localhost:8081/designer/api/weatherGeoMock");
 	}
 }

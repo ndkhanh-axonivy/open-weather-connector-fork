@@ -194,11 +194,11 @@
         },
         "result" : {
           "params" : [
-            { "name" : "geoLocation", "type" : "org.openweathermap.api.geo1_0.client.GeoLocation" },
+            { "name" : "geoLocation", "type" : "List<org.openweathermap.api.geo1_0.client.GeoLocation>" },
             { "name" : "error", "type" : "ch.ivyteam.ivy.bpm.error.BpmError" }
           ],
           "map" : {
-            "result.geoLocation" : "in.#result",
+            "result.geoLocation" : "in.#results",
             "result.error" : "in.#error"
           }
         },
@@ -223,8 +223,7 @@
         "clientId" : "550bf66e-4811-47e6-b1ca-1942196a3487",
         "clientErrorCode" : "ivy:error:rest:client",
         "queryParams" : {
-          "appid" : "",
-          "limit" : "",
+          "limit" : "in.param.limit is initialized ? in.param.limit : null",
           "lat" : "in.param.lat is initialized ? in.param.lat : null",
           "lon" : "in.param.lon is initialized ? in.param.lon : null"
         },
