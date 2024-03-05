@@ -1,4 +1,4 @@
 Variables:
   openWeatherConnector:
     # Your UPS Application Client ID
-    appId: '536ab120c8d59f5249e91d759e1392c9'
+    appId: ''
