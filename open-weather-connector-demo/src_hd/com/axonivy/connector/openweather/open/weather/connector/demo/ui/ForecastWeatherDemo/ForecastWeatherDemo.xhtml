@@ -60,7 +60,7 @@
 								<p:outputPanel styleClass="p-text-left ">
 									<i class="pi pi-map-marker" /> #{forecastWeatherBean.cityName}</p:outputPanel>
 
-								<p:outputPanel styleClass="p-text-right">#{forecastWeatherBean.formattedTime12Hour}</p:outputPanel>
+								<p:outputPanel styleClass="p-text-right">#{forecastWeatherBean.time12HourName}</p:outputPanel>
 							</p:panelGrid>
 							<div class="weather-condition-img-container">
 								<p:graphicImage
@@ -102,7 +102,7 @@
 									<div class="weather-windspeed-detail">#{forecastWeatherBean.currentWindSpeed}#{forecastWeatherBean.speedUnit}</div>
 								</p:outputPanel>
 							</p:panelGrid>
-							<p:outputPanel styleClass="weather-date-container p-mt-4">#{forecastWeatherBean.formattedDate}</p:outputPanel>
+							<p:outputPanel styleClass="weather-date-container p-mt-4">#{forecastWeatherBean.dateName}</p:outputPanel>
 						</p:outputPanel>
 						<p:outputPanel styleClass="weather-chart-btn-container">
 							<p:tabView id="weather-chart-panel" styleClass="weather-tab-view">
@@ -133,7 +133,7 @@
 											oncomplete="panChart(#{dailyForecastDisplayInfo.chartWindowStartX}, #{dailyForecastDisplayInfo.chartWindowEndX})" />
 										<p:outputPanel styleClass="p-mb-2">
 											<span class="weather-date-btn-label">#{status.first ?
-												'Today' : dailyForecastDisplayInfo.formattedEEE}</span>
+												'Today' : dailyForecastDisplayInfo.shortDateName}</span>
 										</p:outputPanel>
 										<p:outputPanel styleClass="p-mb-2">
 											<p:graphicImage

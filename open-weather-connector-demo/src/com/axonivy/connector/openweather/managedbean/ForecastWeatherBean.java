@@ -49,8 +49,8 @@ public class ForecastWeatherBean implements Serializable {
 	private int selectedDateIndex;
 	private int selectedTimeIndex;
 	private String cityName;
-	private String formattedTime12Hour;
-	private String formattedDate;
+	private String time12HourName;
+	private String dateName;
 	private ZoneId zoneId;
 	private String speedUnit;
 	private String units;
@@ -92,7 +92,7 @@ public class ForecastWeatherBean implements Serializable {
 
 	public void setSelectedDate(LocalDate selectedDate) {
 		this.selectedDate = selectedDate;
-		updateFormattedDate();
+		updateDateName();
 	}
 
 	public LocalTime getSelectedTime() {
@@ -135,7 +135,7 @@ public class ForecastWeatherBean implements Serializable {
 
 	public void setSelectedTime(LocalTime selectedTime) {
 		this.selectedTime = selectedTime;
-		updateFormattedTime12Hour();
+		updateTime12HourName();
 	}
 
 	public int getSelectedDateIndex() {
@@ -209,12 +209,12 @@ public class ForecastWeatherBean implements Serializable {
 		return currentWeatherDetail;
 	}
 
-	public String getFormattedTime12Hour() {
-		return formattedTime12Hour;
+	public String getTime12HourName() {
+		return time12HourName;
 	}
 
-	public String getFormattedDate() {
-		return formattedDate;
+	public String getDateName() {
+		return dateName;
 	}
 
 	public String getSearchCityName() {
@@ -241,12 +241,12 @@ public class ForecastWeatherBean implements Serializable {
 		this.searchStateCode = searchStateCode;
 	}
 
-	private void updateFormattedDate() {
-		formattedDate = DateTimeFormatterUtilities.formatDate(selectedDate);
+	private void updateDateName() {
+		dateName = DateTimeFormatterUtilities.formatDate(selectedDate);
 	}
 
-	private void updateFormattedTime12Hour() {
-		formattedTime12Hour = DateTimeFormatterUtilities.formatTime12Hour(selectedTime);
+	private void updateTime12HourName() {
+		time12HourName = DateTimeFormatterUtilities.formatTime12Hour(selectedTime);
 	}
 
 	public String getCityName() {
@@ -280,7 +280,7 @@ public class ForecastWeatherBean implements Serializable {
 	public int getCurrentChartWindowStartX() {
 		return currentChartWindowStartX;
 	}
-	
+
 	public void setCurrentChartWindowStartX(int currentChartWindowStartX) {
 		this.currentChartWindowStartX = currentChartWindowStartX;
 	}
@@ -288,7 +288,7 @@ public class ForecastWeatherBean implements Serializable {
 	public int getCurrentChartWindowEndX() {
 		return currentChartWindowEndX;
 	}
-	
+
 	public void setCurrentChartWindowEndX(int currentChartWindowEndX) {
 		this.currentChartWindowEndX = currentChartWindowEndX;
 	}
@@ -424,7 +424,7 @@ public class ForecastWeatherBean implements Serializable {
 	public String getTemperatureData() {
 		return temperatureData;
 	}
-	
+
 	public void setTemperatureData(String temperatureData) {
 		this.temperatureData = temperatureData;
 	}

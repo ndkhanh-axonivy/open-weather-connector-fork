@@ -7,13 +7,13 @@ public class DailyForecastDisplayInfo {
 	private final DailyForecast dailyForecast;
 	private final int chartWindowStartX;
 	private final int chartWindowEndX;
-	private final String formattedEEE;
+	private final String shortDateName;
 
 	public DailyForecastDisplayInfo(DailyForecast dailyForecast, int chartWindowStartX, int chartWindowEndX) {
 		this.dailyForecast = dailyForecast;
 		this.chartWindowStartX = chartWindowStartX;
 		this.chartWindowEndX = chartWindowEndX;
-		this.formattedEEE = dailyForecast != null ? DateTimeFormatterUtilities.formatEEE(dailyForecast.getDate()) : null;
+		this.shortDateName = dailyForecast != null ? DateTimeFormatterUtilities.formatEEE(dailyForecast.getDate()) : null;
 	}
 
 	public DailyForecast getDailyForecast() {
@@ -28,7 +28,7 @@ public class DailyForecastDisplayInfo {
 		return chartWindowEndX;
 	}
 	
-	public String getFormattedEEE() {
-		return formattedEEE;
+	public String getShortDateName() {
+		return shortDateName;
 	}
 }
