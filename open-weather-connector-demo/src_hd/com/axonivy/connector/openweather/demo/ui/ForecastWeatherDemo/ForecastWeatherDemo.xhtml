@@ -62,7 +62,7 @@
 							styleClass="p-text-center #{ivyFreyaTheme.getMode() == 'dark' ? 'weather-detail-container-dark-mode' : 'weather-detail-container-light-mode'}">
 							<p:panelGrid layout="grid" columns="2"
 								columnClasses="ui-g-6 p-py-3, ui-g-6 p-py-3">
-								<p:outputPanel id="city-name-panel" styleClass="p-text-left">
+								<p:outputPanel styleClass="p-text-left">
 									<i class="pi pi-map-marker" /> #{forecastWeatherBean.cityName}</p:outputPanel>
 
 								<p:outputPanel styleClass="p-text-right">#{forecastWeatherBean.time12HourName}</p:outputPanel>
@@ -161,9 +161,16 @@
 				</h:form>
 
 			</p:outputPanel>
+			
+			<h:outputScript>
+				var fontColor = '#{ivyFreyaTheme.getMode()}' == 'dark' ? '#EAEBEC' : '#69707A';
+				var tempBackGroundColor = '#{ivyFreyaTheme.getMode()}' == 'dark' ? '#FF6347' : '#e8f0fe';
+				var tempBorderColor = '#{ivyFreyaTheme.getMode()}' == 'dark' ? '#FF6347' : '#1a73e8';
+			</h:outputScript>
 			<h:outputScript library="js" name="chartjs-config.js" />
 			<h:outputScript library="chartjs-plugin"
 				name="chartjs-plugin-datalabels.min.js" />
+
 		</ui:define>
 	</ui:composition>
 </h:body>

@@ -35,26 +35,6 @@ document.getElementById('form:weather-chart-panel:temp-chart').addEventListener(
 	tempChart.update();
 });
 
-// Define a function to handle DOM changes
-function handleDOMChange(mutationsList) {
-	for (const mutation of mutationsList) {
-		if (mutation.type === 'childList') {
-			const element = mutation.target;
-			const currentColor = window.getComputedStyle(element).color;
-			console.log("Text content changed, current color:", currentColor);
-		}
-	}
-}
-	
-// Create a new MutationObserver instance
-const observer = new MutationObserver(handleDOMChange);
-
-// Select the element to observe
-const targetElement = document.getElementById("form:city-name-panel");
-
-// Start observing the element for changes
-observer.observe(targetElement, { childList: true });
-
 function temperatureChartExtender() {
 	//Register plugin datalabels
 	jQuery.extend(true, this.cfg.config, {plugins: [ChartDataLabels, ClickPositionDetector]});
@@ -73,6 +53,9 @@ function temperatureChartExtender() {
 				max: 7,
 				grid: {
 					drawOnChartArea: false
+				},
+				ticks: {
+					color: fontColor,
 				}
 			},
 		},
@@ -86,7 +69,8 @@ function temperatureChartExtender() {
 				formatter: function(value, context) {
 					return value;
 				},
-				offset: 5
+				offset: 5,
+				color: fontColor
 			}
 		}
 	};
@@ -126,6 +110,9 @@ function precipitationChartExtender() {
 				max: 7,
 				grid: {
 					drawOnChartArea: false
+				},
+				ticks: {
+					color: fontColor,
 				}
 			},
 		},
@@ -140,7 +127,8 @@ function precipitationChartExtender() {
 				formatter: function(value, context) {
 					return value + '%';
 				},
-				offset: 2
+				offset: 2,
+				color: fontColor
 			}
 		}
 	};
@@ -152,8 +140,8 @@ function precipitationChartExtender() {
 			datasets: [
 			{
 				borderWidth: 2,
-				backgroundColor: '#e8f0fe',
-				borderColor: '#1a73e8',
+				backgroundColor: tempBackGroundColor,
+				borderColor: tempBorderColor,
 				barThickness: 80
 			}
 		]
