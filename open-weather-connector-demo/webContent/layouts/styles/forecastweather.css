@@ -2,8 +2,17 @@
 	min-width: 1000px;
 }
 
-.weather-detail-container {
+.weather-detail-container-light-mode {
 	background-image: url("#{resource['images/background/white.jpg']}");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-clip: content-box;
+	background-size: cover;
+}
+
+.weather-detail-container-dark-mode {
+	background-image: url("#{resource['images/background/orange.jpg']}");
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -98,8 +107,12 @@
 	color: inherit;
 }
 
-.weather-date-selected {
+.weather-date-selected-light-mode {
 	background-color: #f8f9fa;
+}
+
+.weather-date-selected-dark-mode {
+	background-color: #4c505a;
 }
 
 .weather-chart {

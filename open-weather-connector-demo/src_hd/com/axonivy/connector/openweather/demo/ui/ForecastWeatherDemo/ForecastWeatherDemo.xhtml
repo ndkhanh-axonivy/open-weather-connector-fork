@@ -59,10 +59,10 @@
 					<p:panelGrid layout="grid" columns="2"
 						columnClasses="ui-g-3 p-p-0, ui-g-9 p-py-0">
 						<p:outputPanel id="forecast-panel"
-							styleClass="p-text-center weather-detail-container">
+							styleClass="p-text-center #{ivyFreyaTheme.getMode() == 'dark' ? 'weather-detail-container-dark-mode' : 'weather-detail-container-light-mode'}">
 							<p:panelGrid layout="grid" columns="2"
 								columnClasses="ui-g-6 p-py-3, ui-g-6 p-py-3">
-								<p:outputPanel styleClass="p-text-left ">
+								<p:outputPanel id="city-name-panel" styleClass="p-text-left">
 									<i class="pi pi-map-marker" /> #{forecastWeatherBean.cityName}</p:outputPanel>
 
 								<p:outputPanel styleClass="p-text-right">#{forecastWeatherBean.time12HourName}</p:outputPanel>
@@ -83,7 +83,7 @@
 										disabled="#{forecastWeatherBean.typeOfDegree == 'CELSIUS'}">
 										<p:ajax
 											update=":form:forecast-panel :form:forecast-btn-panel :form:property-panel"
-											oncomplete="updateChartWithNewData()" />°C</h:commandLink>
+											oncomplete="updateChartWithNewData()" />#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/CelsiusNotation')}</h:commandLink>
 									|
 									<h:commandLink
 										styleClass="type-of-degree #{forecastWeatherBean.typeOfDegree == 'FAHRENHEIT' ? 'type-of-degree-selected' : ''}"
@@ -91,7 +91,7 @@
 										disabled="#{forecastWeatherBean.typeOfDegree == 'FAHRENHEIT'}">
 										<p:ajax
 											update=":form:forecast-panel :form:forecast-btn-panel :form:property-panel"
-											oncomplete="updateChartWithNewData()" />°F</h:commandLink>
+											oncomplete="updateChartWithNewData()" />#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/FahrenheitNotation')}</h:commandLink>
 								</div>
 							</div>
 							<div>#{forecastWeatherBean.currentWeatherDetail}</div>
@@ -134,7 +134,8 @@
 									value="#{forecastWeatherBean.dailyForecastDisplayInfos}"
 									var="dailyForecastDisplayInfo" varStatus="status">
 									<h:commandLink
-										styleClass="weather-date-btn #{status.index == forecastWeatherBean.selectedDateIndex ? 'weather-date-selected' : ''}"
+										styleClass="weather-date-btn #{status.index == forecastWeatherBean.selectedDateIndex ? ivyFreyaTheme.getMode() == 'dark' ? 
+											'weather-date-selected-dark-mode' : 'weather-date-selected-light-mode' : ''}"
 										action="#{forecastWeatherBean.setSelectedDateIndex(status.index)}">
 										<p:ajax
 											update=":form:forecast-panel :form:forecast-btn-panel :form:property-panel"

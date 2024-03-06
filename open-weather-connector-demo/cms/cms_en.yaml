@@ -6,8 +6,10 @@ Dialogs:
           demo:
             ui:
               ForecastWeatherDemo:
+                CelsiusNotation: °C
                 CityNameLabel: City name
                 CountryCodeLabel: Country code
+                FahrenheitNotation: °F
                 Header: Find Weather Forecasts in Any City
                 HumidityLabel: Humidity
                 PrecipitationLabel: Precipitation

@@ -37,6 +37,8 @@ import com.axonivy.connector.openweather.service.ForecastService;
 import com.axonivy.connector.openweather.util.Constants;
 import com.axonivy.connector.openweather.util.DateTimeFormatterUtilities;
 
+import ch.ivyteam.ivy.jsf.primefaces.theme.IvyFreyaTheme;
+
 @ManagedBean
 @ViewScoped
 public class ForecastWeatherBean implements Serializable {
@@ -76,14 +78,23 @@ public class ForecastWeatherBean implements Serializable {
 	private int currentChartWindowStartX;
 	private int currentChartWindowEndX;
 
+	private IvyFreyaTheme ivyFreyaThemeBean;
+
 	@PostConstruct
 	public void init() {
+		initRelatedBeans();
 		searchCityName = Constants.DEFAULT_SEARCH_CITY_NAME;
 		units = Constants.DEFAULT_UNITS;
 		typeOfDegree = Constants.DEFAULT_TYPE_OF_DEGREE;
 		speedUnit = Constants.DEFAULT_SPEED_UNIT;
 		chartWindowSize = Constants.DEFAULT_CHART_WINDOW_SIZE;
 		search();
+	}
+
+	private void initRelatedBeans() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		ivyFreyaThemeBean = context.getApplication().evaluateExpressionGet(context, "#{ivyFreyaTheme}",
+				IvyFreyaTheme.class);
 	}
 
 	public LocalDate getSelectedDate() {

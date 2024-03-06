@@ -25,6 +25,36 @@ const ClickPositionDetector = {
 	}
 };
 
+document.getElementById('form:weather-chart-panel:temp-chart').addEventListener('click', function() {
+	console.log("abc");
+	var tempChart = PF('tempChartWidgetVar').chart;
+	tempChart.options.scales.x.ticks.color = '#EAEBEC';
+	tempChart.data.datasets[0].backgroundColor = '#EAEBEC';
+	tempChart.data.datasets[0].borderColor = 'red';
+	tempChart.options.plugins.datalabels.color = '#EAEBEC';
+	tempChart.update();
+});
+
+// Define a function to handle DOM changes
+function handleDOMChange(mutationsList) {
+	for (const mutation of mutationsList) {
+		if (mutation.type === 'childList') {
+			const element = mutation.target;
+			const currentColor = window.getComputedStyle(element).color;
+			console.log("Text content changed, current color:", currentColor);
+		}
+	}
+}
+	
+// Create a new MutationObserver instance
+const observer = new MutationObserver(handleDOMChange);
+
+// Select the element to observe
+const targetElement = document.getElementById("form:city-name-panel");
+
+// Start observing the element for changes
+observer.observe(targetElement, { childList: true });
+
 function temperatureChartExtender() {
 	//Register plugin datalabels
 	jQuery.extend(true, this.cfg.config, {plugins: [ChartDataLabels, ClickPositionDetector]});
@@ -136,7 +166,6 @@ function precipitationChartExtender() {
 function panChartByCurrentValue() {
 	var currentChartWindowStartX = parseInt(document.getElementById('form:currentChartWindowStartX').value);
 	var currentChartWindowEndX = parseInt(document.getElementById('form:currentChartWindowEndX').value);
-	console.log(typeof(currentChartWindowEndX));
 	
 	panChart(currentChartWindowStartX, currentChartWindowEndX);
 }
@@ -174,7 +203,7 @@ function updateChartWithNewData() {
 	
 	var tempChart = PF('tempChartWidgetVar').chart;
 	var temperatureData = tempChart.data.datasets[0].data;
-
+	
 	data = temperatureData.map(function(value, index) {
 		
 		if (index < newTemperatureData.length) {
