@@ -25,16 +25,6 @@ const ClickPositionDetector = {
 	}
 };
 
-document.getElementById('form:weather-chart-panel:temp-chart').addEventListener('click', function() {
-	console.log("abc");
-	var tempChart = PF('tempChartWidgetVar').chart;
-	tempChart.options.scales.x.ticks.color = '#EAEBEC';
-	tempChart.data.datasets[0].backgroundColor = '#EAEBEC';
-	tempChart.data.datasets[0].borderColor = 'red';
-	tempChart.options.plugins.datalabels.color = '#EAEBEC';
-	tempChart.update();
-});
-
 function temperatureChartExtender() {
 	//Register plugin datalabels
 	jQuery.extend(true, this.cfg.config, {plugins: [ChartDataLabels, ClickPositionDetector]});
