@@ -1,4 +1,4 @@
 Variables:
-  openWeatherConnector:
-    # Your UPS Application Client ID
-    appId: ''
+  openWeatherConnectorDemo:
+    # Default city for searching weather
+    defaultSearchedCity: 'New York'

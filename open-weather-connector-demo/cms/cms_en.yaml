@@ -18,3 +18,9 @@ Dialogs:
                 TemperatureLabel: Temperature
                 Title: ForecastWeatherDemo
                 WindSpeedLabel: Wind speed
+Processes:
+  ForecastWeatherDemo:
+    Tasks:
+      DisplayForecastWeather:
+        name: Display forecast weather
+    name: Get forecast weather

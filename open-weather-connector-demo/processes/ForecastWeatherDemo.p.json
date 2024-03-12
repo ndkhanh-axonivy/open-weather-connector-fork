@@ -10,7 +10,11 @@
       "name" : "start.ivp",
       "config" : {
         "callSignature" : "start",
+        "case" : {
+          "name" : "<%=ivy.cms.co(\"/Processes/ForecastWeatherDemo/Tasks/DisplayForecastWeather/name\")%>"
+        },
         "outLink" : "start.ivp",
+        "startName" : "<%=ivy.cms.co(\"/Processes/ForecastWeatherDemo/name\")%>",
         "tags" : "demo"
       },
       "visual" : {

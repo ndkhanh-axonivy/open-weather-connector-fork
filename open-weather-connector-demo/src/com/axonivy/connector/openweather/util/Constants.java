@@ -22,7 +22,6 @@ public class Constants {
 	public static final DateTimeFormatter SHORT_DATE_FORMATTER = DateTimeFormatter.ofPattern("EEE");
 	public static final DateTimeFormatter TIME_24_HOUR_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
-	public static final String DEFAULT_SEARCH_CITY_NAME = "New York";
 	public static final String DEFAULT_UNITS = METRIC_UNITS;
 	public static final String DEFAULT_TYPE_OF_DEGREE = CELSIUS_TYPE_OF_DEGREE;
 	public static final String DEFAULT_SPEED_UNIT = SPEED_METER_UNIT;
@@ -35,6 +34,13 @@ public class Constants {
 	public static final String STATE_CODE_PARAM_NAME = "stateCode";
 	public static final String UNITS_PARAM_NAME = "units";
 	public static final String FORECAST_WEATHER_RESULT_NAME = "forecastWeather";
+	public static final String TEMPERATURE_CHART_EXTENDER_JS_METHOD_NAME = "temperatureChartExtender";
+	public static final String PRECIPITATION_CHART_EXTENDER_JS_METHOD_NAME = "precipitationChartExtender";
+	public static final String TEMPERATURE_DATASET_LABEL = "temperature";
+	public static final String PRECIPITATION_DATASET_LABEL = "precipitation";
+	public static final Character NOTATION_DAY = 'd';
+	public static final Character NOTATION_NIGHT = 'n';
+	public static final String DEFAULT_SEARCHED_CITY_VARIABLE_PATH = "openWeatherConnectorDemo_defaultSearchedCity";
 
 	private Constants() {
 	}

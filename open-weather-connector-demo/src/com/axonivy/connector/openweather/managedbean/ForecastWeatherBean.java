@@ -37,6 +37,8 @@ import com.axonivy.connector.openweather.service.ForecastService;
 import com.axonivy.connector.openweather.util.Constants;
 import com.axonivy.connector.openweather.util.DateTimeFormatterUtilities;
 
+import ch.ivyteam.ivy.environment.Ivy;
+
 @ManagedBean
 @ViewScoped
 public class ForecastWeatherBean implements Serializable {
@@ -78,7 +80,7 @@ public class ForecastWeatherBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		searchCityName = Constants.DEFAULT_SEARCH_CITY_NAME;
+		searchCityName = Ivy.var().get(Constants.DEFAULT_SEARCHED_CITY_VARIABLE_PATH);
 		units = Constants.DEFAULT_UNITS;
 		typeOfDegree = Constants.DEFAULT_TYPE_OF_DEGREE;
 		speedUnit = Constants.DEFAULT_SPEED_UNIT;
@@ -321,7 +323,7 @@ public class ForecastWeatherBean implements Serializable {
 			record.getWeather().forEach(weather -> {
 				String icon = weather.getIcon();
 				if (icon != null) {
-					icon = icon.replace('n', 'd');
+					icon = icon.replace(Constants.NOTATION_NIGHT, Constants.NOTATION_DAY);
 					weather.setIcon(icon);
 				}
 			});
@@ -368,13 +370,13 @@ public class ForecastWeatherBean implements Serializable {
 		LineChartOptions options = new LineChartOptions();
 		temperatureModel.setOptions(options);
 		temperatureModel.setData(prepareTemperatureChartData());
-		temperatureModel.setExtender("temperatureChartExtender");
+		temperatureModel.setExtender(Constants.TEMPERATURE_CHART_EXTENDER_JS_METHOD_NAME);
 	}
 
 	public ChartData prepareTemperatureChartData() {
 		ChartData data = new ChartData();
 		LineChartDataSet dataSet = new LineChartDataSet();
-		dataSet.setLabel("Temperature");
+		dataSet.setLabel(Constants.TEMPERATURE_DATASET_LABEL);
 		dataSet.setFill(false);
 		dataSet.setTension(0.4);
 		dataSet.setData(prepareTemperatureData());
@@ -402,13 +404,13 @@ public class ForecastWeatherBean implements Serializable {
 		BarChartOptions options = new BarChartOptions();
 		precipitationModel.setOptions(options);
 		precipitationModel.setData(preparePrecipitationChartData());
-		precipitationModel.setExtender("precipitationChartExtender");
+		precipitationModel.setExtender(Constants.PRECIPITATION_CHART_EXTENDER_JS_METHOD_NAME);
 	}
 
 	public ChartData preparePrecipitationChartData() {
 		ChartData data = new ChartData();
 		BarChartDataSet dataSet = new BarChartDataSet();
-		dataSet.setLabel("Precipitation");
+		dataSet.setLabel(Constants.PRECIPITATION_DATASET_LABEL);
 		dataSet.setData(preparePrecipitationData());
 		data.setLabels(prepareTimeLabels());
 		data.addChartDataSet(dataSet);
