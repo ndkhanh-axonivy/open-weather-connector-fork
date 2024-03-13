@@ -41,7 +41,8 @@ public class Constants {
 	public static final Character NOTATION_DAY = 'd';
 	public static final Character NOTATION_NIGHT = 'n';
 	public static final String DEFAULT_SEARCHED_CITY_VARIABLE_PATH = "openWeatherConnectorDemo_defaultSearchedCity";
-
+	public static final String SELECTED_TIME_INDEX_JS_VARIABLE_NAME = "selectedTimeIndex";
+	
 	private Constants() {
 	}
 }

@@ -8,10 +8,7 @@
   "elements" : [ {
       "id" : "f0",
       "type" : "CallSubStart",
-      "name" : [
-        "getCurrentAirPollution",
-        "(Double,Double)"
-      ],
+      "name" : "getCurrentAirPollution(Double,Double)",
       "config" : {
         "callSignature" : "getCurrentAirPollution",
         "input" : {
@@ -38,7 +35,7 @@
       },
       "visual" : {
         "at" : { "x" : 64, "y" : 64 },
-        "labelOffset" : { "x" : 17, "y" : 33 }
+        "labelOffset" : { "x" : 57, "y" : 33 }
       },
       "connect" : { "id" : "f4", "to" : "f3" }
     }, {
@@ -89,10 +86,7 @@
     }, {
       "id" : "f7",
       "type" : "CallSubStart",
-      "name" : [
-        "getForecastAirPollution",
-        "(Double,Double)"
-      ],
+      "name" : "getForecastAirPollution(Double,Double)",
       "config" : {
         "callSignature" : "getForecastAirPollution",
         "input" : {
@@ -119,7 +113,7 @@
       },
       "visual" : {
         "at" : { "x" : 64, "y" : 384 },
-        "labelOffset" : { "x" : 17, "y" : 33 }
+        "labelOffset" : { "x" : 57, "y" : 33 }
       },
       "connect" : { "id" : "f12", "to" : "f9" }
     }, {
@@ -170,10 +164,7 @@
     }, {
       "id" : "f14",
       "type" : "CallSubStart",
-      "name" : [
-        "getHistoricalAirPollution",
-        "(Double,Double,OffsetDateTime,OffsetDateTime)"
-      ],
+      "name" : "getHistoricalAirPollution(Double,Double,OffsetDateTime,OffsetDateTime)",
       "config" : {
         "callSignature" : "getHistoricalAirPollution",
         "input" : {
@@ -213,7 +204,7 @@
       },
       "visual" : {
         "at" : { "x" : 64, "y" : 704 },
-        "labelOffset" : { "x" : 25, "y" : 33 }
+        "labelOffset" : { "x" : -31, "y" : 33 }
       },
       "connect" : { "id" : "f19", "to" : "f16" }
     }, {
@@ -266,10 +257,7 @@
     }, {
       "id" : "f21",
       "type" : "CallSubStart",
-      "name" : [
-        "getCurrentAirPollutionByLocationName",
-        "(String,Double,String,String,String)"
-      ],
+      "name" : "getCurrentAirPollutionByLocationName(String,Double,String,String,String)",
       "config" : {
         "callSignature" : "getCurrentAirPollutionByLocationName",
         "input" : {
@@ -298,16 +286,13 @@
       },
       "visual" : {
         "at" : { "x" : 64, "y" : 160 },
-        "labelOffset" : { "x" : 17, "y" : 33 }
+        "labelOffset" : { "x" : -39, "y" : 33 }
       },
       "connect" : { "id" : "f38", "to" : "f23" }
     }, {
       "id" : "f22",
       "type" : "CallSubStart",
-      "name" : [
-        "getCurrentAirPollutionByZipCode",
-        "(String,Double,String,String,String)"
-      ],
+      "name" : "getCurrentAirPollutionByZipCode(String,Double,String,String,String)",
       "config" : {
         "callSignature" : "getCurrentAirPollutionByZipCode",
         "input" : {
@@ -334,7 +319,7 @@
       },
       "visual" : {
         "at" : { "x" : 64, "y" : 272 },
-        "labelOffset" : { "x" : 25, "y" : 33 }
+        "labelOffset" : { "x" : -23, "y" : 33 }
       },
       "connect" : { "id" : "f33", "to" : "f25" }
     }, {
@@ -427,10 +412,7 @@
     }, {
       "id" : "f39",
       "type" : "CallSubStart",
-      "name" : [
-        "getForecastAirPollutionByLocationName",
-        "(String,Double,String,String,String)"
-      ],
+      "name" : "getForecastAirPollutionByLocationName(String,Double,String,String,String)",
       "config" : {
         "callSignature" : "getForecastAirPollutionByLocationName",
         "input" : {
@@ -459,16 +441,13 @@
       },
       "visual" : {
         "at" : { "x" : 64, "y" : 480 },
-        "labelOffset" : { "x" : 25, "y" : 33 }
+        "labelOffset" : { "x" : -39, "y" : 33 }
       },
       "connect" : { "id" : "f48", "to" : "f41" }
     }, {
       "id" : "f40",
       "type" : "CallSubStart",
-      "name" : [
-        "getForecastAirPollutionByZipCode",
-        "(String,Double,String,String,String)"
-      ],
+      "name" : "getForecastAirPollutionByZipCode(String,Double,String,String,String)",
       "config" : {
         "callSignature" : "getForecastAirPollutionByZipCode",
         "input" : {
@@ -495,7 +474,7 @@
       },
       "visual" : {
         "at" : { "x" : 64, "y" : 592 },
-        "labelOffset" : { "x" : 25, "y" : 33 }
+        "labelOffset" : { "x" : -23, "y" : 33 }
       },
       "connect" : { "id" : "f49", "to" : "f43" }
     }, {
@@ -588,10 +567,7 @@
     }, {
       "id" : "f57",
       "type" : "CallSubStart",
-      "name" : [
-        "getHistoricalAirPollutionByLocationName",
-        "(String,Double,String,String,String)"
-      ],
+      "name" : "getHistoricalAirPollutionByLocationName(String,Double,String,String,String)",
       "config" : {
         "callSignature" : "getHistoricalAirPollutionByLocationName",
         "input" : {
@@ -633,16 +609,13 @@
       },
       "visual" : {
         "at" : { "x" : 64, "y" : 800 },
-        "labelOffset" : { "x" : 17, "y" : 33 }
+        "labelOffset" : { "x" : -39, "y" : 33 }
       },
       "connect" : { "id" : "f66", "to" : "f59" }
     }, {
       "id" : "f58",
       "type" : "CallSubStart",
-      "name" : [
-        "getHistoricalAirPollutionByZipCode",
-        "(String,Double,String,String,String)"
-      ],
+      "name" : "getHistoricalAirPollutionByZipCode(String,Double,String,String,String)",
       "config" : {
         "callSignature" : "getHistoricalAirPollutionByZipCode",
         "input" : {
@@ -682,7 +655,7 @@
       },
       "visual" : {
         "at" : { "x" : 64, "y" : 904 },
-        "labelOffset" : { "x" : 25, "y" : 33 }
+        "labelOffset" : { "x" : -23, "y" : 33 }
       },
       "connect" : { "id" : "f72", "to" : "f61" }
     }, {

@@ -8,10 +8,7 @@
   "elements" : [ {
       "id" : "f0",
       "type" : "CallSubStart",
-      "name" : [
-        "getCurrentWeather",
-        "(Double,Double,String,String)"
-      ],
+      "name" : "getCurrentWeather(Double,Double,String,String)",
       "config" : {
         "callSignature" : "getCurrentWeather",
         "input" : {
@@ -43,7 +40,7 @@
       },
       "visual" : {
         "at" : { "x" : 176, "y" : 32 },
-        "labelOffset" : { "x" : 25, "y" : 33 }
+        "labelOffset" : { "x" : 1, "y" : 33 }
       },
       "connect" : { "id" : "f4", "to" : "f3" }
     }, {
@@ -97,10 +94,7 @@
     }, {
       "id" : "f7",
       "type" : "CallSubStart",
-      "name" : [
-        "getCurrentWeatherByLocationName",
-        "(String,Double,String,String,String)"
-      ],
+      "name" : "getCurrentWeatherByLocationName(String,Double,String,String,String)",
       "config" : {
         "callSignature" : "getCurrentWeatherByLocation",
         "input" : {
@@ -132,7 +126,7 @@
       },
       "visual" : {
         "at" : { "x" : 176, "y" : 128 },
-        "labelOffset" : { "x" : 9, "y" : 33 }
+        "labelOffset" : { "x" : -55, "y" : 33 }
       },
       "connect" : { "id" : "f9", "to" : "f8" }
     }, {
@@ -172,10 +166,7 @@
     }, {
       "id" : "f11",
       "type" : "CallSubStart",
-      "name" : [
-        "getCurrentWeatherByZipCode",
-        "(String,Double,String,String,String)"
-      ],
+      "name" : "getCurrentWeatherByZipCode(String,Double,String,String,String)",
       "config" : {
         "callSignature" : "call",
         "input" : {
@@ -206,7 +197,7 @@
       },
       "visual" : {
         "at" : { "x" : 176, "y" : 240 },
-        "labelOffset" : { "x" : 9, "y" : 33 }
+        "labelOffset" : { "x" : -39, "y" : 33 }
       },
       "connect" : { "id" : "f13", "to" : "f12" }
     }, {

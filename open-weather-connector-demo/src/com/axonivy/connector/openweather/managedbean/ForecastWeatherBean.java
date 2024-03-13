@@ -103,7 +103,7 @@ public class ForecastWeatherBean implements Serializable {
 
 	public void setSelectedTimeIndexFromUI() {
 		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-		setSelectedTimeIndex(Integer.parseInt(params.get("selectedTimeIndex")));
+		setSelectedTimeIndex(Integer.parseInt(params.get(Constants.SELECTED_TIME_INDEX_JS_VARIABLE_NAME)));
 	}
 
 	public int getSelectedTimeIndex() {
