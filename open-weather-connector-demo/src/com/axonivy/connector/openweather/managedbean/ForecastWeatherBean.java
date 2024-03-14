@@ -81,7 +81,7 @@ public class ForecastWeatherBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		searchCityName = Ivy.var().get(Constants.Default.SEARCHED_CITY_VARIABLE_PATH);
-		units = Ivy.var().get(Constants.Default.SEARCHED_CITY_VARIABLE_PATH);
+		units = Ivy.var().get(Constants.Default.UNITS_VARIABLE_PATH);
 		typeOfDegree = Constants.Default.TYPE_OF_DEGREE;
 		speedUnit = Constants.Default.SPEED_UNIT;
 		chartWindowSize = Constants.Default.CHART_WINDOW_SIZE;
