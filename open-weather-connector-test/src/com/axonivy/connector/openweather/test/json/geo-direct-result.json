@@ -1,0 +1,39 @@
+[
+	{
+		"name": "New York County",
+		"local_names": {
+			"uk": "Нью-Йорк",
+			"es": "Nueva York",
+			"pl": "Nowy Jork",
+			"ko": "뉴욕",
+			"cy": "Efrog Newydd",
+			"pt": "Nova Iorque",
+			"cs": "New York",
+			"is": "Nýja Jórvík",
+			"el": "Νέα Υόρκη",
+			"kn": "ನ್ಯೂಯೊರ್ಕ್",
+			"te": "న్యూయొర్క్",
+			"vi": "New York",
+			"hi": "न्यूयॊर्क्",
+			"gl": "Nova York",
+			"he": "ניו יורק",
+			"eo": "Novjorko",
+			"ja": "ニューヨーク",
+			"ar": "نيويورك",
+			"it": "New York",
+			"ru": "Нью-Йорк",
+			"de": "New York",
+			"fr": "New York",
+			"oc": "Nòva York",
+			"zh": "纽约/紐約",
+			"en": "New York",
+			"be": "Нью-Ёрк",
+			"fa": "نیویورک",
+			"ca": "Nova York"
+		},
+		"lat": 40.7127281,
+		"lon": -74.0060152,
+		"country": "US",
+		"state": "New York"
+	}
+]

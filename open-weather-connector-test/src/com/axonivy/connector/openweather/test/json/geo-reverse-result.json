@@ -1,0 +1,39 @@
+[
+	{
+		"name": "New York County",
+		"local_names": {
+			"ca": "Nova York",
+			"is": "Nýja Jórvík",
+			"en": "New York",
+			"ko": "뉴욕",
+			"he": "ניו יורק",
+			"es": "Nueva York",
+			"cy": "Efrog Newydd",
+			"kn": "ನ್ಯೂಯೊರ್ಕ್",
+			"cs": "New York",
+			"fr": "New York",
+			"pt": "Nova Iorque",
+			"vi": "New York",
+			"zh": "纽约/紐約",
+			"it": "New York",
+			"uk": "Нью-Йорк",
+			"fa": "نیویورک",
+			"be": "Нью-Ёрк",
+			"ru": "Нью-Йорк",
+			"hi": "न्यूयॊर्क्",
+			"te": "న్యూయొర్క్",
+			"ar": "نيويورك",
+			"ja": "ニューヨーク",
+			"gl": "Nova York",
+			"pl": "Nowy Jork",
+			"oc": "Nòva York",
+			"eo": "Novjorko",
+			"el": "Νέα Υόρκη",
+			"de": "New York"
+		},
+		"lat": 40.7127281,
+		"lon": -74.0060152,
+		"country": "US",
+		"state": "New York"
+	}
+]

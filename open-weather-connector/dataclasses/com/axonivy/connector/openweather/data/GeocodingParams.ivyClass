@@ -1,0 +1,11 @@
+GeocodingParams #class
+com.axonivy.connector.openweather.data #namespace
+cityName String #field
+limit Integer #field
+lat Double #field
+lon Double #field
+countryCode String #field
+stateCode String #field
+zipCode String #field
+q String #field
+zip String #field

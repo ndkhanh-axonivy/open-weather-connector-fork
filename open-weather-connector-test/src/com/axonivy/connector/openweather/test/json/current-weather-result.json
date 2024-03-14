@@ -1,0 +1,44 @@
+{
+	"coord": {
+		"lon": -73.9967,
+		"lat": 40.7484
+	},
+	"weather": [
+		{
+			"id": 804,
+			"main": "Clouds",
+			"description": "overcast clouds",
+			"icon": "04d"
+		}
+	],
+	"base": "stations",
+	"main": {
+		"temp": 283.38,
+		"feels_like": 282.5,
+		"temp_min": 281.16,
+		"temp_max": 285.07,
+		"pressure": 1030,
+		"humidity": 78
+	},
+	"visibility": 10000,
+	"wind": {
+		"speed": 5.36,
+		"deg": 53,
+		"gust": 5.81
+	},
+	"clouds": {
+		"all": 100
+	},
+	"dt": 1709560480,
+	"sys": {
+		"type": 2,
+		"id": 2008101,
+		"country": "US",
+		"sunrise": 1709551486,
+		"sunset": 1709592643
+	},
+	"timezone": -18000,
+	"id": 5099133,
+	"name": "Hoboken",
+	"cod": 200
+}

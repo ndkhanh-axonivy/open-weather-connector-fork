@@ -1,0 +1,132 @@
+.forecast-weather-panel {
+	min-width: 1000px;
+}
+
+.weather-detail-container-light-mode {
+	background-image: url("#{resource['images/background/white.jpg']}");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-clip: content-box;
+	background-size: cover;
+}
+
+.weather-detail-container-dark-mode {
+	background-image: url("#{resource['images/background/orange.jpg']}");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-clip: content-box;
+	background-size: cover;
+}
+
+.weather-condition-img-container {
+	height: 160px
+}
+
+.w-max {
+	width: max-content
+}
+
+.w-auto {
+	width: auto
+}
+
+.weather-degree-container {
+	display: flex;
+	width: 100%;
+}
+
+.weather-degree-left, .weather-degree-right {
+	flex: 1;
+	margin-top: 8px;
+	font-size: 1.5rem;
+	text-align: left;
+	padding-left: 8px;
+}
+
+.weather-degree-middle {
+	height: 5rem;
+	font-size: 4rem;
+}
+
+.weather-date-container {
+	height: 2rem;
+}
+
+.weather-other-detail-container {
+	height: 5rem
+}
+
+.weather-tab-view .ui-tabs-panel {
+	height: 200px;
+	overflow-y: auto;
+}
+
+.weather-date-btn-container {
+	display: flex;
+	justify-content: space-around;
+	text-align: center;
+	height: 180px;
+}
+
+.weather-date-btn-label {
+	font-size: 1.5rem;
+	font-weight: bold;
+}
+
+.weather-date-btn-max-degree {
+	margin-right: 5px;
+	font-weight: bold;
+}
+
+.weather-humidity-detail {
+	font-weight: bold;
+}
+
+.weather-windspeed-detail {
+	font-weight: bold;
+}
+
+.weather-chart-btn-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100%;
+}
+
+.weather-temperature-chart {
+	cursor: pointer;
+	width: 100%;
+}
+
+.weather-date-btn {
+	cursor: pointer;
+	padding: 10px;
+	border-radius: 10px;
+	color: inherit;
+}
+
+.weather-date-selected-light-mode {
+	background-color: #f8f9fa;
+}
+
+.weather-date-selected-dark-mode {
+	background-color: #4c505a;
+}
+
+.weather-chart {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+
+.type-of-degree {
+	color: inherit;
+}
+
+.type-of-degree-selected {
+	font-weight: bold;
+}
