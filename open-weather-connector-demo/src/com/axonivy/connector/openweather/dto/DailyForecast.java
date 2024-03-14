@@ -25,21 +25,21 @@ public class DailyForecast {
 		this.dailyRecords = dailyRecords;
 
 		this.temperature = dailyRecords.stream().map(record -> record.getMain().getTemp()).filter(Objects::nonNull)
-				.mapToInt(Float::intValue).max().orElse(Constants.DEFAULT_WEATHER_TEMPERATURE_DEGREE);
+				.mapToInt(Float::intValue).max().orElse(Constants.Default.WEATHER_TEMPERATURE_DEGREE);
 
 		this.maxTemperature = dailyRecords.stream().map(record -> record.getMain().getTempMax())
 				.filter(Objects::nonNull).mapToInt(Float::intValue).max()
-				.orElse(Constants.DEFAULT_WEATHER_TEMPERATURE_DEGREE);
+				.orElse(Constants.Default.WEATHER_TEMPERATURE_DEGREE);
 
 		this.minTemperature = dailyRecords.stream().map(record -> record.getMain().getTempMin())
 				.filter(Objects::nonNull).mapToInt(Float::intValue).min()
-				.orElse(Constants.DEFAULT_WEATHER_TEMPERATURE_DEGREE);
+				.orElse(Constants.Default.WEATHER_TEMPERATURE_DEGREE);
 
 		this.humidity = dailyRecords.stream().map(record -> record.getMain().getHumidity()).max(Integer::compareTo)
-				.orElse(Constants.DEFAULT_WEATHER_HUMIDITY);
+				.orElse(Constants.Default.WEATHER_HUMIDITY);
 
 		this.windSpeed = dailyRecords.stream().map(record -> record.getWind().getSpeed()).max(Float::compareTo)
-				.orElse(Constants.DEFAULT_WEATHER_WIND_SPEED);
+				.orElse(Constants.Default.WEATHER_WIND_SPEED);
 
 		WeatherRecord maxPriorityRecord = dailyRecords.stream()
 				.max(Comparator.comparingInt(record -> getWeatherPriority(record.getWeather().get(0).getId())))
@@ -49,8 +49,8 @@ public class DailyForecast {
 			this.weatherIcon = maxPriorityRecord.getWeather().get(0).getIcon();
 			this.weatherDescription = maxPriorityRecord.getWeather().get(0).getDescription();
 		} else {
-			this.weatherIcon = Constants.DEFAULT_WEATHER_CONDITION_ICON;
-			this.weatherDescription = Constants.DEFAULT_WEATHER_CONDITION_DESCRIPTION;
+			this.weatherIcon = Constants.Default.WEATHER_CONDITION_ICON;
+			this.weatherDescription = Constants.Default.WEATHER_CONDITION_DESCRIPTION;
 		}
 	}
 

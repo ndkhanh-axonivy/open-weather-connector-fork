@@ -80,11 +80,11 @@ public class ForecastWeatherBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		searchCityName = Ivy.var().get(Constants.DEFAULT_SEARCHED_CITY_VARIABLE_PATH);
-		units = Constants.DEFAULT_UNITS;
-		typeOfDegree = Constants.DEFAULT_TYPE_OF_DEGREE;
-		speedUnit = Constants.DEFAULT_SPEED_UNIT;
-		chartWindowSize = Constants.DEFAULT_CHART_WINDOW_SIZE;
+		searchCityName = Ivy.var().get(Constants.Default.SEARCHED_CITY_VARIABLE_PATH);
+		units = Ivy.var().get(Constants.Default.SEARCHED_CITY_VARIABLE_PATH);
+		typeOfDegree = Constants.Default.TYPE_OF_DEGREE;
+		speedUnit = Constants.Default.SPEED_UNIT;
+		chartWindowSize = Constants.Default.CHART_WINDOW_SIZE;
 		search();
 	}
 
@@ -103,7 +103,7 @@ public class ForecastWeatherBean implements Serializable {
 
 	public void setSelectedTimeIndexFromUI() {
 		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-		setSelectedTimeIndex(Integer.parseInt(params.get(Constants.SELECTED_TIME_INDEX_JS_VARIABLE_NAME)));
+		setSelectedTimeIndex(Integer.parseInt(params.get(Constants.UiVariable.SELECTED_TIME_INDEX_JS_VARIABLE_NAME)));
 	}
 
 	public int getSelectedTimeIndex() {
@@ -171,12 +171,12 @@ public class ForecastWeatherBean implements Serializable {
 	public void setTypeOfDegree(String typeOfDegree) {
 		if (!Objects.equals(this.typeOfDegree, typeOfDegree)) {
 			this.typeOfDegree = typeOfDegree;
-			if (typeOfDegree.equals(Constants.CELSIUS_TYPE_OF_DEGREE)) {
-				speedUnit = Constants.SPEED_METER_UNIT;
-				units = Constants.METRIC_UNITS;
-			} else if (typeOfDegree.equals(Constants.FAHRENHEIT_TYPE_OF_DEGREE)) {
-				speedUnit = Constants.SPEED_MILE_UNIT;
-				units = Constants.IMPERIAL_UNITS;
+			if (typeOfDegree.equals(Constants.OpenWeatherMapVariable.CELSIUS_TYPE_OF_DEGREE)) {
+				speedUnit = Constants.UiDisplay.SPEED_METER_UNIT;
+				units = Constants.OpenWeatherMapVariable.METRIC_UNITS;
+			} else if (typeOfDegree.equals(Constants.OpenWeatherMapVariable.FAHRENHEIT_TYPE_OF_DEGREE)) {
+				speedUnit = Constants.UiDisplay.SPEED_MILE_UNIT;
+				units = Constants.OpenWeatherMapVariable.IMPERIAL_UNITS;
 			} else {
 				typeOfDegree = StringUtils.EMPTY;
 				speedUnit = StringUtils.EMPTY;
@@ -323,7 +323,7 @@ public class ForecastWeatherBean implements Serializable {
 			record.getWeather().forEach(weather -> {
 				String icon = weather.getIcon();
 				if (icon != null) {
-					icon = icon.replace(Constants.NOTATION_NIGHT, Constants.NOTATION_DAY);
+					icon = icon.replace(Constants.OpenWeatherMapVariable.NOTATION_NIGHT, Constants.OpenWeatherMapVariable.NOTATION_DAY);
 					weather.setIcon(icon);
 				}
 			});
@@ -370,13 +370,13 @@ public class ForecastWeatherBean implements Serializable {
 		LineChartOptions options = new LineChartOptions();
 		temperatureModel.setOptions(options);
 		temperatureModel.setData(prepareTemperatureChartData());
-		temperatureModel.setExtender(Constants.TEMPERATURE_CHART_EXTENDER_JS_METHOD_NAME);
+		temperatureModel.setExtender(Constants.UiVariable.TEMPERATURE_CHART_EXTENDER_JS_METHOD_NAME);
 	}
 
 	public ChartData prepareTemperatureChartData() {
 		ChartData data = new ChartData();
 		LineChartDataSet dataSet = new LineChartDataSet();
-		dataSet.setLabel(Constants.TEMPERATURE_DATASET_LABEL);
+		dataSet.setLabel(Constants.Chart.TEMPERATURE_DATASET_LABEL);
 		dataSet.setFill(false);
 		dataSet.setTension(0.4);
 		dataSet.setData(prepareTemperatureData());
@@ -404,13 +404,13 @@ public class ForecastWeatherBean implements Serializable {
 		BarChartOptions options = new BarChartOptions();
 		precipitationModel.setOptions(options);
 		precipitationModel.setData(preparePrecipitationChartData());
-		precipitationModel.setExtender(Constants.PRECIPITATION_CHART_EXTENDER_JS_METHOD_NAME);
+		precipitationModel.setExtender(Constants.UiVariable.PRECIPITATION_CHART_EXTENDER_JS_METHOD_NAME);
 	}
 
 	public ChartData preparePrecipitationChartData() {
 		ChartData data = new ChartData();
 		BarChartDataSet dataSet = new BarChartDataSet();
-		dataSet.setLabel(Constants.PRECIPITATION_DATASET_LABEL);
+		dataSet.setLabel(Constants.Chart.PRECIPITATION_DATASET_LABEL);
 		dataSet.setData(preparePrecipitationData());
 		data.setLabels(prepareTimeLabels());
 		data.addChartDataSet(dataSet);

@@ -2,3 +2,6 @@ Variables:
   openWeatherConnectorDemo:
     # Default city for searching weather
     defaultSearchedCity: 'New York'
+    
+    # Default units for searching weather
+    defaultUnits: 'metric'
