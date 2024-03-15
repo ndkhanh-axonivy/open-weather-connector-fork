@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import ch.ivyteam.ivy.bpm.exec.client.IvyProcessTest;
 import ch.ivyteam.ivy.environment.AppFixture;
 
-@IvyProcessTest
+@IvyProcessTest(enableWebServer = true)
 public class BaseProcessTest {
 
 	@BeforeEach
@@ -15,7 +15,7 @@ public class BaseProcessTest {
 				"ch.ivyteam.ivy.rest.client.mapper.JsonFeature");
 		fixture.config("RestClients.GeocodingCoordinates (Openweathermap geocoding API).Features",
 				"ch.ivyteam.ivy.rest.client.mapper.JsonFeature");
-		fixture.var("openWeatherConnector.weatherDataUrl", "http://localhost:8081/designer/api/weatherDataMock");
-		fixture.var("openWeatherConnector.weatherGeoUrl", "http://localhost:8081/designer/api/weatherGeoMock");
+		fixture.var("openWeatherConnector.weatherDataUrl", "{ivy.app.baseurl}/api/weatherDataMock");
+		fixture.var("openWeatherConnector.weatherGeoUrl", "{ivy.app.baseurl}/api/weatherGeoMock");
 	}
 }
