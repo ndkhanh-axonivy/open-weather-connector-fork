@@ -1,0 +1,23 @@
+RestClients:
+  WeatherData (Openweathermap weather API):
+    UUID: c7415148-b288-475b-8d2f-e532ddae4472
+    Url: ${ivy.var.openWeatherConnector.weatherDataUrl}
+    Features:
+    - ch.ivyteam.ivy.rest.client.mapper.JsonFeature
+    - com.axonivy.connector.openweather.auth.OpenWeatherAuthFeature
+    Properties:
+      AUTH.appId: ${ivy.var.openWeatherConnector.appId}
+    OpenAPI:
+      SpecUrl: file:///D:/Octopus/OpenApi/openweathermap-data-openapi.yaml
+      Namespace: org.openweathermap.api.data2_5.client
+  GeocodingCoordinates (Openweathermap geocoding API):
+    UUID: 550bf66e-4811-47e6-b1ca-1942196a3487
+    Url: ${ivy.var.openWeatherConnector.weatherGeoUrl}
+    Features:
+    - ch.ivyteam.ivy.rest.client.mapper.JsonFeature
+    - com.axonivy.connector.openweather.auth.OpenWeatherAuthFeature
+    Properties:
+      AUTH.appId: ${ivy.var.openWeatherConnector.appId}
+    OpenAPI:
+      SpecUrl: file:///D:/Octopus/OpenApi/openweathermap-geocoding-openapi.yaml
+      Namespace: org.openweathermap.api.geo1_0.client

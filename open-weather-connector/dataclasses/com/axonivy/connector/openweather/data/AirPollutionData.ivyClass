@@ -1,0 +1,5 @@
+AirPollutionData #class
+com.axonivy.connector.openweather.data #namespace
+result org.openweathermap.api.data2_5.client.AirPollution #field
+param com.axonivy.connector.openweather.data.AirPollutionParams #field
+error ch.ivyteam.ivy.bpm.error.BpmError #field

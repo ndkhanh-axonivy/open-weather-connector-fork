@@ -1,0 +1,178 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:ic="http://ivyteam.ch/jsf/component"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:body>
+	<ui:composition template="/layouts/frame-10.xhtml">
+		<ui:define name="title">#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/Title')}</ui:define>
+		<ui:define name="content">
+			<h:outputStylesheet name="layouts/styles/forecastweather.css" />
+			<p:outputPanel styleClass="forecast-weather-panel">
+				<h1>#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/Header')}</h1>
+
+				<p:spacer height="20" />
+
+				<h:form id="form">
+					<p:remoteCommand name="updateByTimeIndex"
+						update="forecast-panel forecast-btn-panel"
+						action="#{forecastWeatherBean.setSelectedTimeIndexFromUI}" />
+					<p:outputPanel id="property-panel">
+						<h:inputHidden id="tempModelData"
+							value="#{forecastWeatherBean.temperatureData}" />
+						<h:inputHidden id="currentChartWindowStartX"
+							value="#{forecastWeatherBean.currentChartWindowStartX}" />
+						<h:inputHidden id="currentChartWindowEndX"
+							value="#{forecastWeatherBean.currentChartWindowEndX}" />
+					</p:outputPanel>
+					<p:panelGrid columns="4" layout="grid" styleClass="ui-fluid"
+						columnClasses="ui-g-4 p-pl-0, ui-g-3, ui-g-3, ui-g-2 p-pr-0">
+
+						<h:panelGroup styleClass="ui-float-label">
+							<p:inputText value="#{forecastWeatherBean.searchCityName}" />
+							<p:outputLabel for="@previous"
+								value="#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/CityNameLabel')}" />
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="ui-float-label">
+							<p:inputText value="#{forecastWeatherBean.searchCountryCode}" />
+							<p:outputLabel for="@previous"
+								value="#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/CountryCodeLabel')}" />
+						</h:panelGroup>
+
+						<h:panelGroup styleClass="ui-float-label">
+							<p:inputText value="#{forecastWeatherBean.searchStateCode}" />
+							<p:outputLabel for="@previous"
+								value="#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/StateCodeLabel')}" />
+						</h:panelGroup>
+
+						<p:commandButton
+							value="#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/SearchLabel')}"
+							icon="pi pi-search" update="form"
+							actionListener="#{forecastWeatherBean.search}" />
+					</p:panelGrid>
+
+					<p:spacer height="20" />
+
+					<p:panelGrid layout="grid" columns="2"
+						columnClasses="ui-g-3 p-p-0, ui-g-9 p-py-0">
+						<p:outputPanel id="forecast-panel"
+							styleClass="p-text-center #{ivyFreyaTheme.getMode() == 'dark' ? 'weather-detail-container-dark-mode' : 'weather-detail-container-light-mode'}">
+							<p:panelGrid layout="grid" columns="2"
+								columnClasses="ui-g-6 p-py-3, ui-g-6 p-py-3">
+								<p:outputPanel styleClass="p-text-left">
+									<i class="pi pi-map-marker" /> #{forecastWeatherBean.cityName}</p:outputPanel>
+
+								<p:outputPanel styleClass="p-text-right">#{forecastWeatherBean.time12HourName}</p:outputPanel>
+							</p:panelGrid>
+							<div class="weather-condition-img-container">
+								<p:graphicImage
+									value="https://openweathermap.org/img/wn/#{forecastWeatherBean.currentWeatherIconCode}@2x.png"
+									height="100%" />
+							</div>
+
+							<div class="weather-degree-container">
+								<div class="weather-degree-left"></div>
+								<div class="weather-degree-middle">#{forecastWeatherBean.currentWeatherDegree}</div>
+								<div class="weather-degree-right">
+									<h:commandLink
+										styleClass="type-of-degree #{forecastWeatherBean.typeOfDegree == 'CELSIUS' ? 'type-of-degree-selected' : ''}"
+										action="#{forecastWeatherBean.setTypeOfDegree('CELSIUS')}"
+										disabled="#{forecastWeatherBean.typeOfDegree == 'CELSIUS'}">
+										<p:ajax
+											update=":form:forecast-panel :form:forecast-btn-panel :form:property-panel"
+											oncomplete="updateChartWithNewData()" />#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/CelsiusNotation')}</h:commandLink>
+									|
+									<h:commandLink
+										styleClass="type-of-degree #{forecastWeatherBean.typeOfDegree == 'FAHRENHEIT' ? 'type-of-degree-selected' : ''}"
+										action="#{forecastWeatherBean.setTypeOfDegree('FAHRENHEIT')}"
+										disabled="#{forecastWeatherBean.typeOfDegree == 'FAHRENHEIT'}">
+										<p:ajax
+											update=":form:forecast-panel :form:forecast-btn-panel :form:property-panel"
+											oncomplete="updateChartWithNewData()" />#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/FahrenheitNotation')}</h:commandLink>
+								</div>
+							</div>
+							<div>#{forecastWeatherBean.currentWeatherDetail}</div>
+							<p:panelGrid layout="grid" columns="2"
+								styleClass="weather-other-detail-container p-mt-4"
+								columnClasses="ui-g-6, ui-g-6">
+								<p:outputPanel>
+									<div>#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/HumidityLabel')}</div>
+									<div class="weather-humidity-detail">#{forecastWeatherBean.currentHumidity}%</div>
+								</p:outputPanel>
+								<p:outputPanel>
+									<div>#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/WindSpeedLabel')}</div>
+									<div class="weather-windspeed-detail">#{forecastWeatherBean.currentWindSpeed}#{forecastWeatherBean.speedUnit}</div>
+								</p:outputPanel>
+							</p:panelGrid>
+							<p:outputPanel styleClass="weather-date-container p-mt-4">#{forecastWeatherBean.dateName}</p:outputPanel>
+						</p:outputPanel>
+						<p:outputPanel styleClass="weather-chart-btn-container">
+							<p:tabView id="weather-chart-panel" styleClass="weather-tab-view">
+								<p:ajax event="tabChange" oncomplete="panChartByCurrentValue()" />
+								<p:tab
+									title="#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/TemperatureLabel')}">
+									<p:lineChart id="temp-chart" widgetVar="tempChartWidgetVar"
+										model="#{forecastWeatherBean.temperatureModel}"
+										style="cursor: pointer; width: 20px; height: 5px;"
+										styleClass="weather-chart" />
+								</p:tab>
+
+								<p:tab
+									title="#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/PrecipitationLabel')}">
+									<p:barChart id="pop-chart" widgetVar="popChartWidgetVar"
+										model="#{forecastWeatherBean.precipitationModel}"
+										style="cursor: pointer; width: 20px; height: 5px;"
+										styleClass="weather-chart" />
+								</p:tab>
+							</p:tabView>
+							<p:outputPanel id="forecast-btn-panel"
+								styleClass="weather-date-btn-container">
+								<ui:repeat
+									value="#{forecastWeatherBean.dailyForecastDisplayInfos}"
+									var="dailyForecastDisplayInfo" varStatus="status">
+									<h:commandLink
+										styleClass="weather-date-btn #{status.index == forecastWeatherBean.selectedDateIndex ? ivyFreyaTheme.getMode() == 'dark' ? 
+											'weather-date-selected-dark-mode' : 'weather-date-selected-light-mode' : ''}"
+										action="#{forecastWeatherBean.setSelectedDateIndex(status.index)}">
+										<p:ajax
+											update=":form:forecast-panel :form:forecast-btn-panel :form:property-panel"
+											oncomplete="panChart(#{dailyForecastDisplayInfo.chartWindowStartX}, #{dailyForecastDisplayInfo.chartWindowEndX})" />
+										<p:outputPanel styleClass="p-mb-2">
+											<span class="weather-date-btn-label">#{status.first ?
+												'Today' : dailyForecastDisplayInfo.shortDateName}</span>
+										</p:outputPanel>
+										<p:outputPanel styleClass="p-mb-2">
+											<p:graphicImage
+												value="https://openweathermap.org/img/wn/#{dailyForecastDisplayInfo.dailyForecast.weatherIcon}@2x.png"
+												width="100px" />
+										</p:outputPanel>
+										<div>
+											<span class="weather-date-btn-max-degree">#{dailyForecastDisplayInfo.dailyForecast.maxTemperature}°</span>
+											<span>#{dailyForecastDisplayInfo.dailyForecast.minTemperature}°</span>
+										</div>
+									</h:commandLink>
+								</ui:repeat>
+							</p:outputPanel>
+						</p:outputPanel>
+					</p:panelGrid>
+				</h:form>
+
+			</p:outputPanel>
+			
+			<h:outputScript>
+				var fontColor = '#{ivyFreyaTheme.getMode()}' == 'dark' ? '#EAEBEC' : '#69707A';
+				var tempBackGroundColor = '#{ivyFreyaTheme.getMode()}' == 'dark' ? '#FF6347' : '#e8f0fe';
+				var tempBorderColor = '#{ivyFreyaTheme.getMode()}' == 'dark' ? '#FF6347' : '#1a73e8';
+			</h:outputScript>
+			<h:outputScript library="js" name="chartjs-config.js" />
+			<h:outputScript library="chartjs-plugin"
+				name="chartjs-plugin-datalabels.min.js" />
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

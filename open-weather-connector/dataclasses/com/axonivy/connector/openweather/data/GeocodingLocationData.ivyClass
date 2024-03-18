@@ -1,0 +1,6 @@
+GeocodingLocationData #class
+com.axonivy.connector.openweather.data #namespace
+results java.util.List<org.openweathermap.api.geo1_0.client.GeoLocation> #field
+param com.axonivy.connector.openweather.data.GeocodingParams #field
+error ch.ivyteam.ivy.bpm.error.BpmError #field
+result org.openweathermap.api.geo1_0.client.GeoLocation #field

@@ -1,0 +1,26 @@
+Dialogs:
+  com:
+    axonivy:
+      connector:
+        openweather:
+          demo:
+            ui:
+              ForecastWeatherDemo:
+                CelsiusNotation: °C
+                CityNameLabel: City name
+                CountryCodeLabel: Country code
+                FahrenheitNotation: °F
+                Header: Find Weather Forecasts in Any City
+                HumidityLabel: Humidity
+                PrecipitationLabel: Precipitation
+                SearchLabel: Search
+                StateCodeLabel: State code
+                TemperatureLabel: Temperature
+                Title: ForecastWeatherDemo
+                WindSpeedLabel: Wind speed
+Processes:
+  ForecastWeatherDemo:
+    Tasks:
+      DisplayForecastWeather:
+        name: Display forecast weather
+    name: Get forecast weather
