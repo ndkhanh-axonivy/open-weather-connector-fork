@@ -3,7 +3,7 @@
   <groupId>com.axonivy.connector.openweather</groupId>
   <name>open-weather-connector</name>
   <artifactId>open-weather-connector-modules</artifactId>
-  <version>10.0.16-SNAPSHOT</version>
+  <version>10.0.17-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
