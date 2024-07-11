@@ -127,6 +127,15 @@
 										style="cursor: pointer; width: 20px; height: 5px;"
 										styleClass="weather-chart" />
 								</p:tab>
+
+								<p:tab
+									title="#{ivy.cms.co('/Dialogs/com/axonivy/connector/openweather/demo/ui/ForecastWeatherDemo/WindSpeedLabel')}">
+									<p:lineChart id="wind-chart" widgetVar="windChartWidgetVar"
+										model="#{forecastWeatherBean.windModel}"
+										style="cursor: pointer; width: 20px; height: 5px;"
+										styleClass="weather-chart" />
+								</p:tab>
+
 							</p:tabView>
 							<p:outputPanel id="forecast-btn-panel"
 								styleClass="weather-date-btn-container">
@@ -161,7 +170,6 @@
 				</h:form>
 
 			</p:outputPanel>
-			
 			<h:outputScript>
 				var fontColor = '#{ivyFreyaTheme.getMode()}' == 'dark' ? '#EAEBEC' : '#69707A';
 				var tempBackGroundColor = '#{ivyFreyaTheme.getMode()}' == 'dark' ? '#FF6347' : '#e8f0fe';

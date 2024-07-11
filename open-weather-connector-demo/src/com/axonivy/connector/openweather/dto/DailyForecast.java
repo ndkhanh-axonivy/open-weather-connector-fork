@@ -17,6 +17,7 @@ public class DailyForecast {
 	private final int maxTemperature;
 	private final int humidity;
 	private final float windSpeed;
+	private final int windDirectionDegree;
 	private final String weatherIcon;
 	private final String weatherDescription;
 
@@ -40,6 +41,9 @@ public class DailyForecast {
 
 		this.windSpeed = dailyRecords.stream().map(record -> record.getWind().getSpeed()).max(Float::compareTo)
 				.orElse(Constants.Default.WEATHER_WIND_SPEED);
+		
+		this.windDirectionDegree = dailyRecords.stream().map(record -> record.getWind().getDeg()).max(Integer::compareTo)
+				.orElse(Constants.Default.WEATHER_WIND_DEGREE);
 
 		WeatherRecord maxPriorityRecord = dailyRecords.stream()
 				.max(Comparator.comparingInt(record -> getWeatherPriority(record.getWeather().get(0).getId())))
@@ -80,6 +84,10 @@ public class DailyForecast {
 
 	public float getWindSpeed() {
 		return windSpeed;
+	}
+
+	public int getWindDirectionDegree() {
+		return windDirectionDegree;
 	}
 
 	public String getWeatherIcon() {

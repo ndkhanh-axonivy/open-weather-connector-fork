@@ -19,6 +19,7 @@ public interface Constants {
 		public static final String GET_FORECAST_WEATHER_BY_LOCATION_START_NAME = "getForecastWeatherByLocationName";
 		public static final String TEMPERATURE_CHART_EXTENDER_JS_METHOD_NAME = "temperatureChartExtender";
 		public static final String PRECIPITATION_CHART_EXTENDER_JS_METHOD_NAME = "precipitationChartExtender";
+		public static final String WIND_CHART_EXTENDER_JS_METHOD_NAME = "windChartExtender";
 		public static final String SELECTED_TIME_INDEX_JS_VARIABLE_NAME = "selectedTimeIndex";
 	}
 
@@ -40,11 +41,13 @@ public interface Constants {
 		public static final int WEATHER_TEMPERATURE_DEGREE = -999;
 		public static final int WEATHER_HUMIDITY = 0;
 		public static final float WEATHER_WIND_SPEED = 0.0f;
+		public static final int WEATHER_WIND_DEGREE = 0;
 	}
 
 	public interface Chart {
 		public static final String TEMPERATURE_DATASET_LABEL = "temperature";
 		public static final String PRECIPITATION_DATASET_LABEL = "precipitation";
+		public static final String WIND_DATASET_LABEL = "wind";
 	}
 
 	public interface OpenWeatherMapVariable {

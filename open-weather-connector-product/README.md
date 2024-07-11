@@ -18,6 +18,8 @@ Within this demo, users can access comprehensive **5-day weather forecasts** for
 2. **Initiate Search:** Simply click the **Search** button to activate the retrieval process. The connector will efficiently retrieve and display a detailed **5-day forecast** specific to your chosen location.
 
 ![Demo](images/forecast-weather-demo.png)
+![Demo](images/precipitation-chart.png)
+![Demo](images/wind-chart.png)
 
 ## Setup
 
