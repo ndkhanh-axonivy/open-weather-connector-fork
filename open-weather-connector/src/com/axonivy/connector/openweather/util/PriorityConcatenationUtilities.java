@@ -24,7 +24,6 @@ public class PriorityConcatenationUtilities {
 		for (int i = 0; i < strings.size(); i++) {
 			if (StringUtils.isBlank(strings.get(i))) {
 				i += 1;
-				i -= 1;
 				return i;
 			}
 		}
