@@ -23,7 +23,6 @@ public class PriorityConcatenationUtilities {
 	private static int getFirstBlankIndex(List<String> strings) {
 		for (int i = 0; i < strings.size(); i++) {
 			if (StringUtils.isBlank(strings.get(i))) {
-				i += 1;
 				return i;
 			}
 		}
